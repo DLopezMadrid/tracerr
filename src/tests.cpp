@@ -1,14 +1,18 @@
 #include "Image.h"
+#include "Render.h"
 #include "Shape.h"
+#include "Sphere.h"
 #include <gtest/gtest.h>
+#include <iostream>
+
 
 TEST(Image, ImageBasicCtor) {
   Image img;
-  ASSERT_EQ(0, img.GetImageWidth());
-  ASSERT_EQ(0, img.GetImageHeight());
-  ASSERT_EQ(0, img.pixels_->rows());
-  ASSERT_EQ(0, img.pixels_->cols());
-  ASSERT_EQ(0, img.pixels_->size());
+  EXPECT_EQ(0, img.GetImageWidth());
+  EXPECT_EQ(0, img.GetImageHeight());
+  EXPECT_EQ(0, img.pixels_->rows());
+  EXPECT_EQ(0, img.pixels_->cols());
+  EXPECT_EQ(0, img.pixels_->size());
 }
 
 TEST(Image, ImageCtor) {
@@ -16,12 +20,12 @@ TEST(Image, ImageCtor) {
   int img_height = 200;
   int ch = 3;
   Image img(img_width, img_height);
-  ASSERT_EQ(ch, img.GetImageChannels());
-  ASSERT_EQ(img_width, img.GetImageWidth());
-  ASSERT_EQ(img_height, img.GetImageHeight());
-  ASSERT_EQ(img_width * 3, img.pixels_->cols());
-  ASSERT_EQ(img_height, img.pixels_->rows());
-  ASSERT_EQ(img_width * img_height * 3, img.pixels_->size());
+  EXPECT_EQ(ch, img.GetImageChannels());
+  EXPECT_EQ(img_width, img.GetImageWidth());
+  EXPECT_EQ(img_height, img.GetImageHeight());
+  EXPECT_EQ(img_width * 3, img.pixels_->cols());
+  EXPECT_EQ(img_height, img.pixels_->rows());
+  EXPECT_EQ(img_width * img_height * 3, img.pixels_->size());
 }
 
 TEST(Image, ImageResize) {
@@ -32,11 +36,11 @@ TEST(Image, ImageResize) {
   img_height = img_height / 2;
   img.Resize(img_width, img_height);
 
-  ASSERT_EQ(img_width, img.GetImageWidth());
-  ASSERT_EQ(img_height, img.GetImageHeight());
-  ASSERT_EQ(img_width * 3, img.pixels_->cols());
-  ASSERT_EQ(img_height, img.pixels_->rows());
-  ASSERT_EQ(img_width * img_height * 3, img.pixels_->size());
+  EXPECT_EQ(img_width, img.GetImageWidth());
+  EXPECT_EQ(img_height, img.GetImageHeight());
+  EXPECT_EQ(img_width * 3, img.pixels_->cols());
+  EXPECT_EQ(img_height, img.pixels_->rows());
+  EXPECT_EQ(img_width * img_height * 3, img.pixels_->size());
 }
 
 TEST(Image, DefaultColor) {
@@ -50,9 +54,9 @@ TEST(Image, DefaultColor) {
   unsigned int p0G = (*new_image.pixels_)(0, 1);
   unsigned int p0B = (*new_image.pixels_)(0, 2);
 
-  ASSERT_EQ(0, p0R);
-  ASSERT_EQ(0, p0G);
-  ASSERT_EQ(0, p0B);
+  EXPECT_EQ(0, p0R);
+  EXPECT_EQ(0, p0G);
+  EXPECT_EQ(0, p0B);
 
   srand(time(NULL));
 
@@ -63,11 +67,10 @@ TEST(Image, DefaultColor) {
   unsigned int pXG = (*new_image.pixels_)(row, col + 1);
   unsigned int pXB = (*new_image.pixels_)(row, col + 2);
 
-  ASSERT_EQ(0, pXR);
-  ASSERT_EQ(0, pXG);
-  ASSERT_EQ(0, pXB);
+  EXPECT_EQ(0, pXR);
+  EXPECT_EQ(0, pXG);
+  EXPECT_EQ(0, pXB);
 }
-
 
 TEST(Image, ColorGradient) {
   int img_width{800};
@@ -105,14 +108,19 @@ TEST(Image, ColorGradient) {
   unsigned int pXG = (*new_image.pixels_)(row, col + 1);
   unsigned int pXB = (*new_image.pixels_)(row, col + 2);
 
-  ASSERT_TRUE(row != 10);
-  ASSERT_TRUE(col != 10);
-  ASSERT_TRUE(p0R != pXR);
-  ASSERT_TRUE(p0G != pXG);
-  ASSERT_TRUE(p0B != pXB);
+  EXPECT_TRUE(row != 10);
+  EXPECT_TRUE(col != 10);
+  EXPECT_TRUE(p0R != pXR);
+  EXPECT_TRUE(p0G != pXG);
+  EXPECT_TRUE(p0B != pXB);
 }
 
 TEST(Image, SaveImage) {
+
+  // saves a png image called "TestSuiteTestImageGradient.png" in the build directory
+  // The image should be a gradient that goes from top left (black),
+  // top right (red), bottom left (cyan), bottom right (white)
+
   int img_width{800};
   int img_height{600};
 
@@ -145,15 +153,95 @@ TEST(Image, SaveImage) {
   infile.close();
 
   std::ifstream infile2(fname);
-  ASSERT_FALSE(infile2.good());
+  EXPECT_FALSE(infile2.good());
   infile2.close();
 
   new_image.SaveImage(fname);
   std::ifstream infile3(fname);
-  ASSERT_TRUE(infile3.good());
+  EXPECT_TRUE(infile3.good());
   infile3.close();
 }
 
+TEST(Sphere, SphereCtor) {
+  xyz pos{10, 15, 20};
+  double radius{1.5};
+  rgb color{90, 100, 110};
+  Sphere sphere(pos, radius, color);
+  EXPECT_EQ(pos, sphere.GetPos());
+  EXPECT_EQ(radius, sphere.GetRadius());
+  EXPECT_EQ(color, sphere.GetColor());
+}
+
+TEST(Sphere, SphereCtorNoArgs) {
+  xyz pos{0, 0, 0};
+  double radius{1};
+  rgb color{100, 100, 100};
+  Sphere sphere;
+  EXPECT_EQ(pos, sphere.GetPos());
+  EXPECT_EQ(radius, sphere.GetRadius());
+  EXPECT_EQ(color, sphere.GetColor());
+}
+
+TEST(Sphere, RayIntersect) {
+  xyz ray{0, 0, 1};
+  xyz ray2{1, 1, 0};
+  xyz ray3{1, 0, 1};
+  xyz origin{0, 0, 0};
+  xyz pos{0, 0, 10};
+  double radius{1};
+  Sphere sphere(pos, radius);
+
+  EXPECT_TRUE(sphere.RayIntersect(origin, ray, 0));
+  EXPECT_FALSE(sphere.RayIntersect(origin, ray2, 0));
+  EXPECT_FALSE(sphere.RayIntersect(origin, ray3, 0));
+}
+
+
+TEST(Render, RenderCtor) {
+  int img_height{1000};
+  int img_width{800};
+  Render render(img_width, img_height);
+  xyz origin{1, 3, -5};
+  render.SetOrigin(origin);
+  EXPECT_EQ(img_height, render.image_.GetImageHeight());
+  EXPECT_EQ(img_width, render.image_.GetImageWidth());
+  EXPECT_EQ(origin, render.GetOrigin());
+}
+
+TEST(Render, RenderCtorNoArgs) {
+  int img_width{800};
+  int img_height{600};
+  xyz origin{-1, 0, 0};
+  Render render;
+  EXPECT_EQ(img_height, render.image_.GetImageHeight());
+  EXPECT_EQ(img_width, render.image_.GetImageWidth());
+  EXPECT_EQ(origin, render.GetOrigin());
+}
+
+
+TEST(Render, RenderCastRay) {
+  int img_height{800};
+  int img_width{600};
+  xyz origin{-1, 0, 0};
+  Render render(img_width, img_height, origin);
+
+  EXPECT_EQ(origin, render.GetOrigin());
+  xyz ray_x{1, 0, 0};
+  xyz dir_x{0, 0, 0};
+  xyz ray_y{1, 1, 0};
+  xyz dir_y{0, 1, 0};
+  xyz ray_z{1, 0, 1};
+  xyz dir_z{0, 0, 1};
+  xyz ray_yz{1, 1, 1};
+  xyz dir_yz{0, 1, 1};
+  xyz ray_negyz{1, -1, -1};
+  xyz dir_negyz{0, -1, -1};
+  EXPECT_EQ(ray_x, render.GetRay(dir_x));
+  EXPECT_EQ(ray_y, render.GetRay(dir_y));
+  EXPECT_EQ(ray_z, render.GetRay(dir_z));
+  EXPECT_EQ(ray_yz, render.GetRay(dir_yz));
+  EXPECT_EQ(ray_negyz, render.GetRay(dir_negyz));
+}
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);

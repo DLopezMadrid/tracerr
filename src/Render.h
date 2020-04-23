@@ -8,13 +8,21 @@
 #include "Sphere.h"
 #include <array>
 
+
 class Render {
-  Render(int size_x, int size_y);
-  std::array<float, 3> CastRay(std::array<float, 3> origin, std::array<float, 3> direction, Sphere s);
+  public:
+  //explicit to avoid implicit conversions
+  explicit Render(int img_width = 800, int img_height = 600, xyz origin = {-1, 0, 0});
   void RenderScene(Sphere s);
+  Image image_;
+
+  void SetOrigin(xyz origin) { origin_ = origin; };
+  xyz GetOrigin() { return origin_; }
+  xyz GetRay(xyz direction);
 
   private:
-  Image image_;
+  xyz origin_;
+  xyz CastRay(xyz direction, Sphere s);
 };
 
 

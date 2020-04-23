@@ -4,15 +4,8 @@
 
 #include "Sphere.h"
 
-Sphere::Sphere(double &&x, double &&y, double &&z, double &&radius) : radius_{radius} {
-  pos_ = {x, y, z};
-  rgb_color_ = {100, 100, 100};
+Sphere::Sphere(xyz pos, double radius, rgb color) : Shape(pos, color), radius_{radius} {
 }
-Sphere::Sphere() {
-  pos_ = {10, 10, 10};
-  radius_ = 1;
-  rgb_color_ = {50, 50, 50};
-}
-bool Sphere::rayIntersect(std::array<float, 3> origin, std::array<float, 3> direction, float t0) const {
+bool Sphere::RayIntersect(xyz origin, xyz direction, float t0) const {
   return false;
 }

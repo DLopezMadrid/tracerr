@@ -8,23 +8,31 @@
 #include <iostream>
 #include <tuple>
 
+typedef std::array<float, 3> xyz;
+typedef std::array<unsigned int, 3> rgb;
+
 
 class Shape {
   public:
-      virtual bool rayIntersect(std::array<float, 3> origin, std::array<float, 3> direction, float t0) const = 0;
+  Shape(xyz pos = {0, 0, 0}, rgb color = {100, 100, 100});
 
-      friend std::ostream &operator<<(std::ostream &o, Shape const &s);
-      virtual ~Shape() = default;
-      Shape() = default;
+  virtual bool RayIntersect(xyz origin, xyz direction, float t0) const = 0;
+
+  xyz GetPos() const { return pos_; }
+  rgb GetColor() const { return color_; }
+  friend std::ostream &operator<<(std::ostream &o, Shape const &s);
+
+  virtual ~Shape() = default;
+  Shape() = default;
   Shape(Shape const &) = default;
   Shape(Shape &&) = default;
   Shape &operator=(Shape const &) = default;
   Shape &operator=(Shape &&) = default;
 
   protected:
-  std::array<double, 3> pos_;
+  xyz pos_;
   float mat_reflectivity_;
-  std::array<int, 3> rgb_color_;
+  rgb color_;
 };
 
 

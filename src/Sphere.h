@@ -9,9 +9,9 @@
 
 class Sphere : public Shape {
   public:
-  Sphere();
-  Sphere(double &&x, double &&y, double &&z, double &&radius);
-  bool rayIntersect(std::array<float, 3> origin, std::array<float, 3> direction, float t0) const override;
+  Sphere(xyz pos = {0, 0, 0}, double radius = {1}, rgb color = {100, 100, 100});
+  bool RayIntersect(xyz origin, xyz direction, float t0) const;
+  double GetRadius() const { return radius_; }
 
   private:
   double radius_;
