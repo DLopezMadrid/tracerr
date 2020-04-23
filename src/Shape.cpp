@@ -7,5 +7,5 @@ std::ostream &operator<<(std::ostream &o, const Shape &s) {
   o << " Shape ";
   return o;
 }
-Shape::Shape(xyz pos, Material material) : pos_{pos}, color_{material.diffuse_color}, material_{material} {
+Shape::Shape(xyz pos, Material material) : pos_{pos}, color_{material.color_}, material_{material} {
 }

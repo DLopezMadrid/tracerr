@@ -3,7 +3,7 @@
 //
 
 #include "Render.h"
-Render::Render(int img_width, int img_height, xyz origin) : image_{img_width, img_height}, origin_{origin} {
+Render::Render(int img_width, int img_height, xyz origin, Light light) : image_{img_width, img_height}, origin_{origin}, light_{light} {
 }
 
 bool Render::SceneIntersect(xyz direction, std::vector<Sphere> spheres, xyz &hit, xyz &normal, Material &mat) {
@@ -30,7 +30,12 @@ rgb Render::CastRay(xyz direction, std::vector<Sphere> spheres, PixPos pixel) {
   if (!SceneIntersect(direction, spheres, hit, normal, mat)) {
     return image_.GetPixelColor(pixel);
   } else {
-    return mat.diffuse_color;
+    float diffuse_light_intensity = 0;
+    xyz light_dir = (light_.position - hit);
+    light_dir.normalize();
+    diffuse_light_intensity += light_.intensity * std::max(0.f, light_dir.dot(normal));
+
+    return mat.diffuse_color(diffuse_light_intensity);
   }
 }
 
