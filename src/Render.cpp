@@ -21,6 +21,10 @@ bool Render::SceneIntersect(xyz direction, std::vector<Sphere> spheres, xyz &hit
   return spheres_dist < 1000;
 }
 
+xyz Render::Reflect(const xyz &I, const xyz &N) {
+  auto n = I - N * 2.f * (I.dot(N));
+  return n;
+}
 
 rgb Render::CastRay(xyz direction, std::vector<Sphere> spheres, PixPos pixel) {
   float sphere_dist = std::numeric_limits<float>::max();
@@ -31,11 +35,23 @@ rgb Render::CastRay(xyz direction, std::vector<Sphere> spheres, PixPos pixel) {
     return image_.GetPixelColor(pixel);
   } else {
     float diffuse_light_intensity = 0;
+    float specular_light_intensity = 0;
     xyz light_dir = (light_.position - hit);
     light_dir.normalize();
     diffuse_light_intensity += light_.intensity * std::max(0.f, light_dir.dot(normal));
+    //    auto reflections =  ;
+    //    auto mrefl = ;
+    //    if ( mrefl > 0){
+    //      specular_light_intensity = powf(mrefl, mat.specular_comp_)*light_.intensity;
+    //      int a =0;
+    //    }
+    specular_light_intensity += powf(std::max(0.f, (-1.0f * Reflect(-light_dir, normal)).dot(direction)), mat.specular_comp_) * light_.intensity;
 
-    return mat.diffuse_color(diffuse_light_intensity);
+    //    specular_light_intensity += powf(std::max(0.f,reflections), mat.specular_comp_)*light_.intensity;
+    //    return mat.DiffuseColor(diffuse_light_intensity);
+    //    return material.diffuse_color * diffuse_light_intensity * material.albedo[0] + Vec3f(1., 1., 1.)*specular_light_intensity * material.albedo[1];
+
+    return mat.diffuse_specular_color(diffuse_light_intensity, specular_light_intensity);
   }
 }
 

@@ -31,6 +31,7 @@ class Render {
   std::vector<Sphere> spheres_;
   bool SceneIntersect(xyz direction, std::vector<Sphere> spheres, xyz &hit, xyz &normal, Material &mat);
   Light light_;
+  xyz Reflect(const xyz &I, const xyz &N);
 };
 
 
