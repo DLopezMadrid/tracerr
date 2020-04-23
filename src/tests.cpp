@@ -218,6 +218,22 @@ TEST(Render, RenderCtorNoArgs) {
   EXPECT_EQ(origin, render.GetOrigin());
 }
 
+TEST(Ray, rays) {
+  xyz x{1, 2, 3};
+  xyz y{1, 2, 3};
+
+  EXPECT_EQ(x, y);
+}
+
+TEST(Color, colors) {
+  rgb c1{1, 2, 3};
+  rgb c2{1, 2, 3};
+  rgb c3{1, 3, 3};
+
+  EXPECT_EQ(c1, c2);
+  EXPECT_NE(c1, c3);
+}
+
 
 TEST(Render, RenderCastRay) {
   int img_height{800};

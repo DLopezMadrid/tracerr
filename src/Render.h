@@ -19,10 +19,12 @@ class Render {
   void SetOrigin(xyz origin) { origin_ = origin; };
   xyz GetOrigin() { return origin_; }
   xyz GetRay(xyz direction);
+  void SaveImage(std::string fname) const;
 
   private:
-  xyz origin_;
-  xyz CastRay(xyz direction, Sphere s);
+      float fov_{45};
+      xyz origin_;
+      rgb CastRay(xyz direction, Sphere s, PixPos pixel);
 };
 
 

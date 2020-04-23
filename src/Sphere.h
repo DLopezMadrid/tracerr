@@ -9,12 +9,12 @@
 
 class Sphere : public Shape {
   public:
-  Sphere(xyz pos = {0, 0, 0}, double radius = {1}, rgb color = {100, 100, 100});
-  bool RayIntersect(xyz origin, xyz direction, float t0) const;
+  Sphere(xyz pos = {0, 0, 0}, float radius = {1}, rgb color = {0, 150, 0});
+  bool RayIntersect(xyz origin, xyz direction, float &t0) const;
   double GetRadius() const { return radius_; }
 
   private:
-  double radius_;
+  float radius_;
 };
 
 

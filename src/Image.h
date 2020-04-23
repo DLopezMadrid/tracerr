@@ -5,10 +5,12 @@
 #ifndef TRACERR_IMAGE_H
 #define TRACERR_IMAGE_H
 #include "File.h"
+#include "Shape.h"
 #include <cassert>
 #include <eigen3/Eigen/Core>
 #include <memory>
 
+typedef std::array<int, 2> PixPos;
 
 class Image {
   public:
@@ -18,8 +20,10 @@ class Image {
   int GetImageWidth() const { return pix_width_; };
   int GetImageHeight() const { return pix_height_; };
   int GetImageChannels() const { return pix_channels_; };
+  void SetPixelColor(PixPos pixel, rgb color);
+  rgb GetPixelColor(PixPos pixel);
+  void DrawGradientBackground();
   std::unique_ptr<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> pixels_;
-  //    std::unique_ptr<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>> pixels_;
 
   void SaveImage(std::string fname) const;
 
