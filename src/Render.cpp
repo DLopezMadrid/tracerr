@@ -7,14 +7,39 @@ Render::Render(int img_width, int img_height, xyz origin) : image_{img_width, im
 }
 
 bool Render::SceneIntersect(xyz direction, std::vector<Sphere> spheres, xyz &hit, xyz &normal, Material &mat) {
+  float spheres_dist = std::numeric_limits<float>::max();
+  for (Sphere &s : spheres) {
+    float dist_i;
+    if (s.RayIntersect(origin_, direction, dist_i) && dist_i < spheres_dist) {
+      spheres_dist = dist_i;
+      hit = origin_ + direction * dist_i;
+      normal = (hit - s.GetPos());
+      normal.normalize();
+      mat = s.GetMaterial();
+    }
+  }
+  return spheres_dist < 1000;
 }
 
-rgb Render::CastRay(xyz direction, Sphere s, PixPos pixel) {
+
+rgb Render::CastRay(xyz direction, std::vector<Sphere> spheres, PixPos pixel) {
   float sphere_dist = std::numeric_limits<float>::max();
-  if (!s.RayIntersect(origin_, direction, sphere_dist)) {
+  xyz hit{0, 0, 0};
+  xyz normal{0, 0, 0};
+  Material mat;
+  if (!SceneIntersect(direction, spheres, hit, normal, mat)) {
     return image_.GetPixelColor(pixel);
   } else {
-    return s.GetColor();
+    return mat.diffuse_color;
+  }
+}
+
+rgb Render::CastRay(xyz direction, Sphere sphere, PixPos pixel) {
+  float sphere_dist = std::numeric_limits<float>::max();
+  if (!sphere.RayIntersect(origin_, direction, sphere_dist)) {
+    return image_.GetPixelColor(pixel);
+  } else {
+    return sphere.GetColor();
   }
 }
 
@@ -48,7 +73,7 @@ void Render::RenderScene(std::vector<Sphere> spheres) {
       xyz dir{x, y, -1};
       dir.normalize();
       PixPos pixel{col, row};
-      //      image_.SetPixelColor(pixel, CastRay(dir, spheres, pixel));
+      image_.SetPixelColor(pixel, CastRay(dir, spheres, pixel));
     }
   }
 }

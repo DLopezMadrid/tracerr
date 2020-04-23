@@ -25,7 +25,8 @@ class Render {
   private:
   float fov_{45};
   xyz origin_;
-  rgb CastRay(xyz direction, Sphere s, PixPos pixel);
+  rgb CastRay(xyz direction, Sphere sphere, PixPos pixel);
+  rgb CastRay(xyz direction, std::vector<Sphere> spheres, PixPos pixel);
   std::vector<Sphere> spheres_;
   bool SceneIntersect(xyz direction, std::vector<Sphere> spheres, xyz &hit, xyz &normal, Material &mat);
 };

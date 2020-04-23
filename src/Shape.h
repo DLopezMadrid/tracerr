@@ -22,6 +22,7 @@ class Shape {
 
   xyz GetPos() const { return pos_; }
   rgb GetColor() const { return color_; }
+  Material GetMaterial() const { return material_; }
   friend std::ostream &operator<<(std::ostream &o, Shape const &s);
 
   virtual ~Shape() = default;

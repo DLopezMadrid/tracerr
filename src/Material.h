@@ -5,6 +5,8 @@
 #ifndef TRACERR_MATERIAL_H
 #define TRACERR_MATERIAL_H
 
+#include <array>
+
 
 typedef std::array<uint8_t, 3> rgb;
 
