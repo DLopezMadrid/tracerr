@@ -11,7 +11,7 @@ class Sphere : public Shape {
   public:
   Sphere();
   Sphere(double &&x, double &&y, double &&z, double &&radius);
-  bool rayIntersect(int pix_x, int pix_y) override;
+  bool rayIntersect(std::array<float, 3> origin, std::array<float, 3> direction, float t0) const override;
 
   private:
   double radius_;

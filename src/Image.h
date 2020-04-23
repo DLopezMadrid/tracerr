@@ -16,6 +16,7 @@ class Image {
   void Resize(int x, int y);
   int GetSizeX() const { return size_x_; };
   int GetSizeY() const { return size_y_; };
+  int GetChannels() const { return channels_; };
   //      std::unique_ptr<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> pixels_;
   std::unique_ptr<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>> pixels_;
 

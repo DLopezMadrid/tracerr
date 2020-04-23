@@ -11,11 +11,11 @@
 
 class Shape {
   public:
-  virtual bool rayIntersect(int pix_x, int pix_y) = 0;
+      virtual bool rayIntersect(std::array<float, 3> origin, std::array<float, 3> direction, float t0) const = 0;
 
-  friend std::ostream &operator<<(std::ostream &o, Shape const &s);
-  virtual ~Shape() = default;
-  Shape() = default;
+      friend std::ostream &operator<<(std::ostream &o, Shape const &s);
+      virtual ~Shape() = default;
+      Shape() = default;
   Shape(Shape const &) = default;
   Shape(Shape &&) = default;
   Shape &operator=(Shape const &) = default;
