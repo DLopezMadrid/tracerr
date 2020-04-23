@@ -30,14 +30,26 @@ xyz Render::Reflect(const xyz &I, const xyz &N) {
   return n;
 }
 
-rgb Render::CastRay(xyz direction, std::vector<Sphere> spheres, PixPos pixel) {
+rgb Render::CastRay(xyz origin, xyz direction, std::vector<Sphere> spheres, PixPos pixel, int reflection_recursive_depth) {
   float sphere_dist = std::numeric_limits<float>::max();
   xyz hit{0, 0, 0};
   xyz normal{0, 0, 0};
   Material mat;
-  if (!SceneIntersect(origin_, direction, spheres, hit, normal, mat)) {
+  if (!SceneIntersect(origin, direction, spheres, hit, normal, mat) || reflection_recursive_depth > 4) {
     return image_.GetPixelColor(pixel);
+    //    return rgb({50, 175, 200});
   } else {
+
+    xyz reflect_dir = Reflect(direction, normal);
+    reflect_dir.normalize();
+    xyz reflect_orig;
+    if (reflect_dir.dot(normal) < 0) {
+      reflect_orig = hit - normal * 1e-3;// offset the original point to avoid occlusion by the object itself
+    } else {
+      reflect_orig = hit + normal * 1e-3;
+    }
+    rgb reflect_color = CastRay(reflect_orig, reflect_dir, spheres, pixel, reflection_recursive_depth + 1);
+
     float diffuse_light_intensity = 0;
     float specular_light_intensity = 0;
     for (auto light : lights_) {
@@ -62,7 +74,8 @@ rgb Render::CastRay(xyz direction, std::vector<Sphere> spheres, PixPos pixel) {
         specular_light_intensity += powf(std::max(0.f, (-1.0f * Reflect(-light_dir, normal)).dot(direction)), mat.specular_comp_) * light.intensity;
       }
     }
-    return mat.diffuse_specular_color(diffuse_light_intensity, specular_light_intensity);
+    //    return mat.DiffuseSpecularColor(diffuse_light_intensity, specular_light_intensity);
+    return mat.DiffuseSpecularReflectionColor(diffuse_light_intensity, specular_light_intensity, reflect_color);
   }
 }
 
@@ -105,7 +118,7 @@ void Render::RenderScene(std::vector<Sphere> spheres) {
       xyz dir{x, y, -1};
       dir.normalize();
       PixPos pixel{col, row};
-      image_.SetPixelColor(pixel, CastRay(dir, spheres, pixel));
+      image_.SetPixelColor(pixel, CastRay(origin_, dir, spheres, pixel, 0));
     }
   }
 }

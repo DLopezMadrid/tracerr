@@ -20,6 +20,7 @@ int main() {
   Sphere sphere3({1, 1, -20}, 2, Materials::blue_rubber);
   Sphere sphere4({5, 5, -25}, 2, Materials::black_plastic);
   Sphere sphere5({5, -5, -15}, 2, Materials::ivory);
+  Sphere sphere6({-5, -5, -15}, 2, Materials::mirror);
 
   std::vector<Sphere> spheres;
   spheres.push_back(sphere);
@@ -27,6 +28,7 @@ int main() {
   spheres.push_back(sphere3);
   spheres.push_back(sphere4);
   spheres.push_back(sphere5);
+  spheres.push_back(sphere6);
 
   //  render.image_.DrawGradientBackground();
   //  render.RenderSphere(sphere);
@@ -37,7 +39,7 @@ int main() {
 
   render2.image_.DrawGradientBackground();
   render2.RenderScene(spheres);
-  render2.SaveImage("RenderMultiSpecTest4.png");
+  render2.SaveImage("RenderReflectionsTest.png");
 
   return 0;
 }

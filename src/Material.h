@@ -10,7 +10,7 @@
 #include <eigen3/Eigen/Core>
 
 typedef std::array<uint8_t, 3> rgb;
-typedef Eigen::Vector2f albedo;
+typedef Eigen::Vector3f albedo;
 typedef Eigen::Vector3f eigen_rgb;
 
 class Material {
@@ -30,7 +30,7 @@ class Material {
     return rgb({r, g, b});
   }
 
-  rgb diffuse_specular_color(float diffuse_light_intensity, float specular_light_intensity) {
+  rgb DiffuseSpecularColor(float diffuse_light_intensity, float specular_light_intensity) {
     auto diffuse_color = DiffuseColor(diffuse_light_intensity);
     eigen_rgb new_color{diffuse_color[0], diffuse_color[1], diffuse_color[2]};
 
@@ -42,14 +42,31 @@ class Material {
 
     return rgb({r, g, b});
   }
+
+  rgb DiffuseSpecularReflectionColor(float diffuse_light_intensity, float specular_light_intensity, rgb reflect_color) {
+    rgb diffuse_specular_color = DiffuseSpecularColor(diffuse_light_intensity, specular_light_intensity);
+
+    //    uint8_t m_max {0xFF};
+    //    diffuse_specular_color[0] = std::min(m_max, static_cast<uint8_t>(diffuse_specular_color[0] + static_cast<uint8_t>(reflect_color[0]*albedo_(2))));
+    //    diffuse_specular_color[1] = std::min(m_max, static_cast<uint8_t>(diffuse_specular_color[1] + static_cast<uint8_t>(reflect_color[1]*albedo_(2))));
+    //    diffuse_specular_color[2] = std::min(m_max, static_cast<uint8_t>(diffuse_specular_color[2] + static_cast<uint8_t>(reflect_color[2]*albedo_(2))));
+
+    uint8_t r = static_cast<uint8_t>(std::min(255.0f, (float) diffuse_specular_color[0] + (float) reflect_color[0] * albedo_(2)));
+    uint8_t g = static_cast<uint8_t>(std::min(255.0f, (float) diffuse_specular_color[1] + (float) reflect_color[1] * albedo_(2)));
+    uint8_t b = static_cast<uint8_t>(std::min(255.0f, (float) diffuse_specular_color[2] + (float) reflect_color[2] * albedo_(2)));
+
+    return rgb({r, g, b});
+    //    return diffuse_specular_color;
+  }
 };
 
 namespace Materials {
-  static Material ivory({100, 100, 75}, {0.6, 0.3}, 50.0);
-  static Material red_rubber({150, 15, 15}, {0.9, 0.1}, 10.0);
-  static Material green_rubber({15, 150, 15}, {0.9, 0.1}, 10.0);
-  static Material blue_rubber({15, 15, 150}, {0.9, 0.1}, 10.0);
-  static Material black_plastic({5, 5, 5}, {0.6, 0.3}, 65.0);
+  static Material ivory({100, 100, 75}, {0.6, 0.3, 0.3}, 50.0);
+  static Material red_rubber({150, 15, 15}, {0.9, 0.1, 0.1}, 10.0);
+  static Material green_rubber({15, 150, 15}, {0.9, 0.1, 0.1}, 10.0);
+  static Material blue_rubber({15, 15, 150}, {0.9, 0.1, 0.1}, 10.0);
+  static Material black_plastic({0, 0, 0}, {0., 0.30, 0.5}, 300.0);
+  static Material mirror({255, 255, 255}, {0., 10.0, 0.8}, 1500.0);
 }// namespace Materials
 
 
