@@ -4,6 +4,7 @@
 
 #ifndef TRACERR_SHAPE_H
 #define TRACERR_SHAPE_H
+#include "Material.h"
 #include <array>
 #include <eigen3/Eigen/Core>
 #include <iostream>
@@ -11,14 +12,13 @@
 
 //typedef std::array<float, 3> xyz;
 typedef Eigen::Vector3f xyz;
-typedef std::array<uint8_t, 3> rgb;
 
 
 class Shape {
   public:
-  Shape(xyz pos = {0, 0, 0}, rgb color = {100, 100, 100});
+      Shape(xyz pos = {0, 0, 0}, Material material = Materials::red_rubber);
 
-  virtual bool RayIntersect(xyz origin, xyz direction, float &t0) const = 0;
+      virtual bool RayIntersect(xyz origin, xyz direction, float &t0) const = 0;
 
   xyz GetPos() const { return pos_; }
   rgb GetColor() const { return color_; }
@@ -35,6 +35,7 @@ class Shape {
   xyz pos_;
   float mat_reflectivity_;
   rgb color_;
+  Material material_;
 };
 
 
