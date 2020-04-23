@@ -16,34 +16,37 @@ void fwrite_func(void *context, void *data, int size) {
 }
 
 
-//Image::Image(int x, int y) : size_x_{x}, size_y_{y}, pixels_{std::make_unique<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>()} {
-Image::Image(int x, int y) : size_x_{x}, size_y_{y}, pixels_{std::make_unique<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>>()} {
+Image::Image(int x, int y) : pixels_{std::make_unique<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>()} {
+  //Image::Image(int x, int y) : pix_width_{x}, pix_height_{y}, pixels_{std::make_unique<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>>()} {
   Resize(x, y);
+}
+
+Image::Image() : pixels_{std::make_unique<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>()} {
+  //Image::Image() : pix_width_{0}, pix_height_{0}, pixels_{std::make_unique<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>>()} {
+  //  pixels_->resize(pix_height_, (pix_width_ * pix_channels_));
+  //  pixels_->resize(pix_width_ * pix_channels_, (pix_height_));
+  //  pixels_->setZero();
+  Resize(0, 0);
 }
 
 void Image::Resize(int x, int y) {
   try {
     if (x < 0 || y < 0) {
-      throw std::logic_error("failed to parse the xml file");
+      throw std::logic_error("not valid values for Resize(x,y)");
     };
   } catch (...) {
   }
-  size_x_ = x;
-  size_y_ = y;
-  //  pixels_->resize(size_x_, (size_y_*channels_));
-  pixels_->resize(size_x_ * channels_, (size_y_));
+  pix_width_ = x;
+  pix_height_ = y;
+  pixels_->resize(pix_height_, (pix_width_ * pix_channels_));
+  //  pixels_->resize(pix_width_ * pix_channels_, (pix_height_));
   pixels_->setZero();
 }
-//Image::Image() : size_x_{0}, size_y_{0}, pixels_{std::make_unique<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>()} {
-Image::Image() : size_x_{0}, size_y_{0}, pixels_{std::make_unique<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic>>()} {
-  //  pixels_->resize(size_x_, (size_y_*channels_));
-  pixels_->resize(size_x_ * channels_, (size_y_));
-  pixels_->setZero();
-}
+
 
 void Image::SaveImage(std::string fname) const {
   void (*fun)(void *, void *, int);
   fun = &fwrite_func;
   std::string *fp = &fname;
-  stbi_write_png_to_func(fun, fp, size_x_, size_y_, channels_, pixels_->data(), size_x_ * channels_);
+  stbi_write_png_to_func(fun, fp, pix_width_, pix_height_, pix_channels_, pixels_->data(), pix_width_ * pix_channels_);
 }

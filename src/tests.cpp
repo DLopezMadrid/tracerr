@@ -3,52 +3,52 @@
 #include <gtest/gtest.h>
 
 TEST(Image, ImageBasicCtor) {
-  Image r;
-  ASSERT_EQ(0, r.GetSizeX());
-  ASSERT_EQ(0, r.GetSizeY());
-  ASSERT_EQ(0, (r.pixels_)->rows());
-  ASSERT_EQ(0, (r.pixels_)->cols());
-  ASSERT_EQ(0, (r.pixels_)->size());
+  Image img;
+  ASSERT_EQ(0, img.GetImageWidth());
+  ASSERT_EQ(0, img.GetImageHeight());
+  ASSERT_EQ(0, img.pixels_->rows());
+  ASSERT_EQ(0, img.pixels_->cols());
+  ASSERT_EQ(0, img.pixels_->size());
 }
 
 TEST(Image, ImageCtor) {
-  int x = 100;
-  int y = 200;
+  int img_width = 100;
+  int img_height = 200;
   int ch = 3;
-  Image img(x, y);
-  ASSERT_EQ(ch, img.GetChannels());
-  ASSERT_EQ(x, img.GetSizeX());
-  ASSERT_EQ(y, img.GetSizeY());
-  ASSERT_EQ(x * 3, (img.pixels_)->rows());
-  ASSERT_EQ(y, (img.pixels_)->cols());
-  ASSERT_EQ(x * y * 3, (img.pixels_)->size());
+  Image img(img_width, img_height);
+  ASSERT_EQ(ch, img.GetImageChannels());
+  ASSERT_EQ(img_width, img.GetImageWidth());
+  ASSERT_EQ(img_height, img.GetImageHeight());
+  ASSERT_EQ(img_width * 3, img.pixels_->cols());
+  ASSERT_EQ(img_height, img.pixels_->rows());
+  ASSERT_EQ(img_width * img_height * 3, img.pixels_->size());
 }
 
 TEST(Image, ImageResize) {
-  int x = 100;
-  int y = 200;
-  Image img(x, y);
-  x = x * 3;
-  y = y / 2;
-  img.Resize(x, y);
+  int img_width = 100;
+  int img_height = 200;
+  Image img(img_width, img_height);
+  img_width = img_width * 3;
+  img_height = img_height / 2;
+  img.Resize(img_width, img_height);
 
-  ASSERT_EQ(x, img.GetSizeX());
-  ASSERT_EQ(y, img.GetSizeY());
-  ASSERT_EQ(x * img.GetChannels(), (img.pixels_)->rows());
-  ASSERT_EQ(y, (img.pixels_)->cols());
-  ASSERT_EQ(x * y * img.GetChannels(), (img.pixels_)->size());
+  ASSERT_EQ(img_width, img.GetImageWidth());
+  ASSERT_EQ(img_height, img.GetImageHeight());
+  ASSERT_EQ(img_width * 3, img.pixels_->cols());
+  ASSERT_EQ(img_height, img.pixels_->rows());
+  ASSERT_EQ(img_width * img_height * 3, img.pixels_->size());
 }
 
 TEST(Image, DefaultColor) {
 
-  int size_x{300};
-  int size_y{200};
-  Image new_image(size_x, size_y);
-  int channels{new_image.GetChannels()};
+  int img_width{300};
+  int img_height{200};
+  Image new_image(img_width, img_height);
+  int channels{new_image.GetImageChannels()};
 
   unsigned int p0R = (*new_image.pixels_)(0, 0);
-  unsigned int p0G = (*new_image.pixels_)(1, 0);
-  unsigned int p0B = (*new_image.pixels_)(2, 0);
+  unsigned int p0G = (*new_image.pixels_)(0, 1);
+  unsigned int p0B = (*new_image.pixels_)(0, 2);
 
   ASSERT_EQ(0, p0R);
   ASSERT_EQ(0, p0G);
@@ -56,12 +56,12 @@ TEST(Image, DefaultColor) {
 
   srand(time(NULL));
 
-  int row = rand() % (size_x * channels);
-  int col = rand() % (size_y);
+  int row = rand() % (img_height);
+  int col = rand() % (img_width * channels);
 
   unsigned int pXR = (*new_image.pixels_)(row, col);
-  unsigned int pXG = (*new_image.pixels_)(row + 1, col);
-  unsigned int pXB = (*new_image.pixels_)(row + 2, col);
+  unsigned int pXG = (*new_image.pixels_)(row, col + 1);
+  unsigned int pXB = (*new_image.pixels_)(row, col + 2);
 
   ASSERT_EQ(0, pXR);
   ASSERT_EQ(0, pXG);
@@ -70,41 +70,40 @@ TEST(Image, DefaultColor) {
 
 
 TEST(Image, ColorGradient) {
-  int size_x{800};
-  int size_y{600};
+  int img_width{800};
+  int img_height{600};
 
-  Image new_image(size_x, size_y);
+  Image new_image(img_width, img_height);
 
-  int channels{new_image.GetChannels()};
+  int channels{new_image.GetImageChannels()};
   unsigned int red{0};
   unsigned int green{0};
   unsigned int blue{0};
-  for (float col = 0; col < new_image.pixels_->cols(); col++) {
-    green = floor(255 * (col / new_image.pixels_->cols()));
-    for (float row = 0; row < new_image.pixels_->rows(); row += channels) {
-      if (row / 3 == col) {
-        blue = floor(255 * (col / new_image.pixels_->cols()));
+  for (float row = 0; row < new_image.pixels_->rows(); row++) {
+    green = floor(255 * (row / new_image.pixels_->rows()));
+    for (float col = 0; col < new_image.pixels_->cols(); col += channels) {
+      if (col / 3 == row) {
+        blue = floor(255 * (row / new_image.pixels_->rows()));
       }
-
-      red = floor(255 * (row / new_image.pixels_->rows()));
+      red = floor(255 * (col / new_image.pixels_->cols()));
       (*new_image.pixels_)(row, col) = red;
-      (*new_image.pixels_)(row + 1, col) = green;
-      (*new_image.pixels_)(row + 2, col) = blue;
+      (*new_image.pixels_)(row, col + 1) = green;
+      (*new_image.pixels_)(row, col + 2) = blue;
     }
   }
 
-  unsigned int p0R = (*new_image.pixels_)(0, 10);
-  unsigned int p0G = (*new_image.pixels_)(1, 10);
-  unsigned int p0B = (*new_image.pixels_)(2, 10);
+  unsigned int p0R = (*new_image.pixels_)(10, 3);
+  unsigned int p0G = (*new_image.pixels_)(10, 4);
+  unsigned int p0B = (*new_image.pixels_)(10, 5);
 
   srand(time(NULL));
 
-  int row = (size_x * channels / 2) + rand() % (size_x * channels / 2);
-  int col = (size_y / 2) + rand() % (size_y / 2);
+  int col = (img_width * channels / 2) + rand() % (img_width * channels / 2);
+  int row = (img_height / 2) + rand() % (img_height / 2);
 
   unsigned int pXR = (*new_image.pixels_)(row, col);
-  unsigned int pXG = (*new_image.pixels_)(row + 1, col);
-  unsigned int pXB = (*new_image.pixels_)(row + 2, col);
+  unsigned int pXG = (*new_image.pixels_)(row, col + 1);
+  unsigned int pXB = (*new_image.pixels_)(row, col + 2);
 
   ASSERT_TRUE(row != 10);
   ASSERT_TRUE(col != 10);
@@ -114,40 +113,26 @@ TEST(Image, ColorGradient) {
 }
 
 TEST(Image, SaveImage) {
-  int size_x{800};
-  int size_y{600};
+  int img_width{800};
+  int img_height{600};
 
-  Image new_image(size_x, size_y);
+  Image new_image(img_width, img_height);
 
-  int channels{new_image.GetChannels()};
+  int channels{new_image.GetImageChannels()};
   unsigned int red{0};
   unsigned int green{0};
   unsigned int blue{0};
-  //  for (float col = 0; col < new_image.pixels_->cols(); col++) {
-  //    green = floor(255 * (col / new_image.pixels_->cols()));
-  //    for (float row = 0; row < new_image.pixels_->rows(); row += channels) {
-  //      if(row/3==col){
-  //        blue = floor(255 * (col / new_image.pixels_->cols()));
-  //      }
-  //
-  //      red = floor(255 * (row / new_image.pixels_->rows()));
-  //      (*new_image.pixels_)(row, col) = red;
-  //      (*new_image.pixels_)(row + 1, col) = green;
-  //      (*new_image.pixels_)(row + 2, col) = blue;
-  //    }
-  //  }
 
-  for (float col = 0; col < new_image.pixels_->cols(); col++) {
-    //    green = floor(255 * (col / new_image.pixels_->cols()));
-    for (float row = 0; row < new_image.pixels_->rows(); row += channels) {
-      //      if(row/3==col){
-      //        blue = floor(255 * (col / new_image.pixels_->cols()));
-      //      }
-
-      red = floor(255 * (row / new_image.pixels_->rows()));
+  for (float row = 0; row < new_image.pixels_->rows(); row++) {
+    green = floor(255 * (row / new_image.pixels_->rows()));
+    for (float col = 0; col < new_image.pixels_->cols(); col += channels) {
+      if (col / 3 == row) {
+        blue = floor(255 * (row / new_image.pixels_->rows()));
+      }
+      red = floor(255 * (col / new_image.pixels_->cols()));
       (*new_image.pixels_)(row, col) = red;
-      (*new_image.pixels_)(row + 1, col) = 0;
-      (*new_image.pixels_)(row + 2, col) = 0;
+      (*new_image.pixels_)(row, col + 1) = green;
+      (*new_image.pixels_)(row, col + 2) = blue;
     }
   }
 
