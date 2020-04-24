@@ -13,11 +13,12 @@ typedef std::array<uint8_t, 3> rgb;
 typedef Eigen::Vector4f albedo;
 typedef Eigen::Vector3f eigen_rgb;
 
+
 class Material {
   public:
-      Material(const rgb &color, albedo alb, float spec, float refract) : color_{color}, albedo_{alb}, specular_comp_{spec}, refractive_index{refract} {}
-      Material() : color_() {}
-      rgb color_;
+  Material(const rgb &color, albedo alb, float spec, float refract) : color_{color}, albedo_{alb}, specular_comp_{spec}, refractive_index{refract} {}
+  Material() : color_() {}
+  rgb color_;
   albedo albedo_;
   float specular_comp_;
   float refractive_index;
@@ -70,34 +71,64 @@ class Material {
   }
 
   rgb DSRRColor(float diffuse_light_intensity, float specular_light_intensity, rgb reflect_color, rgb refract_color) {
+    float rf_col = static_cast<float>(color_[0]);
+    float gf_col = static_cast<float>(color_[1]);
+    float bf_col = static_cast<float>(color_[2]);
+    Eigen::Vector3f rgb_f{rf_col, gf_col, bf_col};
 
-    float rf = static_cast<float>(color_[0]) / 255.0;
-    float gf = static_cast<float>(color_[1]) / 255.0;
-    float bf = static_cast<float>(color_[2]) / 255.0;
-    Eigen::Vector3f rgb_f{rf, gf, bf};
-
-    float rf_refract = static_cast<float>(refract_color[0]) / 255.0;
-    float gf_refract = static_cast<float>(refract_color[1]) / 255.0;
-    float bf_refract = static_cast<float>(refract_color[2]) / 255.0;
+    float rf_refract = static_cast<float>(refract_color[0]);
+    float gf_refract = static_cast<float>(refract_color[1]);
+    float bf_refract = static_cast<float>(refract_color[2]);
     Eigen::Vector3f rgb_f_refract{rf_refract, gf_refract, bf_refract};
 
-    float rf_reflect = static_cast<float>(reflect_color[0]) / 255.0;
-    float gf_reflect = static_cast<float>(reflect_color[1]) / 255.0;
-    float bf_reflect = static_cast<float>(reflect_color[2]) / 255.0;
+    float rf_reflect = static_cast<float>(reflect_color[0]);
+    float gf_reflect = static_cast<float>(reflect_color[1]);
+    float bf_reflect = static_cast<float>(reflect_color[2]);
     Eigen::Vector3f rgb_f_reflect{rf_reflect, gf_reflect, bf_reflect};
 
     Eigen::Vector3f ret_f{0.0, 0.0, 0.0};
-    //    Eigen::Vector3f unit_f {255.0,255.0,255.0};
-    Eigen::Vector3f unit_f{1.0, 1.0, 1.0};
+    Eigen::Vector3f unit_f{255.0, 255.0, 255.0};
+    //    Eigen::Vector3f unit_f{1.0, 1.0, 1.0};
 
     //    ret_f = rgb_f *diffuse_light_intensity * albedo_(0) + unit_f * specular_light_intensity * albedo_(1) + rgb_f_reflect * albedo_(2) + rgb_f_refract * albedo_(3);
-    ret_f = rgb_f * diffuse_light_intensity * albedo_(0) + unit_f * specular_light_intensity * albedo_(1) + rgb_f_reflect * albedo_(2);
+    ret_f = rgb_f * diffuse_light_intensity * albedo_(0) + unit_f * specular_light_intensity * albedo_(1) + rgb_f_reflect * albedo_(2) + rgb_f_refract * albedo_(3);
 
-    uint8_t r = static_cast<uint8_t>(std::min(255.0f, 255.0f * ret_f(0)));
-    uint8_t g = static_cast<uint8_t>(std::min(255.0f, 255.0f * ret_f(1)));
-    uint8_t b = static_cast<uint8_t>(std::min(255.0f, 255.0f * ret_f(2)));
+    uint8_t r = static_cast<uint8_t>(std::min(255.0f, ret_f(0)));
+    uint8_t g = static_cast<uint8_t>(std::min(255.0f, ret_f(1)));
+    uint8_t b = static_cast<uint8_t>(std::min(255.0f, ret_f(2)));
+
+    return rgb{r, g, b};
+  }
+
+  rgb DSRRColor2(float diffuse_light_intensity, float specular_light_intensity, rgb reflect_color, rgb refract_color) {
+
+    Eigen::Vector3f rgb_f = rgb2vec(color_);
+    Eigen::Vector3f rgb_f_refract = rgb2vec(refract_color);
+    Eigen::Vector3f rgb_f_reflect = rgb2vec(reflect_color);
+
+    Eigen::Vector3f ret_f{0.0, 0.0, 0.0};
+    Eigen::Vector3f unit_f{1.0, 1.0, 1.0};
+
+    ret_f = rgb_f * diffuse_light_intensity * albedo_(0) + unit_f * specular_light_intensity * albedo_(1) + rgb_f_reflect * albedo_(2) + rgb_f_refract * albedo_(3);
+
+    rgb rgbret = vec2rgb(ret_f);
+    return rgbret;
+  }
+
+  static rgb vec2rgb(Eigen::Vector3f v) {
+    uint8_t r = static_cast<uint8_t>(std::min(255.0f, 255.0f * v(0)));
+    uint8_t g = static_cast<uint8_t>(std::min(255.0f, 255.0f * v(1)));
+    uint8_t b = static_cast<uint8_t>(std::min(255.0f, 255.0f * v(2)));
 
     return rgb({r, g, b});
+  }
+
+  static Eigen::Vector3f rgb2vec(rgb m_rgb) {
+    float rf = std::min(1.0f, static_cast<float>(m_rgb[0]) / 255.0f);
+    float gf = std::min(1.0f, static_cast<float>(m_rgb[1]) / 255.0f);
+    float bf = std::min(1.0f, static_cast<float>(m_rgb[2]) / 255.0f);
+    Eigen::Vector3f rgb_f{rf, gf, bf};
+    return rgb_f;
   }
 };
 

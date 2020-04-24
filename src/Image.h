@@ -5,12 +5,14 @@
 #ifndef TRACERR_IMAGE_H
 #define TRACERR_IMAGE_H
 #include "File.h"
-#include "Shape.h"
+//#include "Shape.h"
 #include <cassert>
 #include <eigen3/Eigen/Core>
 #include <memory>
 
 typedef std::array<int, 2> PixPos;
+typedef std::array<uint8_t, 3> rgb;
+
 
 class Image {
   public:

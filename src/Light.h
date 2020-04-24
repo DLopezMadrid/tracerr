@@ -8,7 +8,7 @@
 #include "Shape.h"
 
 struct Light {
-  Light(const xyz &p, const float &i) : position(p), intensity(i) {}
+  Light(const xyz &p, const float &i) : position{p}, intensity{i} {}
   xyz position;
   float intensity;
 };

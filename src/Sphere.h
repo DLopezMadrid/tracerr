@@ -10,7 +10,7 @@
 class Sphere : public Shape {
   public:
       Sphere(xyz pos = {0, 0, 0}, float radius = {1}, Material material = Materials::red_rubber);
-      bool RayIntersect(xyz origin, xyz direction, float &t0) const;
+      bool RayIntersect(xyz const origin, xyz const direction, float &t0) const;
       double GetRadius() const { return radius_; }
 
   private:

@@ -1,5 +1,5 @@
 #include "Image.h"
-#include "Render.h"
+//#include "Render.h"
 #include "Shape.h"
 #include "Sphere.h"
 #include <gtest/gtest.h>

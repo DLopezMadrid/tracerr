@@ -18,9 +18,9 @@ class Shape {
   public:
       Shape(xyz pos = {0, 0, 0}, Material material = Materials::red_rubber);
 
-      virtual bool RayIntersect(xyz origin, xyz direction, float &t0) const = 0;
+      virtual bool RayIntersect(xyz const origin, xyz const direction, float &t0) const = 0;
 
-  xyz GetPos() const { return pos_; }
+      xyz GetPos() const { return pos_; }
   rgb GetColor() const { return color_; }
   Material GetMaterial() const { return material_; }
   friend std::ostream &operator<<(std::ostream &o, Shape const &s);

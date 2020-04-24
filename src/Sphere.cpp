@@ -6,7 +6,7 @@
 
 Sphere::Sphere(xyz pos, float radius, Material material) : Shape(pos, material), radius_{radius} {
 }
-bool Sphere::RayIntersect(xyz origin, xyz direction, float &t0) const {
+bool Sphere::RayIntersect(xyz const origin, xyz const direction, float &t0) const {
   //  https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-sphere-intersection
   //
   xyz dist_origin_center = pos_ - origin;
