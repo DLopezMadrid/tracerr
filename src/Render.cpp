@@ -130,9 +130,9 @@ Vec3f Render::cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Sp
     float diffuse_light_intensity = 0;
     float specular_light_intensity = 0;
     for (auto light : lights) {
-      Vec3f light_dir = (light.position - hit);
+      Vec3f light_dir = (light.position_ - hit);
       light_dir.normalize();
-      float light_distance = (light.position - hit).norm();
+      float light_distance = (light.position_ - hit).norm();
 
       Vec3f shadow_orig;
       if (light_dir.dot(normal) < 0) {
@@ -148,16 +148,19 @@ Vec3f Render::cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Sp
         continue;
       }
 
-      diffuse_light_intensity += light.intensity * std::max(0.f, light_dir.dot(normal));
-      specular_light_intensity += powf(std::max(0.f, (-1.0f * reflect(-light_dir, normal)).dot(dir)), mat.specular_comp_) * light.intensity;
+      diffuse_light_intensity += light.intensity_ * std::max(0.f, light_dir.dot(normal));
+      specular_light_intensity += powf(std::max(0.f, (-1.0f * reflect(-light_dir, normal)).dot(dir)), mat.specular_comp_) * light.intensity_;
     }
 
-    rgb reflect_color_rgb = Material::vec2rgb(reflect_color);
-    rgb refract_color_rgb = Material::vec2rgb(refract_color);
-    rgb new_color = mat.DSRRColor2(diffuse_light_intensity, specular_light_intensity, reflect_color_rgb, refract_color_rgb);
-    Vec3f new_color_f = Material::rgb2vec(new_color);
+    //    rgb reflect_color_rgb = Material::vec2rgb(reflect_color);
+    //    rgb refract_color_rgb = Material::vec2rgb(refract_color);
+    //    rgb new_color = mat.DSRRColor2(diffuse_light_intensity, specular_light_intensity, reflect_color_rgb, refract_color_rgb);
+    //    Vec3f new_color_f = Material::rgb2vec(new_color);
 
-    return new_color_f;
+    rgb_f new_color = mat.DSRRColor3(diffuse_light_intensity, specular_light_intensity, reflect_color, refract_color);
+    //    Vec3f new_color_f = Material::rgb2vec(new_color);
+
+    return new_color;
     //END MINE
   }
 }

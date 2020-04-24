@@ -21,9 +21,9 @@ class Shape {
       virtual bool RayIntersect(xyz const origin, xyz const direction, float &t0) const = 0;
 
       xyz GetPos() const { return pos_; }
-  rgb GetColor() const { return color_; }
-  Material GetMaterial() const { return material_; }
-  friend std::ostream &operator<<(std::ostream &o, Shape const &s);
+      Material GetMaterial() const { return material_; }
+      //TODO unused
+      friend std::ostream &operator<<(std::ostream &o, Shape const &s);
 
   virtual ~Shape() = default;
   Shape() = default;
@@ -34,8 +34,6 @@ class Shape {
 
   protected:
   xyz pos_;
-  float mat_reflectivity_;
-  rgb color_;
   Material material_;
 };
 

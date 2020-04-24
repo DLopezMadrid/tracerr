@@ -13,8 +13,8 @@
 
 class File {
   public:
-  File(std::string fname);
-  void Write(void *data, int size);
+  File(std::string const &fname);
+  void Write(void *data, int const &size);
   ~File();
 
   protected:

@@ -3,13 +3,13 @@
 //
 
 #include "File.h"
-File::File(std::string fname) {
+File::File(const std::string &fname) {
   try {
     file_ = fopen(fname.c_str(), "wb");
   } catch (...) {
   }
 }
-void File::Write(void *data, int size) {
+void File::Write(void *data, int const &size) {
   fwrite(data, 1, size, file_);
 }
 
@@ -18,3 +18,4 @@ File::~File() {
     fclose(file_);
   }
 }
+

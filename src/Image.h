@@ -16,19 +16,21 @@ typedef std::array<uint8_t, 3> rgb;
 
 class Image {
   public:
-  Image(int x, int y);
+  Image(int const &x, int const &y);
   Image();
-  void Resize(int x, int y);
+  void Resize(int const &x, int const &y);
   int GetImageWidth() const { return pix_width_; };
   int GetImageHeight() const { return pix_height_; };
   int GetImageChannels() const { return pix_channels_; };
-  void SetPixelColor(PixPos pixel, rgb color);
-  rgb GetPixelColor(PixPos pixel);
-  void DrawGradientBackground();
+  void SetPixelColor(PixPos const &pixel, rgb const &color);
+  rgb GetPixelColor(PixPos const &pixel);
+  //  void DrawGradientBackground();
+  //TODO move data to write function (although now we are just passing a pointer so not sure if really needed)
   std::unique_ptr<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> pixels_;
 
   void SaveImage(std::string fname) const;
 
+  //TODO does it really need to be a friend function?
   friend void fwrite_func(void *context, void *data, int size);
 
   private:
