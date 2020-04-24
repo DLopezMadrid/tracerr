@@ -65,7 +65,7 @@ namespace Materials {
   static Material red_rubber({150, 15, 15}, {0.9, 0.1, 0.1}, 10.0);
   static Material green_rubber({15, 150, 15}, {0.9, 0.1, 0.1}, 10.0);
   static Material blue_rubber({15, 15, 150}, {0.9, 0.1, 0.1}, 10.0);
-  static Material black_plastic({0, 0, 0}, {0., 0.30, 0.5}, 300.0);
+  static Material black_plastic({0, 0, 0}, {0., 0.60, 0.15}, 300.0);
   static Material mirror({255, 255, 255}, {0., 10.0, 0.8}, 1500.0);
 }// namespace Materials
 
