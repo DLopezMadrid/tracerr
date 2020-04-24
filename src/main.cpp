@@ -1,4 +1,5 @@
 #include "Render.h"
+#include <chrono>
 
 
 // X positive to right
@@ -7,6 +8,10 @@
 // Z positive is behind projection plane
 
 int main() {
+
+  auto start_t{std::chrono::high_resolution_clock::now()};
+  int width{250};
+  int height{250};
 
   std::vector<Sphere> spheres;
   spheres.push_back(Sphere(Vec3f({-3, 0, -16}), 2, Materials::ivory));
@@ -19,9 +24,12 @@ int main() {
   lights.push_back(Light(Vec3f({20, 10, -20}), 1.8));
   lights.push_back(Light(Vec3f({5, -10, -30}), 0.8));
 
-  Render r(250, 250, {0, 0, 0}, lights);
-  r.RenderScene(spheres);
-  r.SaveImage("RenderSwapTest2.png");
+  Render r(2500, 2500, {0, 0, 0}, lights);
+  r.RenderScene(std::move(spheres));
+  r.SaveImage("RenderSwapTest3.png");
+
+  auto end_t = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_t);
+  std::cout << "Completed " << width << "x" << height << " image in " << end_t.count() << " ms" << std::endl;
 
   return 0;
 }

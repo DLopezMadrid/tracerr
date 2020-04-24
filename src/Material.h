@@ -29,7 +29,7 @@ class Material {
     return color_f_ * diffuse_light_intensity * albedo_(0) + unit_f_1 * specular_light_intensity * albedo_(1) + reflect_color * albedo_(2) + refract_color * albedo_(3);
   }
 
-  static rgb vec2rgb(Eigen::Vector3f v) {
+  static rgb vec2rgb(Eigen::Vector3f const &v) {
     uint8_t r = static_cast<uint8_t>(std::min(255.0f, 255.0f * v(0)));
     uint8_t g = static_cast<uint8_t>(std::min(255.0f, 255.0f * v(1)));
     uint8_t b = static_cast<uint8_t>(std::min(255.0f, 255.0f * v(2)));
@@ -37,12 +37,13 @@ class Material {
     return rgb({r, g, b});
   }
 
-  static Eigen::Vector3f rgb2vec(rgb m_rgb) {
+  static Eigen::Vector3f rgb2vec(rgb const &m_rgb) {
     float rf = std::min(1.0f, static_cast<float>(m_rgb[0]) / 255.0f);
     float gf = std::min(1.0f, static_cast<float>(m_rgb[1]) / 255.0f);
     float bf = std::min(1.0f, static_cast<float>(m_rgb[2]) / 255.0f);
-    Eigen::Vector3f rgb_f{rf, gf, bf};
-    return rgb_f;
+
+    return Eigen::Vector3f{rf, gf, bf};
+    ;
   }
 };
 
