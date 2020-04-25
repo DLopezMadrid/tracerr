@@ -19,5 +19,12 @@ bool Sphere::RayIntersect(xyz const origin, xyz const direction, float &t0) cons
   if (t0 < 0) {
     t0 = t1;
   }
+
+
   return t0 >= 0;
+}
+xyz Sphere::GetNormal(xyz point) const {
+  xyz normal = (point - pos_);
+  normal.normalize();
+  return normal;
 }

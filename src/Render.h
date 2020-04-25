@@ -9,24 +9,20 @@
 #include "Light.h"
 #include "Material.h"
 #include "Sphere.h"
+#include "Triangle.h"
 #include <eigen3/Eigen/Core>
 #include <mutex>
 #include <thread>
-
-
-typedef Eigen::Vector3f Vec3f;
-typedef Eigen::Vector4f Vec4f;
-
-typedef std::array<uint8_t, 3> rgb;
 
 
 class Render {
   public:
   explicit Render(int img_width = 800, int img_height = 600, xyz origin = {0, 0, 0}, std::vector<Light> lights = {});
   void SaveImage(std::string fname) const;
-  void RenderScene(std::vector<Sphere> &&spheres);
-  void RenderSceneOMP(std::vector<Sphere> &&spheres);
-  void RenderSceneMultiThread(std::vector<Sphere> &&spheres);
+  void RenderScene(std::vector<std::unique_ptr<Shape>> shapes);
+  void RenderTriangles(std::vector<Triangle> &&triangles);
+  void RenderSceneOMP(std::vector<std::unique_ptr<Shape>> shapes);
+  void RenderSceneMultiThread(std::vector<std::unique_ptr<Shape>> shapes);
   void RenderThread(const int &row_init, const int &row_n);
   void SetOrigin(xyz origin) { original_origin_ = std::move(origin); };
   xyz GetOrigin() { return original_origin_; }
@@ -40,6 +36,8 @@ class Render {
   float fov_{M_PI / 3.0};
   Vec3f original_origin_;
   std::vector<Sphere> spheres_;
+  std::vector<std::unique_ptr<Shape>> shapes_;
+  std::vector<Triangle> triangles_;
   Vec3f ambient_light_;
   std::vector<Light> lights_;
   int width_;

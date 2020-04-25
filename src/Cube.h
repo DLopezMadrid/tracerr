@@ -8,14 +8,14 @@
 
 class Cube : public Shape {
   public:
-  bool rayIntersect(int pix_x, int pix_y);
-
+  Cube(xyz pos = {0, 0, 0}, float side_len = {1}, Eigen::Vector3f rot = {0, 0, 0}, Material material = Materials::red_rubber);
+  bool RayIntersect(xyz const origin, xyz const direction, float &t0) const override;
+  double GetSideLen() const { return side_len_; }
+  Eigen::Vector3f GetCubeRot() const { return rot_; }
 
   private:
-  double side_len_;
-  float rot_roll_;
-  float rot_pitch_;
-  float rot_yaw_;
+  float side_len_;
+  Eigen::Vector3f rot_;
 };
 
 

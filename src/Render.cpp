@@ -22,18 +22,51 @@ void Render::SaveImage(std::string fname) const {
 
 
 bool Render::scene_intersect(Vec3f const &origin, Vec3f const &direction, Vec3f &hit, Vec3f &normal, Material &mat) {
-  float spheres_dist = std::numeric_limits<float>::max();
-  for (Sphere const &s : spheres_) {
+  float shapes_dist = std::numeric_limits<float>::max();
+  //  for (Sphere const &s : spheres_) {
+  for (auto &s : shapes_) {
     float dist_i;
-    if (s.RayIntersect(origin, direction, dist_i) && dist_i < spheres_dist) {
-      spheres_dist = dist_i;
+    if (s->RayIntersect(origin, direction, dist_i) && dist_i < shapes_dist) {
+      shapes_dist = dist_i;
       hit = origin + direction * dist_i;
-      normal = (hit - s.GetPos());
-      normal.normalize();
-      mat = s.GetMaterial();
+      normal = s->GetNormal(hit);
+      mat = s->GetMaterial();
     }
   }
-  return spheres_dist < 1000;
+
+  //  float checkerboard_dist = std::numeric_limits<float>::max();
+  //  if (fabs(direction(1)>1e-3) ) {
+  //    float d = -(origin(1)+4)/direction(1); // the checkerboard plane has equation y = -4
+  //    Vec3f pt = origin + direction*d;
+  //    if (d>0 && fabs(pt(0))<10 && pt(2)<-10 && pt(2)>-30 && d<shapes_dist) {
+  //      checkerboard_dist = d;
+  //      hit = pt;
+  //      normal = Vec3f(0,1,0);
+  ////      mat.color_f_= (int(.5*hit(0)+1000) + int(.5*hit(2))) & 1 ? Vec3f({.3, .3, .3}) : Vec3f({.3, .2, .1});
+  //      mat = Materials::red_rubber;
+  ////      mat.color_f_= (int(.5*hit(0)+1000) + int(.5*hit(2))) & 1 ? Vec3f({.3, .3, .3}) : Vec3f({.3, .2, .1});
+  //
+  //    }
+  //  }
+  //  return std::min(shapes_dist, checkerboard_dist)<1000;
+  //
+  //---------------
+  float checkerboard_dist = std::numeric_limits<float>::max();
+  if (fabs(direction(1)) > 1e-3) {
+    float d = -(origin(1) + 4) / direction(1);// the checkerboard plane has equation y = -4
+    Vec3f pt = origin + direction * d;
+    if (d > 0 && fabs(pt(0)) < 10 && pt(2) < -10 && pt(2) > -30 && d < shapes_dist) {
+      checkerboard_dist = d;
+      hit = pt;
+      normal = Vec3f({0, 1, 0});
+      mat = Materials::red_rubber;
+      mat.color_f_ = (int(.5 * hit(0) + 1000) + int(.5 * hit(2))) & 1 ? Vec3f({.3, .3, .3}) : Vec3f({.3, .2, .1});
+    }
+  }
+  return std::min(shapes_dist, checkerboard_dist) < 1000;
+
+
+  //  return shapes_dist < 1000;
 }
 
 xyz Render::reflect(const xyz &I, const xyz &N) {
@@ -52,8 +85,8 @@ xyz Render::refract(const xyz &I, const xyz &N, const float eta_t, const float e
 }
 
 
-void Render::RenderScene(std::vector<Sphere> &&spheres) {
-  spheres_ = std::move(spheres);
+void Render::RenderScene(std::vector<std::unique_ptr<Shape>> shapes) {
+  shapes_ = std::move(shapes);
   float dir_x, dir_y, dir_z;
   dir_z = -height_ / (2.f * tan(fov_ / 2.f));
   //#pragma omp parallel for
@@ -71,8 +104,8 @@ void Render::RenderScene(std::vector<Sphere> &&spheres) {
   }
 }
 
-void Render::RenderSceneOMP(std::vector<Sphere> &&spheres) {
-  spheres_ = std::move(spheres);
+void Render::RenderSceneOMP(std::vector<std::unique_ptr<Shape>> shapes) {
+  shapes_ = std::move(shapes);
   float dir_x, dir_y, dir_z;
   dir_z = -height_ / (2.f * tan(fov_ / 2.f));
 #pragma omp parallel for
@@ -90,9 +123,9 @@ void Render::RenderSceneOMP(std::vector<Sphere> &&spheres) {
   }
 }
 
-void Render::RenderSceneMultiThread(std::vector<Sphere> &&spheres) {
+void Render::RenderSceneMultiThread(std::vector<std::unique_ptr<Shape>> shapes) {
 
-  spheres_ = std::move(spheres);
+  shapes_ = std::move(shapes);
 
 
   std::vector<std::thread> threads;
@@ -192,4 +225,6 @@ Vec3f Render::cast_ray(const Vec3f &orig, const Vec3f &dir, size_t depth, int ra
 
     return new_color;
   }
+}
+void Render::RenderTriangles(std::vector<Triangle> &&triangles) {
 }

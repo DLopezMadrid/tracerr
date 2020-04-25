@@ -12,16 +12,21 @@
 
 //typedef std::array<float, 3> xyz;
 typedef Eigen::Vector3f xyz;
+typedef Eigen::Vector3f Vec3f;
+typedef Eigen::Vector4f Vec4f;
+
+typedef std::array<uint8_t, 3> rgb;
 
 
 class Shape {
   public:
-      Shape(xyz pos = {0, 0, 0}, Material material = Materials::red_rubber);
+  Shape(xyz pos = {0, 0, 0}, Material material = Materials::red_rubber);
 
-      virtual bool RayIntersect(xyz const origin, xyz const direction, float &t0) const = 0;
+  virtual bool RayIntersect(xyz const origin, xyz const direction, float &t0) const = 0;
+  virtual xyz GetNormal(xyz point) const = 0;
 
-      xyz GetPos() const { return pos_; }
-      Material GetMaterial() const { return material_; }
+  xyz GetPos() const { return pos_; }
+  Material GetMaterial() const { return material_; }
       //TODO unused
       friend std::ostream &operator<<(std::ostream &o, Shape const &s);
 
