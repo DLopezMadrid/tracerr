@@ -4,8 +4,24 @@
 
 #include "Render.h"
 
+#include <utility>
 
-bool Render::scene_intersect(Vec3f origin, Vec3f direction, Vec3f &hit, Vec3f &normal, Material &mat) {
+Render::Render(int img_width, int img_height, xyz origin, std::vector<Light> lights) : image_{img_width, img_height}, original_origin_{std::move(origin)}, lights_{std::move(lights)} {
+
+  width_ = image_.GetImageWidth();
+  height_ = image_.GetImageHeight();
+  if (lights_.empty()) {
+    lights_.emplace_back(Light({-20, 20, 20}, 1.5));
+  }
+}
+
+
+void Render::SaveImage(std::string fname) const {
+  image_.SaveImage(std::move(fname));
+}
+
+
+bool Render::scene_intersect(Vec3f const &origin, Vec3f const &direction, Vec3f &hit, Vec3f &normal, Material &mat) {
   float spheres_dist = std::numeric_limits<float>::max();
   for (Sphere const &s : spheres_) {
     float dist_i;
@@ -37,16 +53,14 @@ xyz Render::refract(const xyz &I, const xyz &N, const float eta_t, const float e
 
 
 void Render::RenderScene(std::vector<Sphere> &&spheres) {
-  int width{image_.GetImageWidth()};
-  int height{image_.GetImageHeight()};
   spheres_ = std::move(spheres);
   float dir_x, dir_y, dir_z;
-  dir_z = -height / (2. * tan(fov_ / 2.));
-#pragma omp parallel for
-  for (int row = 0; row < height; row++) {
-    dir_y = -(row + 0.5) + height / 2.;// this flips the image at the same time
-    for (int col = 0; col < width; col++) {
-      dir_x = (col + 0.5) - width / 2.;
+  dir_z = -height_ / (2.f * tan(fov_ / 2.f));
+  //#pragma omp parallel for
+  for (int row = 0; row < height_; row++) {
+    dir_y = -(row + 0.5f) + height_ / 2.f;// this flips the image at the same time
+    for (int col = 0; col < width_; col++) {
+      dir_x = (col + 0.5f) - width_ / 2.f;
       xyz dir{dir_x, dir_y, dir_z};
       dir.normalize();
       //      PixPos pixel{col, row};
@@ -56,6 +70,68 @@ void Render::RenderScene(std::vector<Sphere> &&spheres) {
     }
   }
 }
+
+void Render::RenderSceneOMP(std::vector<Sphere> &&spheres) {
+  spheres_ = std::move(spheres);
+  float dir_x, dir_y, dir_z;
+  dir_z = -height_ / (2.f * tan(fov_ / 2.f));
+#pragma omp parallel for
+  for (int row = 0; row < height_; row++) {
+    dir_y = -(row + 0.5f) + height_ / 2.f;// this flips the image at the same time
+    for (int col = 0; col < width_; col++) {
+      dir_x = (col + 0.5f) - width_ / 2.f;
+      xyz dir{dir_x, dir_y, dir_z};
+      dir.normalize();
+      //      PixPos pixel{col, row};
+      Vec3f pix = cast_ray(original_origin_, dir, 0, 0);
+      rgb rgb_val = Material::vec2rgb(pix);
+      image_.SetPixelColor({col, row}, rgb_val);
+    }
+  }
+}
+
+void Render::RenderSceneMultiThread(std::vector<Sphere> &&spheres) {
+
+  spheres_ = std::move(spheres);
+
+
+  std::vector<std::thread> threads;
+
+  int num_threads{16};
+
+  int num_rows_thread{height_ / num_threads};
+  int num_rows_last_thread = num_rows_thread + (height_ % num_threads);
+
+  for (int i{0}; i < num_threads - 1; i++) {
+    threads.emplace_back(std::thread(&Render::RenderThread, this, i * num_rows_thread, num_rows_thread));
+  }
+  threads.emplace_back(std::thread(&Render::RenderThread, this, (num_threads - 1) * num_rows_thread, num_rows_last_thread));
+
+  for (auto &thread : threads) {
+    thread.join();
+  }
+}
+
+
+void Render::RenderThread(int const &row_init, int const &row_n) {
+
+  float dir_x, dir_y, dir_z;
+  dir_z = -height_ / (2. * tan(fov_ / 2.));
+  xyz dir;
+  for (int row = row_init; row < row_init + row_n; row++) {
+    dir_y = -(row + 0.5f) + height_ / 2.f;// this flips the image at the same time
+    for (int col = 0; col < width_; col++) {
+      dir_x = (col + 0.5f) - width_ / 2.f;
+      dir = {dir_x, dir_y, dir_z};
+      dir.normalize();
+      //      PixPos pixel{col, row};
+      Vec3f pix = cast_ray(original_origin_, dir, 0, 0);
+      rgb rgb_val = Material::vec2rgb(pix);
+      image_.SetPixelColor({col, row}, rgb_val);
+    }
+  }
+}
+
 
 Vec3f Render::cast_ray(const Vec3f &orig, const Vec3f &dir, size_t depth, int ray_type) {
 
@@ -116,13 +192,4 @@ Vec3f Render::cast_ray(const Vec3f &orig, const Vec3f &dir, size_t depth, int ra
 
     return new_color;
   }
-}
-Render::Render(int img_width, int img_height, xyz origin, std::vector<Light> lights) : image_{img_width, img_height}, original_origin_{origin}, lights_{lights} {
-
-  if (lights_.empty()) {
-    lights_.emplace_back(Light({-20, 20, 20}, 1.5));
-  }
-}
-void Render::SaveImage(std::string fname) const {
-  image_.SaveImage(fname);
 }
