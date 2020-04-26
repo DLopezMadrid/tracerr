@@ -11,7 +11,9 @@
 #include <vector>
 
 // from https://riptutorial.com/cplusplus/example/15806/create-a-simple-thread-pool
-
+// thread pool design pattern
+// implements a queue of work packages for a pool of threads
+// threads take a task, run it and when they are finished, return the result and check if there are any more tasks to perform
 class ThreadPool {
   public:
   // the mutex, condition variable and deque form a single

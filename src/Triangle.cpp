@@ -4,9 +4,9 @@
 
 #include "Triangle.h"
 
-#include <utility>
+//#include <utility>
 
-
+// from https://github.com/VityasZV/tinyraytracer
 bool Triangle::RayIntersect(xyz const origin, xyz const direction, float &t0) const {
   const float EPSILON = 0.0000001;
   Vec3f vertex0 = p0_;

@@ -7,6 +7,7 @@
 
 #include "Shape.h"
 
+// Point light
 struct Light {
   Light(xyz const &p, float const &i) : position_{p}, intensity_{i} {}
   xyz position_;

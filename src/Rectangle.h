@@ -6,6 +6,8 @@
 #define TRACERR_RECTANGLE_H
 #include "Shape.h"
 #include "Triangle.h"
+
+// Example of a more complex shape made out of simpler ones (2 triangles)
 class Rectangle : public Shape {
   public:
   Rectangle(xyz p0, xyz p1, xyz p2, Material material);

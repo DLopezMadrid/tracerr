@@ -9,14 +9,15 @@
 #include <eigen3/Eigen/Geometry>
 #include <vector>
 
-
+// The most basic 2d shape
+// Can be used to render more complex figures (like .obj models)
 class Triangle : public Shape {
 
   public:
-      Triangle(xyz p0, xyz p1, xyz p2, Material material);
-      Triangle();
-      bool RayIntersect(xyz const origin, xyz const direction, float &t0) const override;
-      xyz GetNormal(const xyz &point) const override;
+  Triangle(xyz p0, xyz p1, xyz p2, Material material);
+  Triangle();
+  bool RayIntersect(xyz const origin, xyz const direction, float &t0) const override;
+  xyz GetNormal(const xyz &point) const override;
 
   private:
   xyz p0_;

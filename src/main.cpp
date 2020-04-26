@@ -19,11 +19,13 @@ int main() {
 
   srand(time(NULL));
 
-  int width{1000};
-  int height{500};
+  //Image parameters & number of randomly generated small spheres for the demo scene
+  int width{500};
+  int height{250};
   int num_spheres{400};
   std::string fname{"RenderTest.png"};
 
+  //Scene setup
   std::vector<std::unique_ptr<Shape>> shapes;
   std::vector<Light> lights;
 
@@ -34,7 +36,7 @@ int main() {
 
   Render r(width, height, {0, 0, 0}, std::move(lights));
 
-
+  //Bigger spheres
   Sphere s1(Vec3f({-5, 0, -6}), 1, Materials::red_plastic);
   Sphere s2(Vec3f({0, 0.5, -4}), 1.5, Materials::mirror);
   Sphere s3(Vec3f({-3, 0, -5}), 1, Materials::glass);
@@ -49,6 +51,7 @@ int main() {
   shapes.push_back(std::make_unique<Sphere>(std::move(s5)));
   shapes.push_back(std::make_unique<Sphere>(std::move(s6)));
 
+  //Randomly generated small spheres
   for (int i{0}; i < num_spheres; i++) {
     float xpos;
     float zpos;
@@ -66,10 +69,11 @@ int main() {
     shapes.push_back(std::make_unique<Sphere>(std::move(ns)));
   }
 
+  //Render the scene using single thread, OpenMP multithreading or our own implementation
   //  r.RenderScene(std::move(shapes));
   //  r.RenderSceneOMP(std::move(shapes));
-  r.RenderObj("../obj/duck.obj", {1, 3, 1}, Materials::blue_rubber);
-  r.ParallelQueue(std::move(shapes));
+  r.LoadObj("../obj/duck.obj", {1, 3, 1}, Materials::blue_rubber);
+  r.RenderSceneMultiThread(std::move(shapes));
   r.SaveImage(fname);
 
   auto end_t = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_t);

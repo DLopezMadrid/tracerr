@@ -6,7 +6,7 @@
 
 #include <utility>
 
-Render::Render(int img_width, int img_height, xyz origin, std::vector<Light> lights, bool grad_background) : image_{img_width, img_height}, background_{img_width, img_height}, original_origin_{std::move(origin)}, lights_{std::move(lights)} {
+Render::Render(int img_width, int img_height, xyz origin, std::vector<Light> lights, bool grad_background) : image_{img_width, img_height}, background_{img_width, img_height}, image_origin_{std::move(origin)}, lights_{std::move(lights)} {
 
   width_ = image_.GetImageWidth();
   height_ = image_.GetImageHeight();
@@ -24,10 +24,9 @@ void Render::SaveImage(std::string fname) const {
   image_.SaveImage(std::move(fname));
 }
 
-
+// checks if a ray intersects with anything in the scene (dynamic polymorphism)
 bool Render::scene_intersect(Vec3f const &origin, Vec3f const &direction, Vec3f &hit, Vec3f &normal, Material &mat) {
   float shapes_dist = std::numeric_limits<float>::max();
-  //  for (Sphere const &s : spheres_) {
   for (auto &s : shapes_) {
     float dist_i;
     if (s->RayIntersect(origin, direction, dist_i) && dist_i < shapes_dist) {
@@ -38,11 +37,12 @@ bool Render::scene_intersect(Vec3f const &origin, Vec3f const &direction, Vec3f 
     }
   }
 
-
+  // draw checkerboard floor plane
   float checkerboard_dist = std::numeric_limits<float>::max();
   if (fabs(direction(1)) > 1e-3) {
-    float d = -(origin(1) + 1) / direction(1);// the checkerboard plane has equation y = -4
+    float d = -(origin(1) + 1) / direction(1);// the checkerboard plane has equation y = -1
     Vec3f pt = origin + direction * d;
+    // draws the checkerboard from -20 < x < 20 and -30 < z < 30
     if (d > 0 && fabs(pt(0)) < 20 && pt(2) < 30 && pt(2) > -30 && d < shapes_dist) {
       checkerboard_dist = d;
       hit = pt;
@@ -53,8 +53,6 @@ bool Render::scene_intersect(Vec3f const &origin, Vec3f const &direction, Vec3f 
   }
   return std::min(shapes_dist, checkerboard_dist) < 1000;
 
-
-  //    return shapes_dist < 1000;
 }
 
 xyz Render::reflect(const xyz &I, const xyz &N) {
@@ -62,98 +60,14 @@ xyz Render::reflect(const xyz &I, const xyz &N) {
   return n;
 }
 
+//Snell law
 xyz Render::refract(const xyz &I, const xyz &N, const float eta_t, const float eta_i) {
-  //Snell law
   float cosi = -std::max(-1.f, std::min(1.f, I.dot(N)));
-  if (cosi < 0) return refract(I, -N, eta_i, eta_t);// if the ray comes from the inside the object, swap the air and the media
+  if (cosi < 0) return refract(I, -N, eta_i, eta_t);// swap the values if th ray comes from within the object
   float eta = eta_i / eta_t;
   float k = 1 - eta * eta * (1 - cosi * cosi);
   xyz unit{1.0, 0.0, 0.0};
-  return k < 0 ? unit : I * eta + N * (eta * cosi - sqrtf(k));// k<0 = total reflection, no ray to refract. I refract it anyways, this has no physical meaning
-}
-
-
-void Render::RenderScene(std::vector<std::unique_ptr<Shape>> shapes) {
-  shapes_ = std::move(shapes);
-  float dir_x, dir_y, dir_z;
-  dir_z = -height_ / (2.f * tan(fov_ / 2.f));
-  PixPos pixel;
-  for (int row = 0; row < height_; row++) {
-    dir_y = -(row + 0.5f) + height_ / 2.f;// this flips the image at the same time
-    for (int col = 0; col < width_; col++) {
-      dir_x = (col + 0.5f) - width_ / 2.f;
-      xyz dir{dir_x, dir_y, dir_z};
-      dir.normalize();
-      pixel = {col, row};
-      Vec3f pix = cast_ray(original_origin_, dir, 0, pixel);
-      rgb rgb_val = Material::vec2rgb(pix);
-      image_.SetPixelColor({col, row}, rgb_val);
-    }
-  }
-}
-
-void Render::RenderSceneOMP(std::vector<std::unique_ptr<Shape>> shapes) {
-  shapes_ = std::move(shapes);
-  float dir_x, dir_y, dir_z;
-  dir_z = -height_ / (2.f * tan(fov_ / 2.f));
-  PixPos pixel;
-#pragma omp parallel for
-  for (int row = 0; row < height_; row++) {
-    dir_y = -(row + 0.5f) + height_ / 2.f;// this flips the image at the same time
-    for (int col = 0; col < width_; col++) {
-      dir_x = (col + 0.5f) - width_ / 2.f;
-      xyz dir{dir_x, dir_y, dir_z};
-      dir.normalize();
-      pixel = {col, row};
-      Vec3f pix = cast_ray(original_origin_, dir, 0, pixel);
-      rgb rgb_val = Material::vec2rgb(pix);
-      image_.SetPixelColor({col, row}, rgb_val);
-    }
-  }
-}
-
-void Render::RenderSceneMultiThread(std::vector<std::unique_ptr<Shape>> shapes) {
-
-  shapes_ = std::move(shapes);
-
-
-  std::vector<std::thread> threads;
-
-  int num_threads = std::thread::hardware_concurrency();
-
-  int num_rows_thread{height_ / num_threads};
-  int num_rows_last_thread = num_rows_thread + (height_ % num_threads);
-
-  for (int i{0}; i < num_threads - 1; i++) {
-    threads.emplace_back(std::thread(&Render::RenderThread, this, i * num_rows_thread, num_rows_thread));
-  }
-  threads.emplace_back(std::thread(&Render::RenderThread, this, (num_threads - 1) * num_rows_thread, num_rows_last_thread));
-
-  for (auto &thread : threads) {
-    thread.join();
-  }
-}
-
-
-void Render::RenderThread(int const &row_init, int const &row_n) {
-
-  float dir_x, dir_y, dir_z;
-  dir_z = -height_ / (2. * tan(fov_ / 2.));
-  xyz dir;
-  PixPos pixel;
-  for (int row = row_init; row < row_init + row_n; row++) {
-    dir_y = -(row + 0.5f) + height_ / 2.f;// this flips the image at the same time
-    for (int col = 0; col < width_; col++) {
-      dir_x = (col + 0.5f) - width_ / 2.f;
-      dir = {dir_x, dir_y, dir_z};
-      dir.normalize();
-      pixel = {col, row};
-      Vec3f pix = cast_ray(original_origin_, dir, 0, pixel);
-      rgb rgb_val = Material::vec2rgb(pix);
-      image_.SetPixelColor({col, row}, rgb_val);
-    }
-  }
-  //  std::cout << row_init << '\n';
+  return k < 0 ? unit : I * eta + N * (eta * cosi - sqrtf(k));
 }
 
 
@@ -221,21 +135,80 @@ Vec3f Render::cast_ray(const Vec3f &orig, const Vec3f &dir, size_t depth, const 
       specular_light_intensity += powf(std::max(0.f, (-1.0f * reflect(-light_dir, normal)).dot(dir)), mat.specular_comp_) * light.intensity_;
     }
 
-    rgb_f new_color = mat.DSRRColor3(diffuse_light_intensity, specular_light_intensity, reflect_color, refract_color);
+    rgb_f new_color = mat.CalcColor(diffuse_light_intensity, specular_light_intensity, reflect_color, refract_color);
 
     return new_color;
   }
 }
-void Render::RenderTriangles(std::vector<Triangle> &&triangles) {
+
+
+void Render::RenderScene(std::vector<std::unique_ptr<Shape>> shapes) {
+  shapes_ = std::move(shapes);
+  float dir_x, dir_y, dir_z;
+  dir_z = -height_ / (2.f * tan(fov_ / 2.f));
+  PixPos pixel;
+  for (int row = 0; row < height_; row++) {
+    dir_y = -(row + 0.5f) + height_ / 2.f;
+    for (int col = 0; col < width_; col++) {
+      dir_x = (col + 0.5f) - width_ / 2.f;
+      xyz dir{dir_x, dir_y, dir_z};
+      dir.normalize();
+      pixel = {col, row};
+      Vec3f pix = cast_ray(image_origin_, dir, 0, pixel);
+      rgb rgb_val = Material::vec2rgb(pix);
+      image_.SetPixelColor({col, row}, rgb_val);
+    }
+  }
+}
+
+void Render::RenderSceneOMP(std::vector<std::unique_ptr<Shape>> shapes) {
+  shapes_ = std::move(shapes);
+  float dir_x, dir_y, dir_z;
+  dir_z = -height_ / (2.f * tan(fov_ / 2.f));
+  PixPos pixel;
+#pragma omp parallel for
+  for (int row = 0; row < height_; row++) {
+    dir_y = -(row + 0.5f) + height_ / 2.f;// this flips the image at the same time
+    for (int col = 0; col < width_; col++) {
+      dir_x = (col + 0.5f) - width_ / 2.f;
+      xyz dir{dir_x, dir_y, dir_z};
+      dir.normalize();
+      pixel = {col, row};
+      Vec3f pix = cast_ray(image_origin_, dir, 0, pixel);
+      rgb rgb_val = Material::vec2rgb(pix);
+      image_.SetPixelColor({col, row}, rgb_val);
+    }
+  }
 }
 
 
-void Render::ParallelQueue(std::vector<std::unique_ptr<Shape>> shapes) {
+
+void Render::RenderThread(int const &row_init, int const &row_n) {
+
+  float dir_x, dir_y, dir_z;
+  dir_z = -height_ / (2. * tan(fov_ / 2.));
+  xyz dir;
+  PixPos pixel;
+  for (int row = row_init; row < row_init + row_n; row++) {
+    dir_y = -(row + 0.5f) + height_ / 2.f;// this flips the image at the same time
+    for (int col = 0; col < width_; col++) {
+      dir_x = (col + 0.5f) - width_ / 2.f;
+      dir = {dir_x, dir_y, dir_z};
+      dir.normalize();
+      pixel = {col, row};
+      Vec3f pix = cast_ray(image_origin_, dir, 0, pixel);
+      rgb rgb_val = Material::vec2rgb(pix);
+      image_.SetPixelColor({col, row}, rgb_val);
+    }
+  }
+}
+
+// creates a thread pool
+void Render::RenderSceneMultiThread(std::vector<std::unique_ptr<Shape>> shapes) {
   if (!shapes.empty()) {
     for (auto &shape : shapes) {
       shapes_.push_back(std::move(shape));
     }
-    //    shapes_.insert(shapes_.end(), shapes.begin(), shapes.end());
   }
 
   ThreadPool pool;
@@ -249,12 +222,12 @@ void Render::ParallelQueue(std::vector<std::unique_ptr<Shape>> shapes) {
   pool.start(num_threads);
 }
 
-void Render::RenderObj(std::string fname, xyz const &translation, Material const &mat) {
+void Render::LoadObj(std::string fname, xyz const &translation, Material const &mat) {
   ObjLoader obj;
   obj.readFile(fname.c_str(), translation, mat);
 
   for (int i{0}; i < obj.triangles_.size(); i++) {
     shapes_.push_back(std::make_unique<Triangle>(obj.triangles_[i]));
   }
-  //  ParallelQueue();
+  //  RenderSceneMultiThread();
 }
