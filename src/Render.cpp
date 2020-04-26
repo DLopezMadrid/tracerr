@@ -13,6 +13,7 @@ Render::Render(int img_width, int img_height, xyz origin, std::vector<Light> lig
   if (lights_.empty()) {
     lights_.emplace_back(Light({-20, 20, 20}, 1.5));
   }
+  //TODO implement background
   //  if (grad_background) {
   //    //unused for now
   //    background_.DrawGradientBackground();
@@ -25,7 +26,7 @@ void Render::SaveImage(std::string fname) const {
 }
 
 // checks if a ray intersects with anything in the scene (dynamic polymorphism)
-bool Render::scene_intersect(Vec3f const &origin, Vec3f const &direction, Vec3f &hit, Vec3f &normal, Material &mat) {
+bool Render::scene_intersect(xyz const &origin, xyz const &direction, xyz &hit, xyz &normal, Material &mat) {
   float shapes_dist = std::numeric_limits<float>::max();
   for (auto &s : shapes_) {
     float dist_i;
@@ -41,23 +42,23 @@ bool Render::scene_intersect(Vec3f const &origin, Vec3f const &direction, Vec3f 
   float checkerboard_dist = std::numeric_limits<float>::max();
   if (fabs(direction(1)) > 1e-3) {
     float d = -(origin(1) + 1) / direction(1);// the checkerboard plane has equation y = -1
-    Vec3f pt = origin + direction * d;
+    xyz pt = origin + direction * d;
     // draws the checkerboard from -20 < x < 20 and -30 < z < 30
     if (d > 0 && fabs(pt(0)) < 20 && pt(2) < 30 && pt(2) > -30 && d < shapes_dist) {
       checkerboard_dist = d;
       hit = pt;
-      normal = Vec3f({0, 1, 0});
+      normal = xyz({0, 1, 0});
       mat = Materials::red_rubber;
-      mat.color_f_ = (int(.5 * hit(0) + 1000) + int(.5 * hit(2))) & 1 ? Vec3f({.3, .3, .3}) : Vec3f({.3, .2, .1});
+      mat.color_f_ = (int(.5 * hit(0) + 1000) + int(.5 * hit(2))) & 1 ? rgb_f({.3, .3, .3}) : rgb_f({.3, .2, .1});
     }
   }
   return std::min(shapes_dist, checkerboard_dist) < 1000;
 
 }
 
+// Calculates reflected ray
 xyz Render::reflect(const xyz &I, const xyz &N) {
-  auto n = I - N * 2.f * (I.dot(N));
-  return n;
+  return I - N * 2.f * (I.dot(N));
 }
 
 //Snell law
@@ -70,62 +71,71 @@ xyz Render::refract(const xyz &I, const xyz &N, const float eta_t, const float e
   return k < 0 ? unit : I * eta + N * (eta * cosi - sqrtf(k));
 }
 
+// Main function for the ray tracing process
+// it casts a ray using an origin point + a direction unit vector
+// checks if the ray intersects with anything in the scene
+// if it doesn't it returns the background color
+// If it does, it calculates the resulting pixel color value by using the phong illumination model (ambient, diffusion and specular) + reflections and refractions
+// To calculate reflections and refractions, it calls itself recursively with the hit point as the new origin and the reflected / refracted ray as the direction unit vector
+// To calculate shadows it checks if the hit point has line of sight with the lights, if not it is in a shadow
+// The final calculation is done considering the previously calculated values + the object material properties
+rgb_f Render::cast_ray(const xyz &orig, const xyz &dir, size_t depth) {
 
-Vec3f Render::cast_ray(const Vec3f &orig, const Vec3f &dir, size_t depth, const PixPos &pixel) {
-
-  //MINE
-  Vec3f hit{0, 0, 0};
-  Vec3f normal{0, 0, 0};
+  xyz hit{0, 0, 0};
+  xyz normal{0, 0, 0};
   Material mat;
   if (!scene_intersect(orig, dir, hit, normal, mat) || depth > 4) {
     //TODO add background
     //    int a = std::max(0, std::min(background_.GetImageWidth() -1, static_cast<int>((atan2(dir(2), dir(0))/(2*M_PI) + .5)*background_.GetImageWidth())));
     //    int b = std::max(0, std::min(background_.GetImageHeight()-1, static_cast<int>(acos(dir(1))/M_PI*background_.GetImageHeight())));
     //    return Material::rgb2vec(background_.GetPixelColor({a,b}));
-    return Vec3f({50.0 / 255.0, 180.0 / 255.0, 205.0 / 255.0});
+
+    // background color
+    return rgb_f({50.0 / 255.0, 180.0 / 255.0, 205.0 / 255.0});
   } else {
 
-    Vec3f reflect_dir = reflect(dir, normal);
+    xyz reflect_dir = reflect(dir, normal);
     reflect_dir.normalize();
-    Vec3f refract_dir = refract(dir, normal, mat.refractive_index);
+    xyz refract_dir = refract(dir, normal, mat.refractive_index);
     refract_dir.normalize();
-    Vec3f reflect_orig;
+    xyz reflect_orig;
     if (reflect_dir.dot(normal) < 0) {
       reflect_orig = hit - normal * 1e-3;// offset the original point to avoid occlusion by the object itself
     } else {
       reflect_orig = hit + normal * 1e-3;
     }
 
-    Vec3f refract_orig;
+    xyz refract_orig;
     if (refract_dir.dot(normal) < 0) {
       refract_orig = hit - normal * 1e-3;// offset the original point to avoid occlusion by the object itself
     } else {
       refract_orig = hit + normal * 1e-3;
     }
 
-    Vec3f reflect_color;
-    Vec3f refract_color;
+    rgb_f reflect_color;
+    rgb_f refract_color;
     if (mat.albedo_(2) != 0) {
-      reflect_color = cast_ray(reflect_orig, reflect_dir, depth + 1, pixel);
+      reflect_color = cast_ray(reflect_orig, reflect_dir, depth + 1);
     }
     if (mat.albedo_(3) != 0) {
-      refract_color = cast_ray(refract_orig, refract_dir, depth + 1, pixel);
+      refract_color = cast_ray(refract_orig, refract_dir, depth + 1);
     }
     float diffuse_light_intensity = 0;
     float specular_light_intensity = 0;
     for (auto const &light : lights_) {
-      Vec3f light_dir = (light.position_ - hit);
+      xyz light_dir = (light.position_ - hit);
       light_dir.normalize();
       float light_distance = (light.position_ - hit).norm();
 
-      Vec3f shadow_orig;
+      xyz shadow_orig;
       if (light_dir.dot(normal) < 0) {
         shadow_orig = hit - normal * 1e-3;
       } else {
         shadow_orig = hit + normal * 1e-3;
       }
 
-      Vec3f shadow_pt, shadow_N;
+      xyz shadow_pt;
+      xyz shadow_N;
       Material tmpmaterial;
       if (scene_intersect(shadow_orig, light_dir, shadow_pt, shadow_N, tmpmaterial) && (shadow_pt - shadow_orig).norm() < light_distance) {
         continue;
@@ -141,31 +151,30 @@ Vec3f Render::cast_ray(const Vec3f &orig, const Vec3f &dir, size_t depth, const 
   }
 }
 
-
+// Plain render function using a single thread
 void Render::RenderScene(std::vector<std::unique_ptr<Shape>> shapes) {
   shapes_ = std::move(shapes);
   float dir_x, dir_y, dir_z;
   dir_z = -height_ / (2.f * tan(fov_ / 2.f));
-  PixPos pixel;
   for (int row = 0; row < height_; row++) {
     dir_y = -(row + 0.5f) + height_ / 2.f;
     for (int col = 0; col < width_; col++) {
       dir_x = (col + 0.5f) - width_ / 2.f;
       xyz dir{dir_x, dir_y, dir_z};
       dir.normalize();
-      pixel = {col, row};
-      Vec3f pix = cast_ray(image_origin_, dir, 0, pixel);
+      rgb_f pix = cast_ray(image_origin_, dir, 0);
       rgb rgb_val = Material::vec2rgb(pix);
       image_.SetPixelColor({col, row}, rgb_val);
     }
   }
 }
 
+// Uses OpenMP for parallelization. In order for this to work you need to set up a cmake environment with the -fopenmp flag
+// the pragma statement below automatically parallelizes the content of the for loop
 void Render::RenderSceneOMP(std::vector<std::unique_ptr<Shape>> shapes) {
   shapes_ = std::move(shapes);
   float dir_x, dir_y, dir_z;
   dir_z = -height_ / (2.f * tan(fov_ / 2.f));
-  PixPos pixel;
 #pragma omp parallel for
   for (int row = 0; row < height_; row++) {
     dir_y = -(row + 0.5f) + height_ / 2.f;// this flips the image at the same time
@@ -173,8 +182,7 @@ void Render::RenderSceneOMP(std::vector<std::unique_ptr<Shape>> shapes) {
       dir_x = (col + 0.5f) - width_ / 2.f;
       xyz dir{dir_x, dir_y, dir_z};
       dir.normalize();
-      pixel = {col, row};
-      Vec3f pix = cast_ray(image_origin_, dir, 0, pixel);
+      rgb_f pix = cast_ray(image_origin_, dir, 0);
       rgb rgb_val = Material::vec2rgb(pix);
       image_.SetPixelColor({col, row}, rgb_val);
     }
@@ -182,38 +190,36 @@ void Render::RenderSceneOMP(std::vector<std::unique_ptr<Shape>> shapes) {
 }
 
 
-
+// Function to be used for an indivudual thread in a multi threading context
+// The thread will render row_n number of lines starting from row_init and write the results to the image file
 void Render::RenderThread(int const &row_init, int const &row_n) {
 
   float dir_x, dir_y, dir_z;
   dir_z = -height_ / (2. * tan(fov_ / 2.));
   xyz dir;
-  PixPos pixel;
   for (int row = row_init; row < row_init + row_n; row++) {
     dir_y = -(row + 0.5f) + height_ / 2.f;// this flips the image at the same time
     for (int col = 0; col < width_; col++) {
       dir_x = (col + 0.5f) - width_ / 2.f;
       dir = {dir_x, dir_y, dir_z};
       dir.normalize();
-      pixel = {col, row};
-      Vec3f pix = cast_ray(image_origin_, dir, 0, pixel);
+      rgb_f pix = cast_ray(image_origin_, dir, 0);
       rgb rgb_val = Material::vec2rgb(pix);
       image_.SetPixelColor({col, row}, rgb_val);
     }
   }
 }
 
-// creates a thread pool
+// creates a thread pool and splits the image into line tasks for the pool workers
 void Render::RenderSceneMultiThread(std::vector<std::unique_ptr<Shape>> shapes) {
   if (!shapes.empty()) {
     for (auto &shape : shapes) {
       shapes_.push_back(std::move(shape));
     }
   }
-
   ThreadPool pool;
   int num_threads = std::thread::hardware_concurrency();
-
+  // to avoid allocation and initialization at every call
   const int row_n{1};
   for (int i{0}; i < height_; i++) {
     pool.queue([&, i]() { RenderThread(i, row_n); });
@@ -222,6 +228,8 @@ void Render::RenderSceneMultiThread(std::vector<std::unique_ptr<Shape>> shapes) 
   pool.start(num_threads);
 }
 
+
+// Reads and parses the .obj file, then puts all the triangles into the shapes_ vector
 void Render::LoadObj(std::string fname, xyz const &translation, Material const &mat) {
   ObjLoader obj;
   obj.readFile(fname.c_str(), translation, mat);
@@ -229,5 +237,4 @@ void Render::LoadObj(std::string fname, xyz const &translation, Material const &
   for (int i{0}; i < obj.triangles_.size(); i++) {
     shapes_.push_back(std::make_unique<Triangle>(obj.triangles_[i]));
   }
-  //  RenderSceneMultiThread();
 }

@@ -29,20 +29,20 @@ int main() {
   std::vector<std::unique_ptr<Shape>> shapes;
   std::vector<Light> lights;
 
-  lights.emplace_back(Vec3f({-20, 20, 10}), 1.5);
-  lights.emplace_back(Vec3f({20, 10, -20}), 1.8);
-  lights.emplace_back(Vec3f({0, 20, 0}), 0.5);
-  lights.emplace_back(Vec3f({20, 20, -5}), 0.5);
+  lights.emplace_back(Light({-20, 20, 10}, 1.5));
+  lights.emplace_back(Light({20, 10, -20}, 1.8));
+  lights.emplace_back(Light({0, 20, 0}, 0.5));
+  lights.emplace_back(Light({20, 20, -5}, 0.5));
 
   Render r(width, height, {0, 0, 0}, std::move(lights));
 
   //Bigger spheres
-  Sphere s1(Vec3f({-5, 0, -6}), 1, Materials::red_plastic);
-  Sphere s2(Vec3f({0, 0.5, -4}), 1.5, Materials::mirror);
-  Sphere s3(Vec3f({-3, 0, -5}), 1, Materials::glass);
-  Sphere s4(Vec3f({-5, 0, 3}), 1, Materials::green_rubber);
-  Sphere s5(Vec3f({0, 0, 3}), 1, Materials::pink_rubber);
-  Sphere s6(Vec3f({5, 0, 3}), 1, Materials::orange_rubber);
+  Sphere s1({-5, 0, -6}, 1, Materials::red_plastic);
+  Sphere s2({0, 0.5, -4}, 1.5, Materials::mirror);
+  Sphere s3({-3, 0, -5}, 1, Materials::glass);
+  Sphere s4({-5, 0, 3}, 1, Materials::green_rubber);
+  Sphere s5({0, 0, 3}, 1, Materials::pink_rubber);
+  Sphere s6({5, 0, 3}, 1, Materials::orange_rubber);
 
   shapes.push_back(std::make_unique<Sphere>(std::move(s1)));
   shapes.push_back(std::make_unique<Sphere>(std::move(s2)));

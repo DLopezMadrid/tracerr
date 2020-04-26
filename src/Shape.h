@@ -10,12 +10,7 @@
 #include <iostream>
 #include <tuple>
 
-//typedef std::array<float, 3> xyz;
 typedef Eigen::Vector3f xyz;
-typedef Eigen::Vector3f Vec3f;
-typedef Eigen::Vector4f Vec4f;
-
-typedef std::array<uint8_t, 3> rgb;
 
 // Pure virtual class to define the interface for all other shapes
 // For dynamic polymorphism

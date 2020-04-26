@@ -23,7 +23,7 @@ void ObjLoader::readFile(const char *file_name, Eigen::Vector3f const &translati
     char discard;
     if (!line.compare(0, 2, "v ")) {
       iss >> discard;
-      Vec3f vertex;
+      xyz vertex;
       for (int i = 0; i < 3; ++i) { iss >> vertex[i]; }
       vertexes_.push_back(std::move(vertex));
     } else if (!line.compare(0, 2, "vt")) {

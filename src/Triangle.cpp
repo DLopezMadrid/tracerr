@@ -9,10 +9,10 @@
 // from https://github.com/VityasZV/tinyraytracer
 bool Triangle::RayIntersect(xyz const origin, xyz const direction, float &t0) const {
   const float EPSILON = 0.0000001;
-  Vec3f vertex0 = p0_;
-  Vec3f vertex1 = p1_;
-  Vec3f vertex2 = p2_;
-  Vec3f edge1, edge2, h, s, q;
+  xyz vertex0 = p0_;
+  xyz vertex1 = p1_;
+  xyz vertex2 = p2_;
+  xyz edge1, edge2, h, s, q;
   float a, f, u, v;
   edge1 = vertex1 - vertex0;
   edge2 = vertex2 - vertex0;
