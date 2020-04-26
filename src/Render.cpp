@@ -6,13 +6,17 @@
 
 #include <utility>
 
-Render::Render(int img_width, int img_height, xyz origin, std::vector<Light> lights) : image_{img_width, img_height}, original_origin_{std::move(origin)}, lights_{std::move(lights)} {
+Render::Render(int img_width, int img_height, xyz origin, std::vector<Light> lights, bool grad_background) : image_{img_width, img_height}, background_{img_width, img_height}, original_origin_{std::move(origin)}, lights_{std::move(lights)} {
 
   width_ = image_.GetImageWidth();
   height_ = image_.GetImageHeight();
   if (lights_.empty()) {
     lights_.emplace_back(Light({-20, 20, 20}, 1.5));
   }
+  //  if (grad_background) {
+  //    //unused for now
+  //    background_.DrawGradientBackground();
+  //  }
 }
 
 
@@ -37,9 +41,9 @@ bool Render::scene_intersect(Vec3f const &origin, Vec3f const &direction, Vec3f 
 
   float checkerboard_dist = std::numeric_limits<float>::max();
   if (fabs(direction(1)) > 1e-3) {
-    float d = -(origin(1) + 4) / direction(1);// the checkerboard plane has equation y = -4
+    float d = -(origin(1) + 1) / direction(1);// the checkerboard plane has equation y = -4
     Vec3f pt = origin + direction * d;
-    if (d > 0 && fabs(pt(0)) < 10 && pt(2) < -10 && pt(2) > -30 && d < shapes_dist) {
+    if (d > 0 && fabs(pt(0)) < 20 && pt(2) < 30 && pt(2) > -30 && d < shapes_dist) {
       checkerboard_dist = d;
       hit = pt;
       normal = Vec3f({0, 1, 0});
@@ -50,7 +54,7 @@ bool Render::scene_intersect(Vec3f const &origin, Vec3f const &direction, Vec3f 
   return std::min(shapes_dist, checkerboard_dist) < 1000;
 
 
-  //  return shapes_dist < 1000;
+  //    return shapes_dist < 1000;
 }
 
 xyz Render::reflect(const xyz &I, const xyz &N) {
@@ -73,15 +77,15 @@ void Render::RenderScene(std::vector<std::unique_ptr<Shape>> shapes) {
   shapes_ = std::move(shapes);
   float dir_x, dir_y, dir_z;
   dir_z = -height_ / (2.f * tan(fov_ / 2.f));
-  //#pragma omp parallel for
+  PixPos pixel;
   for (int row = 0; row < height_; row++) {
     dir_y = -(row + 0.5f) + height_ / 2.f;// this flips the image at the same time
     for (int col = 0; col < width_; col++) {
       dir_x = (col + 0.5f) - width_ / 2.f;
       xyz dir{dir_x, dir_y, dir_z};
       dir.normalize();
-      //      PixPos pixel{col, row};
-      Vec3f pix = cast_ray(original_origin_, dir, 0, 0);
+      pixel = {col, row};
+      Vec3f pix = cast_ray(original_origin_, dir, 0, pixel);
       rgb rgb_val = Material::vec2rgb(pix);
       image_.SetPixelColor({col, row}, rgb_val);
     }
@@ -92,6 +96,7 @@ void Render::RenderSceneOMP(std::vector<std::unique_ptr<Shape>> shapes) {
   shapes_ = std::move(shapes);
   float dir_x, dir_y, dir_z;
   dir_z = -height_ / (2.f * tan(fov_ / 2.f));
+  PixPos pixel;
 #pragma omp parallel for
   for (int row = 0; row < height_; row++) {
     dir_y = -(row + 0.5f) + height_ / 2.f;// this flips the image at the same time
@@ -99,8 +104,8 @@ void Render::RenderSceneOMP(std::vector<std::unique_ptr<Shape>> shapes) {
       dir_x = (col + 0.5f) - width_ / 2.f;
       xyz dir{dir_x, dir_y, dir_z};
       dir.normalize();
-      //      PixPos pixel{col, row};
-      Vec3f pix = cast_ray(original_origin_, dir, 0, 0);
+      pixel = {col, row};
+      Vec3f pix = cast_ray(original_origin_, dir, 0, pixel);
       rgb rgb_val = Material::vec2rgb(pix);
       image_.SetPixelColor({col, row}, rgb_val);
     }
@@ -135,14 +140,15 @@ void Render::RenderThread(int const &row_init, int const &row_n) {
   float dir_x, dir_y, dir_z;
   dir_z = -height_ / (2. * tan(fov_ / 2.));
   xyz dir;
+  PixPos pixel;
   for (int row = row_init; row < row_init + row_n; row++) {
     dir_y = -(row + 0.5f) + height_ / 2.f;// this flips the image at the same time
     for (int col = 0; col < width_; col++) {
       dir_x = (col + 0.5f) - width_ / 2.f;
       dir = {dir_x, dir_y, dir_z};
       dir.normalize();
-      //      PixPos pixel{col, row};
-      Vec3f pix = cast_ray(original_origin_, dir, 0, 0);
+      pixel = {col, row};
+      Vec3f pix = cast_ray(original_origin_, dir, 0, pixel);
       rgb rgb_val = Material::vec2rgb(pix);
       image_.SetPixelColor({col, row}, rgb_val);
     }
@@ -151,14 +157,17 @@ void Render::RenderThread(int const &row_init, int const &row_n) {
 }
 
 
-Vec3f Render::cast_ray(const Vec3f &orig, const Vec3f &dir, size_t depth, int ray_type) {
+Vec3f Render::cast_ray(const Vec3f &orig, const Vec3f &dir, size_t depth, const PixPos &pixel) {
 
   //MINE
   Vec3f hit{0, 0, 0};
   Vec3f normal{0, 0, 0};
   Material mat;
   if (!scene_intersect(orig, dir, hit, normal, mat) || depth > 4) {
-    //    return image_.GetPixelColor(pixel);
+    //TODO add background
+    //    int a = std::max(0, std::min(background_.GetImageWidth() -1, static_cast<int>((atan2(dir(2), dir(0))/(2*M_PI) + .5)*background_.GetImageWidth())));
+    //    int b = std::max(0, std::min(background_.GetImageHeight()-1, static_cast<int>(acos(dir(1))/M_PI*background_.GetImageHeight())));
+    //    return Material::rgb2vec(background_.GetPixelColor({a,b}));
     return Vec3f({50.0 / 255.0, 180.0 / 255.0, 205.0 / 255.0});
   } else {
 
@@ -183,10 +192,10 @@ Vec3f Render::cast_ray(const Vec3f &orig, const Vec3f &dir, size_t depth, int ra
     Vec3f reflect_color;
     Vec3f refract_color;
     if (mat.albedo_(2) != 0) {
-      reflect_color = cast_ray(reflect_orig, reflect_dir, depth + 1, 0);
+      reflect_color = cast_ray(reflect_orig, reflect_dir, depth + 1, pixel);
     }
     if (mat.albedo_(3) != 0) {
-      refract_color = cast_ray(refract_orig, refract_dir, depth + 1, 0);
+      refract_color = cast_ray(refract_orig, refract_dir, depth + 1, pixel);
     }
     float diffuse_light_intensity = 0;
     float specular_light_intensity = 0;
@@ -222,7 +231,12 @@ void Render::RenderTriangles(std::vector<Triangle> &&triangles) {
 
 
 void Render::ParallelQueue(std::vector<std::unique_ptr<Shape>> shapes) {
-  shapes_ = std::move(shapes);
+  if (!shapes.empty()) {
+    for (auto &shape : shapes) {
+      shapes_.push_back(std::move(shape));
+    }
+    //    shapes_.insert(shapes_.end(), shapes.begin(), shapes.end());
+  }
 
   ThreadPool pool;
   int num_threads = std::thread::hardware_concurrency();
@@ -233,4 +247,14 @@ void Render::ParallelQueue(std::vector<std::unique_ptr<Shape>> shapes) {
   }
 
   pool.start(num_threads);
+}
+
+void Render::RenderObj(std::string fname, xyz const &translation, Material const &mat) {
+  ObjLoader obj;
+  obj.readFile(fname.c_str(), translation, mat);
+
+  for (int i{0}; i < obj.triangles_.size(); i++) {
+    shapes_.push_back(std::make_unique<Triangle>(obj.triangles_[i]));
+  }
+  //  ParallelQueue();
 }

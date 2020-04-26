@@ -4,16 +4,16 @@
 
 #include "ObjLoader.h"
 
-void ObjLoader::calcTriangles() {
+void ObjLoader::calcTriangles(Eigen::Vector3f const &translation, Material const &mat) {
 
   for (auto &f : faces_) {
-    xyz p0 = vertexes_[f(0)];
-    xyz p1 = vertexes_[f(1)];
-    xyz p2 = vertexes_[f(2)];
-    triangles_.emplace_back(p0, p1, p2, Materials::glass);
+    xyz p0 = vertexes_[f(0)] + translation;
+    xyz p1 = vertexes_[f(1)] + translation;
+    xyz p2 = vertexes_[f(2)] + translation;
+    triangles_.emplace_back(p0, p1, p2, mat);
   }
 }
-void ObjLoader::readFile(const char *file_name) {
+void ObjLoader::readFile(const char *file_name, Eigen::Vector3f const &translation, Material const &mat) {
 
   std::ifstream in(file_name, std::ifstream::in);
   if (in.fail()) {
@@ -46,5 +46,5 @@ void ObjLoader::readFile(const char *file_name) {
     }
   }
 
-  calcTriangles();
+  calcTriangles(translation, mat);
 }

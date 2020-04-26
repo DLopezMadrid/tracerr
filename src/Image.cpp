@@ -60,21 +60,21 @@ void Image::SetPixelColor(PixPos const &pixel, rgb const &color) {
 rgb Image::GetPixelColor(PixPos const &pixel) {
   return rgb({(*pixels_)(pixel[1], pixel[0] * 3), (*pixels_)(pixel[1], pixel[0] * 3 + 1), (*pixels_)(pixel[1], pixel[0] * 3 + 2)});
 }
-//void Image::DrawGradientBackground() {
-//  unsigned int red{0};
-//  unsigned int green{0};
-//  unsigned int blue{0};
-//
-//  for (float row = 0; row < pixels_->rows(); row++) {
-//    green = floor(255 * (row / pixels_->rows()));
-//    for (float col = 0; col < pixels_->cols(); col += pix_channels_) {
-//      if (col / 3 == row) {
-//        blue = floor(255 * (row / pixels_->rows()));
-//      }
-//      red = floor(255 * (col / pixels_->cols()));
-//      (*pixels_)(row, col) = red;
-//      (*pixels_)(row, col + 1) = green;
-//      (*pixels_)(row, col + 2) = blue;
-//    }
-//  }
-//}
+void Image::DrawGradientBackground() {
+  unsigned int red{0};
+  unsigned int green{0};
+  unsigned int blue{0};
+
+  for (float row = 0; row < pixels_->rows(); row++) {
+    green = floor(255 * (row / pixels_->rows()));
+    for (float col = 0; col < pixels_->cols(); col += pix_channels_) {
+      if (col / 3 == row) {
+        blue = floor(255 * (row / pixels_->rows()));
+      }
+      red = floor(255 * (col / pixels_->cols()));
+      (*pixels_)(row, col) = red;
+      (*pixels_)(row, col + 1) = green;
+      (*pixels_)(row, col + 2) = blue;
+    }
+  }
+}

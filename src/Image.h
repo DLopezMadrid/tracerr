@@ -24,7 +24,7 @@ class Image {
   int GetImageChannels() const { return pix_channels_; };
   void SetPixelColor(PixPos const &pixel, rgb const &color);
   rgb GetPixelColor(PixPos const &pixel);
-  //  void DrawGradientBackground();
+  void DrawGradientBackground();
   //TODO move data to write function (although now we are just passing a pointer so not sure if really needed)
   std::unique_ptr<Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> pixels_;
 

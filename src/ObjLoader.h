@@ -10,13 +10,13 @@
 #include <fstream>
 
 class ObjLoader {
-  void calcTriangles();
+  void calcTriangles(Eigen::Vector3f const &translation, Material const &mat);
   std::vector<Eigen::Vector3f> vertexes_;
   std::vector<Eigen::Vector3i> faces_;
 
   public:
   std::vector<Triangle> triangles_;
-  void readFile(const char *file_name);
+  void readFile(const char *file_name, Eigen::Vector3f const &translation, Material const &mat);
 };
 
 
