@@ -180,8 +180,14 @@ Vec3f Render::cast_ray(const Vec3f &orig, const Vec3f &dir, size_t depth, int ra
       refract_orig = hit + normal * 1e-3;
     }
 
-    Vec3f reflect_color = cast_ray(reflect_orig, reflect_dir, depth + 1, 0);
-    Vec3f refract_color = cast_ray(refract_orig, refract_dir, depth + 1, 0);
+    Vec3f reflect_color;
+    Vec3f refract_color;
+    if (mat.albedo_(2) != 0) {
+      reflect_color = cast_ray(reflect_orig, reflect_dir, depth + 1, 0);
+    }
+    if (mat.albedo_(3) != 0) {
+      refract_color = cast_ray(refract_orig, refract_dir, depth + 1, 0);
+    }
     float diffuse_light_intensity = 0;
     float specular_light_intensity = 0;
     for (auto const &light : lights_) {

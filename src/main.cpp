@@ -86,7 +86,7 @@ int main() {
   Render r(width, height, {0, 0, 0}, std::move(lights));
   //      r.RenderScene(std::move(shapes));
   //  r.RenderSceneMultiThread(std::move(shapes));
-  //  r.RenderSceneOMP(std::move(shapes));
+  //    r.RenderSceneOMP(std::move(shapes));
   r.ParallelQueue(std::move(shapes));
   //  r.RenderScene(shapes)
   //  r.RenderTriangles(std::move(triangles));
