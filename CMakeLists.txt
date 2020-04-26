@@ -8,9 +8,9 @@ include_directories(${GTEST_INCLUDE_DIRS})
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-add_executable(tracerr src/main.cpp src/Shape.cpp src/Shape.h src/Image.cpp src/Image.h src/Sphere.cpp src/Sphere.h src/File.cpp src/File.h src/Material.h src/Light.h src/Render.h src/Render.cpp src/Triangle.cpp src/Triangle.h)
+add_executable(tracerr src/main.cpp src/Shape.cpp src/Shape.h src/Image.cpp src/Image.h src/Sphere.cpp src/Sphere.h src/File.cpp src/File.h src/Material.h src/Light.h src/Render.h src/Render.cpp src/Triangle.cpp src/Triangle.h src/Rectangle.cpp src/Rectangle.h src/ObjLoader.cpp src/ObjLoader.h src/ThreadPool.h)
 target_link_libraries(tracerr Threads::Threads)
 
 # Link runTests with what we want to test and the GTest and pthread library
-add_executable(runTests src/tests.cpp src/Shape.cpp src/Shape.h src/Image.cpp src/Image.h src/Sphere.cpp src/Sphere.h src/File.cpp src/File.h src/Cube.cpp src/Cube.h src/Material.h src/Light.h src/Render.h src/Render.cpp src/Triangle.cpp src/Triangle.h)
+add_executable(runTests src/tests.cpp src/Shape.cpp src/Shape.h src/Image.cpp src/Image.h src/Sphere.cpp src/Sphere.h src/File.cpp src/File.h src/Cube.cpp src/Cube.h src/Material.h src/Light.h src/Render.h src/Render.cpp src/Triangle.cpp src/Triangle.h src/Rectangle.cpp src/Rectangle.h src/ObjLoader.cpp src/ObjLoader.h src/ThreadPool.h)
 target_link_libraries(runTests ${GTEST_LIBRARIES} pthread)

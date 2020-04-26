@@ -1,3 +1,4 @@
+#include "ObjLoader.h"
 #include "Render.h"
 #include <chrono>
 #include <eigen3/Eigen/Geometry>
@@ -12,8 +13,12 @@
 int main() {
 
   auto start_t{std::chrono::high_resolution_clock::now()};
-  int width{1200};
-  int height{1200};
+
+  ObjLoader obj;
+  obj.readFile("../obj/duck.obj");
+  std::cout << obj.triangles_.size() << std::endl;
+  int width{2000};
+  int height{1000};
 
   std::vector<Triangle> triangles;
 
@@ -23,19 +28,24 @@ int main() {
   Triangle t3(Vec3f({5, 4, -20}), Vec3f({5, 7, -17}), Vec3f({6, 7, -16}), Materials::mirror);
   Triangle t4(Vec3f({5, -4, -14}), Vec3f({6, -4, -13}), Vec3f({5.5, -2, -13.5}), Materials::mirror);
 
+  Rectangle r1(Vec3f({-4, -4, -14}), Vec3f({-7, -4, -14}), Vec3f({-7, 0, -13}), Materials::mirror);
+  //  Triangle t5(Vec3f({-4,-4,-14}), Vec3f({-7,-4,-14}), Vec3f({-7,0,-14}),Materials::green_rubber);
+
 
   Sphere s1(Vec3f({-3, -3, -16}), 1, Materials::ivory);
   Sphere s2(Vec3f({0, -2.5, -14}), 1.5, Materials::mirror);
   Sphere s3(Vec3f({1.5, -2, -18}), 2, Materials::red_rubber);
   std::vector<std::unique_ptr<Shape>> shapes;
 
-  shapes.push_back(std::make_unique<Sphere>(s1));
-  shapes.push_back(std::make_unique<Sphere>(s2));
-  shapes.push_back(std::make_unique<Sphere>(s3));
-  shapes.push_back(std::make_unique<Triangle>(t1));
-  shapes.push_back(std::make_unique<Triangle>(t3));
-  shapes.push_back(std::make_unique<Triangle>(t2));
-  shapes.push_back(std::make_unique<Triangle>(t4));
+  //  shapes.push_back(std::make_unique<Sphere>(s1));
+  //  shapes.push_back(std::make_unique<Sphere>(s2));
+  //  shapes.push_back(std::make_unique<Sphere>(s3));
+  //  shapes.push_back(std::make_unique<Triangle>(t1));
+  //  shapes.push_back(std::make_unique<Triangle>(t3));
+  //  shapes.push_back(std::make_unique<Triangle>(t2));
+  //  shapes.push_back(std::make_unique<Triangle>(t4));
+  ////  shapes.push_back(std::make_unique<Triangle>(t5));
+  //  shapes.push_back(std::make_unique<Rectangle>(r1));
 
   int num_spheres{40};
 
@@ -51,8 +61,14 @@ int main() {
 
     Sphere ns({xpos, -3.75, zpos}, 0.25, mat);
 
-    shapes.push_back(std::make_unique<Sphere>(ns));
+    //    shapes.push_back(std::make_unique<Sphere>(ns));
   }
+
+  for (int i{0}; i < obj.triangles_.size(); i++) {
+    shapes.push_back(std::make_unique<Triangle>(obj.triangles_[i]));
+  }
+
+  //  for(int i{0})
 
 
   //  shapes.push_back(Sphere(Vec3f({-3, 0, -16}), 2, Materials::ivory));
@@ -68,12 +84,13 @@ int main() {
   lights.emplace_back(Vec3f({5, -10, -30}), 0.8);
 
   Render r(width, height, {0, 0, 0}, std::move(lights));
-  //    r.RenderScene(std::move(shapes));
+  //      r.RenderScene(std::move(shapes));
   //  r.RenderSceneMultiThread(std::move(shapes));
-  r.RenderSceneOMP(std::move(shapes));
+  //  r.RenderSceneOMP(std::move(shapes));
+  r.ParallelQueue(std::move(shapes));
   //  r.RenderScene(shapes)
   //  r.RenderTriangles(std::move(triangles));
-  r.SaveImage("RenderDP.png");
+  r.SaveImage("RenderDP5.png");
 
   auto end_t = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_t);
   std::cout << "Completed " << width << "x" << height << " image in " << end_t.count() << " ms" << std::endl;

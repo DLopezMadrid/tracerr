@@ -12,7 +12,7 @@ class Sphere : public Shape {
       Sphere(xyz pos = {0, 0, 0}, float radius = {1}, Material material = Materials::red_rubber);
       bool RayIntersect(xyz const origin, xyz const direction, float &t0) const override;
       double GetRadius() const { return radius_; }
-      xyz GetNormal(xyz point) const override;
+      xyz GetNormal(const xyz &point) const override;
 
   private:
   float radius_;
