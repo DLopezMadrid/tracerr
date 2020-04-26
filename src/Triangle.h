@@ -13,9 +13,10 @@
 class Triangle : public Shape {
 
   public:
-  Triangle(xyz p0, xyz p1, xyz p2, Material material);
-  bool RayIntersect(xyz const origin, xyz const direction, float &t0) const override;
-  xyz GetNormal(xyz point) const override;
+      Triangle(xyz p0, xyz p1, xyz p2, Material material);
+      Triangle();
+      bool RayIntersect(xyz const origin, xyz const direction, float &t0) const override;
+      xyz GetNormal(const xyz &point) const override;
 
   private:
   xyz p0_;

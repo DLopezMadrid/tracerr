@@ -23,7 +23,7 @@ class Shape {
   Shape(xyz pos = {0, 0, 0}, Material material = Materials::red_rubber);
 
   virtual bool RayIntersect(xyz const origin, xyz const direction, float &t0) const = 0;
-  virtual xyz GetNormal(xyz point) const = 0;
+  virtual xyz GetNormal(const xyz &point) const = 0;
 
   xyz GetPos() const { return pos_; }
   Material GetMaterial() const { return material_; }

@@ -8,7 +8,9 @@
 #include "Image.h"
 #include "Light.h"
 #include "Material.h"
+#include "Rectangle.h"
 #include "Sphere.h"
+#include "ThreadPool.h"
 #include "Triangle.h"
 #include <eigen3/Eigen/Core>
 #include <mutex>
@@ -26,6 +28,7 @@ class Render {
   void RenderThread(const int &row_init, const int &row_n);
   void SetOrigin(xyz origin) { original_origin_ = std::move(origin); };
   xyz GetOrigin() { return original_origin_; }
+  void ParallelQueue(std::vector<std::unique_ptr<Shape>> shapes);
 
   private:
   Vec3f reflect(const Vec3f &I, const Vec3f &N);

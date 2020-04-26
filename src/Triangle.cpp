@@ -42,8 +42,10 @@ bool Triangle::RayIntersect(xyz const origin, xyz const direction, float &t0) co
 }
 Triangle::Triangle(xyz p0, xyz p1, xyz p2, Material material) : Shape((p0), std::move(material)), p0_{std::move(p0)}, p1_{std::move(p1)}, p2_{std::move(p2)} {
 }
-xyz Triangle::GetNormal(xyz point) const {
+xyz Triangle::GetNormal(const xyz &point) const {
   xyz normal = (p1_ - p0_).cross((p2_ - p0_));
   normal.normalize();
   return normal;
+}
+Triangle::Triangle() : Shape({0, 0, 0}, Materials::red_rubber) {
 }

@@ -34,23 +34,7 @@ bool Render::scene_intersect(Vec3f const &origin, Vec3f const &direction, Vec3f 
     }
   }
 
-  //  float checkerboard_dist = std::numeric_limits<float>::max();
-  //  if (fabs(direction(1)>1e-3) ) {
-  //    float d = -(origin(1)+4)/direction(1); // the checkerboard plane has equation y = -4
-  //    Vec3f pt = origin + direction*d;
-  //    if (d>0 && fabs(pt(0))<10 && pt(2)<-10 && pt(2)>-30 && d<shapes_dist) {
-  //      checkerboard_dist = d;
-  //      hit = pt;
-  //      normal = Vec3f(0,1,0);
-  ////      mat.color_f_= (int(.5*hit(0)+1000) + int(.5*hit(2))) & 1 ? Vec3f({.3, .3, .3}) : Vec3f({.3, .2, .1});
-  //      mat = Materials::red_rubber;
-  ////      mat.color_f_= (int(.5*hit(0)+1000) + int(.5*hit(2))) & 1 ? Vec3f({.3, .3, .3}) : Vec3f({.3, .2, .1});
-  //
-  //    }
-  //  }
-  //  return std::min(shapes_dist, checkerboard_dist)<1000;
-  //
-  //---------------
+
   float checkerboard_dist = std::numeric_limits<float>::max();
   if (fabs(direction(1)) > 1e-3) {
     float d = -(origin(1) + 4) / direction(1);// the checkerboard plane has equation y = -4
@@ -130,7 +114,7 @@ void Render::RenderSceneMultiThread(std::vector<std::unique_ptr<Shape>> shapes) 
 
   std::vector<std::thread> threads;
 
-  int num_threads{16};
+  int num_threads = std::thread::hardware_concurrency();
 
   int num_rows_thread{height_ / num_threads};
   int num_rows_last_thread = num_rows_thread + (height_ % num_threads);
@@ -163,6 +147,7 @@ void Render::RenderThread(int const &row_init, int const &row_n) {
       image_.SetPixelColor({col, row}, rgb_val);
     }
   }
+  //  std::cout << row_init << '\n';
 }
 
 
@@ -227,4 +212,19 @@ Vec3f Render::cast_ray(const Vec3f &orig, const Vec3f &dir, size_t depth, int ra
   }
 }
 void Render::RenderTriangles(std::vector<Triangle> &&triangles) {
+}
+
+
+void Render::ParallelQueue(std::vector<std::unique_ptr<Shape>> shapes) {
+  shapes_ = std::move(shapes);
+
+  ThreadPool pool;
+  int num_threads = std::thread::hardware_concurrency();
+
+  const int row_n{1};
+  for (int i{0}; i < height_; i++) {
+    pool.queue([&, i]() { RenderThread(i, row_n); });
+  }
+
+  pool.start(num_threads);
 }

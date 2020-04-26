@@ -23,7 +23,7 @@ bool Sphere::RayIntersect(xyz const origin, xyz const direction, float &t0) cons
 
   return t0 >= 0;
 }
-xyz Sphere::GetNormal(xyz point) const {
+xyz Sphere::GetNormal(const xyz &point) const {
   xyz normal = (point - pos_);
   normal.normalize();
   return normal;
