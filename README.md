@@ -24,10 +24,10 @@ Choose the parameters that you desire within the _main.cpp_ file (image size, sc
 Once you have it installed you can compile with CMake and Make  
 **NOTE**: This code uses C++17 features  
 `mkdir build  `  
-`fstarstcd build  `  
-`fstarstcmake ..  `  
-`fstarstmake  `  
-`fstarst./tracerr`    
+`cd build  `  
+`cmake ..  `  
+`make  `  
+`./tracerr`    
 The resulting image will be saved in the build directory under the filename that you specify ("_RenderTest.png_" as default)
 
 ### Code Overview
