@@ -4,7 +4,8 @@
 #include <eigen3/Eigen/Geometry>
 #include <memory>
 
-
+// Coordinate frame of reference
+// Camera is at (0,0,0)
 // X positive to right
 // Y positive up
 // Z negative means far away
@@ -20,8 +21,8 @@ int main() {
   srand(time(NULL));
 
   //Image parameters & number of randomly generated small spheres for the demo scene
-  int width{500};
-  int height{250};
+  int width{2000};
+  int height{1000};
   int num_spheres{400};
   std::string fname{"RenderTest.png"};
 

@@ -48,7 +48,7 @@ bool Render::scene_intersect(xyz const &origin, xyz const &direction, xyz &hit, 
       checkerboard_dist = d;
       hit = pt;
       normal = xyz({0, 1, 0});
-      mat = Materials::red_rubber;
+      mat = Materials::chessboard;
       mat.color_f_ = (int(.5 * hit(0) + 1000) + int(.5 * hit(2))) & 1 ? rgb_f({.3, .3, .3}) : rgb_f({.3, .2, .1});
     }
   }

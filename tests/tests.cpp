@@ -1,6 +1,6 @@
-#include "Image.h"
-#include "Shape.h"
-#include "Sphere.h"
+#include "../src/Image.h"
+#include "../src/Shape.h"
+#include "../src/Sphere.h"
 #include <gtest/gtest.h>
 #include <iostream>
 

@@ -63,6 +63,7 @@ namespace Materials {
   static Material black_plastic({0, 0, 0}, {0.0, 0.60, 0.15, 0.0}, 300.0, 1.0);
   static Material mirror({255, 255, 255}, {0.0, 10.0, 0.80, 0.0}, 1500.0, 1.0);
   static Material glass({150, 180, 205}, {0.0, 0.50, 0.10, 0.8}, 125.0, 1.5);
+  static Material chessboard({120, 80, 40}, {0.9, 0.10, 0.0, 0.0}, 10.0, 1.0);
 }// namespace Materials
 
 
