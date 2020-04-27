@@ -19,7 +19,9 @@ First you will need to install [Eigen](http://eigen.tuxfamily.org/index.php?titl
 It also uses the [STB library](https://github.com/nothings/stb) to encode the image files. The required files are already included in the repo (_include_ directory)  
 
 Choose the parameters that you desire within the _main.cpp_ file (image size, scene to render, etc...)  
-**NOTE**: bear in mind that in a i7 Skylake machine it takes around 25s to render the demo scene shown in the cover image above (2000px x 1000px) (400 randomly generated spheres + 3D duck model)
+**NOTE**: bear in mind that in a i7 Skylake machine it takes around 25s to render the demo scene shown in the cover image above (2000px x 1000px) (400 randomly generated spheres + 3D duck model)   
+For **faster execution** reduce the number of randomly generated spheres or reduce the resolution (_main.cpp_ file - lines 24 - 26). You can also comment out the 3D duck rendering (main.cpp file - line 76)  
+For **single thread execution**, go to _main.cpp_ and swap the comments on lines 74 & 76   
 
 Once you have it installed you can compile with CMake and Make  
 **NOTE**: This code uses C++17 features  
