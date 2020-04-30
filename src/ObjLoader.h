@@ -5,6 +5,7 @@
 #ifndef TRACERR_OBJLOADER_H
 #define TRACERR_OBJLOADER_H
 
+#include "Rectangle.h"
 #include "Triangle.h"
 #include <eigen3/Eigen/Core>
 #include <fstream>
@@ -44,10 +45,14 @@ class ObjLoader {
   void calcTriangles(Eigen::Vector3f const &translation, Material const &mat);
   std::vector<Eigen::Vector3f> vertexes_;
   std::vector<Eigen::Vector3i> faces_;
+  std::vector<Eigen::Vector4i> faces_2_;
 
   public:
   std::vector<Triangle> triangles_;
+  std::vector<Rectangle> rectangles_;
   void readFile(const char *file_name, Eigen::Vector3f const &translation, Material const &mat);
+  void readFile2(const char *file_name, const Eigen::Vector3f &translation, const Material &mat);
+  void calcShapes(const Eigen::Vector3f &translation, const Material &mat);
 };
 
 

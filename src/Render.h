@@ -30,8 +30,8 @@ class Render {
   public:
   explicit Render(int img_width = 800, int img_height = 600, xyz origin = {0, 0, 0}, std::vector<Light> lights = {}, bool grad_background = false);
   void SaveImage(std::string fname) const;
-  void RenderScene(std::vector<std::unique_ptr<Shape>> shapes);
-  void RenderSceneOMP(std::vector<std::unique_ptr<Shape>> shapes);
+  void RenderScene(std::vector<std::unique_ptr<Shape>> shapes = std::vector<std::unique_ptr<Shape>>());
+  void RenderSceneOMP(std::vector<std::unique_ptr<Shape>> shapes = std::vector<std::unique_ptr<Shape>>());
   void RenderThread(const int &row_init, const int &row_n);
   void RenderSceneMultiThread(std::vector<std::unique_ptr<Shape>> shapes = std::vector<std::unique_ptr<Shape>>());
   void LoadObj(std::string fname, xyz const &translation = {0, 0, 0}, Material const &mat = Materials::red_rubber);

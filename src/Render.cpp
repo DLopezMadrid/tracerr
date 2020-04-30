@@ -40,20 +40,19 @@ bool Render::scene_intersect(xyz const &origin, xyz const &direction, xyz &hit, 
 
   // draw checkerboard floor plane
   float checkerboard_dist = std::numeric_limits<float>::max();
-  if (fabs(direction(1)) > 1e-3) {
-    float d = -(origin(1) + 1) / direction(1);// the checkerboard plane has equation y = -1
-    xyz pt = origin + direction * d;
-    // draws the checkerboard from -20 < x < 20 and -30 < z < 30
-    if (d > 0 && fabs(pt(0)) < 20 && pt(2) < 30 && pt(2) > -30 && d < shapes_dist) {
-      checkerboard_dist = d;
-      hit = pt;
-      normal = xyz({0, 1, 0});
-      mat = Materials::chessboard;
-      mat.color_f_ = (int(.5 * hit(0) + 1000) + int(.5 * hit(2))) & 1 ? rgb_f({.3, .3, .3}) : rgb_f({.3, .2, .1});
-    }
-  }
+  //  if (fabs(direction(1)) > 1e-3) {
+  //    float d = -(origin(1) + 1) / direction(1);// the checkerboard plane has equation y = -1
+  //    xyz pt = origin + direction * d;
+  //    // draws the checkerboard from -20 < x < 20 and -30 < z < 30
+  //    if (d > 0 && fabs(pt(0)) < 20 && pt(2) < 30 && pt(2) > -30 && d < shapes_dist) {
+  //      checkerboard_dist = d;
+  //      hit = pt;
+  //      normal = xyz({0, 1, 0});
+  //      mat = Materials::chessboard;
+  //      mat.color_f_ = (int(.5 * hit(0) + 1000) + int(.5 * hit(2))) & 1 ? rgb_f({.3, .3, .3}) : rgb_f({.3, .2, .1});
+  //    }
+  //  }
   return std::min(shapes_dist, checkerboard_dist) < 1000;
-
 }
 
 // Calculates reflected ray
@@ -153,7 +152,11 @@ rgb_f Render::cast_ray(const xyz &orig, const xyz &dir, size_t depth) {
 
 // Plain render function using a single thread
 void Render::RenderScene(std::vector<std::unique_ptr<Shape>> shapes) {
-  shapes_ = std::move(shapes);
+  if (!shapes.empty()) {
+    for (auto &shape : shapes) {
+      shapes_.push_back(std::move(shape));
+    }
+  }
   float dir_x, dir_y, dir_z;
   dir_z = -height_ / (2.f * tan(fov_ / 2.f));
   for (int row = 0; row < height_; row++) {
@@ -166,13 +169,18 @@ void Render::RenderScene(std::vector<std::unique_ptr<Shape>> shapes) {
       rgb rgb_val = Material::vec2rgb(pix);
       image_.SetPixelColor({col, row}, rgb_val);
     }
+    std::cout << row << '\n';
   }
 }
 
 // Uses OpenMP for parallelization. In order for this to work you need to set up a cmake environment with the -fopenmp flag
 // the pragma statement below automatically parallelizes the content of the for loop
 void Render::RenderSceneOMP(std::vector<std::unique_ptr<Shape>> shapes) {
-  shapes_ = std::move(shapes);
+  if (!shapes.empty()) {
+    for (auto &shape : shapes) {
+      shapes_.push_back(std::move(shape));
+    }
+  }
   float dir_x, dir_y, dir_z;
   dir_z = -height_ / (2.f * tan(fov_ / 2.f));
 #pragma omp parallel for
@@ -207,6 +215,7 @@ void Render::RenderThread(int const &row_init, int const &row_n) {
       rgb rgb_val = Material::vec2rgb(pix);
       image_.SetPixelColor({col, row}, rgb_val);
     }
+    std::cout << row << '\n';
   }
 }
 
@@ -232,9 +241,12 @@ void Render::RenderSceneMultiThread(std::vector<std::unique_ptr<Shape>> shapes) 
 // Reads and parses the .obj file, then puts all the triangles into the shapes_ vector
 void Render::LoadObj(std::string fname, xyz const &translation, Material const &mat) {
   ObjLoader obj;
-  obj.readFile(fname.c_str(), translation, mat);
+  obj.readFile2(fname.c_str(), translation, mat);
 
   for (int i{0}; i < obj.triangles_.size(); i++) {
     shapes_.push_back(std::make_unique<Triangle>(obj.triangles_[i]));
+  }
+  for (int i{0}; i < obj.rectangles_.size(); i++) {
+    shapes_.push_back(std::make_unique<Rectangle>(obj.rectangles_[i]));
   }
 }

@@ -10,6 +10,12 @@ Rectangle::Rectangle(xyz p0, xyz p1, xyz p2, Material material) : Shape(p0, mate
   t2_ = Triangle(p0_, p3_, p2_, material);
 }
 
+Rectangle::Rectangle(xyz p0, xyz p1, xyz p2, xyz p3, Material material) : Shape(p0, material), t1_(), t2_(), p0_{std::move(p0)}, p1_{std::move(p1)}, p2_{std::move(p2)}, p3_{std::move(p3)} {
+  t1_ = Triangle(p0_, p1_, p2_, material);
+  t2_ = Triangle(p0_, p3_, p2_, material);
+}
+
+
 xyz Rectangle::GetNormal(const xyz &point) const {
   xyz normal = (p1_ - p0_).cross((p2_ - p0_));
   normal.normalize();

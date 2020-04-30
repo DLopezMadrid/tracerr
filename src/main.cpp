@@ -21,10 +21,11 @@ int main() {
   srand(time(NULL));
 
   //Image parameters & number of randomly generated small spheres for the demo scene
-  int width{2000};
-  int height{1000};
-  int num_spheres{400};
-  std::string fname{"RenderTest.png"};
+  int width{800};
+  int height{400};
+  //  int num_spheres{400};
+  int num_spheres{1};
+  std::string fname{"SuzyTest.png"};
 
   //Scene setup
   std::vector<std::unique_ptr<Shape>> shapes;
@@ -35,7 +36,8 @@ int main() {
   lights.emplace_back(Light({0, 20, 0}, 0.5));
   lights.emplace_back(Light({20, 20, -5}, 0.5));
 
-  Render r(width, height, {0, 0, 0}, std::move(lights));
+  //  Render r(width, height, {0, 0, 0}, std::move(lights));
+  Render r2(width, height, {0, 0, 0}, std::move(lights));
 
   //Bigger spheres
   Sphere s1({-5, 0, -6}, 1, Materials::red_plastic);
@@ -45,12 +47,12 @@ int main() {
   Sphere s5({0, 0, 3}, 1, Materials::pink_rubber);
   Sphere s6({5, 0, 3}, 1, Materials::orange_rubber);
 
-  shapes.push_back(std::make_unique<Sphere>(std::move(s1)));
-  shapes.push_back(std::make_unique<Sphere>(std::move(s2)));
-  shapes.push_back(std::make_unique<Sphere>(std::move(s3)));
-  shapes.push_back(std::make_unique<Sphere>(std::move(s4)));
-  shapes.push_back(std::make_unique<Sphere>(std::move(s5)));
-  shapes.push_back(std::make_unique<Sphere>(std::move(s6)));
+  //  shapes.push_back(std::make_unique<Sphere>(std::move(s1)));
+  //  shapes.push_back(std::make_unique<Sphere>(std::move(s2)));
+  //  shapes.push_back(std::make_unique<Sphere>(std::move(s3)));
+  //  shapes.push_back(std::make_unique<Sphere>(std::move(s4)));
+  //  shapes.push_back(std::make_unique<Sphere>(std::move(s5)));
+  //  shapes.push_back(std::make_unique<Sphere>(std::move(s6)));
 
   //Randomly generated small spheres
   for (int i{0}; i < num_spheres; i++) {
@@ -67,15 +69,20 @@ int main() {
 
     Sphere ns({xpos, (-1.0f + radius), zpos}, radius, mat);
 
-    shapes.push_back(std::make_unique<Sphere>(std::move(ns)));
+    //    shapes.push_back(std::make_unique<Sphere>(std::move(ns)));
   }
+
 
   //Render the scene using single thread, OpenMP multithreading or our own implementation
   //  r.RenderScene(std::move(shapes));
   //  r.RenderSceneOMP(std::move(shapes));
-  r.LoadObj("../obj/duck.obj", {1, 3, 1}, Materials::blue_rubber);
-  r.RenderSceneMultiThread(std::move(shapes));
-  r.SaveImage(fname);
+  //  r.LoadObj("../obj/duck.obj", {1, 3, 1}, Materials::blue_rubber);
+  //  r.RenderSceneMultiThread(std::move(shapes));
+  //  r.SaveImage(fname);
+
+  r2.LoadObj("../obj/suzanne.obj", {-1, 0, -5}, Materials::red_rubber);
+  r2.RenderSceneMultiThread();
+  r2.SaveImage(fname);
 
   auto end_t = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_t);
   std::cout << "Completed " << width << "x" << height << " image in " << end_t.count() << " ms" << std::endl;
