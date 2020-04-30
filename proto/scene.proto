@@ -1,0 +1,59 @@
+syntax = "proto2";
+
+package tracerr;
+
+message Scene {
+  required int32 width = 1;
+  required int32 height = 2;
+  required bool saveFile = 3 [default = true];
+  optional string fname = 4 [default = "RenderTest.png"];
+  optional bool multiThread = 5 [default = true];
+
+  enum ShapeType {
+    tSphere = 0;
+    tTriangle = 1;
+    tRectangle = 2;
+  }
+  message Pos {
+    required float x = 1;
+    required float y = 2;
+    required float z = 3;
+  }
+  message Light{
+    required Pos p = 1;
+    required float intensity = 2;
+  }
+  message Sphere{
+    required Pos p = 1;
+    required float radius = 2;
+    required string material = 3;
+  }
+  message Triangle{
+    required Pos p0 = 1;
+    required Pos p1 = 2;
+    required Pos p2 = 3;
+    required string material = 4;
+  }
+  message Rectangle{
+    required Pos p0 = 1;
+    required Pos p1 = 2;
+    required Pos p2 = 3;
+    required Pos p3 = 4;
+    required string material = 5;
+  }
+  message Obj{
+    required string fname = 1;
+    required string material = 2;
+    optional Pos translation = 3;
+  }
+
+
+  repeated Light light = 6;
+  repeated Sphere sphere = 7;
+  repeated Triangle triangle = 8;
+  repeated Rectangle rectangle = 9;
+  repeated Obj obj = 10;
+  optional bool show_elapsed_time = 11 [default = true];
+
+
+}

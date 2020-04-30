@@ -45,6 +45,9 @@ Triangle::Triangle(xyz p0, xyz p1, xyz p2, Material material) : Shape((p0), std:
 xyz Triangle::GetNormal(const xyz &point) const {
   xyz normal = (p1_ - p0_).cross((p2_ - p0_));
   normal.normalize();
+  if (normal(2) < 0) {
+    normal(2) = -1.0f * normal(2);
+  }
   return normal;
 }
 Triangle::Triangle() : Shape({0, 0, 0}, Materials::red_rubber) {

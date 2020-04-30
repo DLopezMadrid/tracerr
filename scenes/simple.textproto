@@ -1,0 +1,101 @@
+# proto-file: ../proto/scene.proto
+# proto-message: Scene
+
+
+height: 500
+width: 1000
+saveFile: true
+fname: "testProto.png"
+
+
+light{
+  p{
+    x: 0
+    y: 5
+    z: 0
+  }
+  intensity: 1.5
+}
+
+sphere{
+  p{
+    x: 0
+    y: 0
+    z: -4
+  }
+  radius: 1.5
+  material: "Materials::red_rubber"
+}
+
+sphere{
+  p{
+    x: 3
+    y: 0
+    z: -4
+  }
+  radius: 0.5
+  material: "Materials::blue_rubber"
+}
+
+triangle{
+  p0{
+    x: 3
+    y: 3
+    z: -6
+  }
+  p1{
+    x: 3
+    y: 1
+    z: -6
+  }
+  p2{
+    x: 2
+    y: 2
+    z: -6
+  }
+  material: "Materials::green_rubber"
+}
+
+rectangle{
+  p0{
+    x: -3
+    y: -3
+    z: -6
+  }
+  p1{
+    x: -3
+    y: -1
+    z: -6
+  }
+  p2{
+    x: -2
+    y: -2
+    z: -6
+  }
+  p3{
+    x: -2
+    y: -4
+    z: -6
+  }
+  material: "Materials::orange_rubber"
+}
+
+#obj{
+#  fname: "./../obj/duck.obj"
+#  translation{
+#    x: 1
+#    y: 3
+#    z: 1
+#  }
+#  material: "Materials::pink_rubber"
+#}
+
+obj{
+  fname: "./../obj/suzanne.obj"
+  translation{
+    x: 1
+    y: -0.5
+    z: -6
+  }
+  material: "Materials::pink_rubber"
+}
