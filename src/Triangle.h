@@ -18,6 +18,10 @@ class Triangle : public Shape {
   Triangle();
   bool RayIntersect(xyz const origin, xyz const direction, float &t0) const override;
   xyz GetNormal(const xyz &point) const override;
+  shapeTypes GetType() const override;
+  const xyz &GetP0_() const;
+  const xyz &GetP1_() const;
+  const xyz &GetP2_() const;
 
   private:
   xyz p0_;

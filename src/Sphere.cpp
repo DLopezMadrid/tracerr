@@ -28,3 +28,6 @@ xyz Sphere::GetNormal(const xyz &point) const {
   normal.normalize();
   return normal;
 }
+shapeTypes Sphere::GetType() const {
+  return shapeTypes::sph;
+}

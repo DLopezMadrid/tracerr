@@ -46,7 +46,7 @@ PROTOBUF_NAMESPACE_CLOSE
 struct TableStruct_scene_2eproto {
   static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTableField entries[] PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[] PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[7] PROTOBUF_SECTION_VARIABLE(protodesc_cold);
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[12] PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
   static const ::PROTOBUF_NAMESPACE_ID::uint32 offsets[];
@@ -56,9 +56,24 @@ namespace tracerr {
   class Scene;
   class SceneDefaultTypeInternal;
   extern SceneDefaultTypeInternal _Scene_default_instance_;
+  class Scene_Albedo;
+  class Scene_AlbedoDefaultTypeInternal;
+  extern Scene_AlbedoDefaultTypeInternal _Scene_Albedo_default_instance_;
+  class Scene_Color;
+  class Scene_ColorDefaultTypeInternal;
+  extern Scene_ColorDefaultTypeInternal _Scene_Color_default_instance_;
   class Scene_Light;
   class Scene_LightDefaultTypeInternal;
   extern Scene_LightDefaultTypeInternal _Scene_Light_default_instance_;
+  class Scene_Material;
+  class Scene_MaterialDefaultTypeInternal;
+  extern Scene_MaterialDefaultTypeInternal _Scene_Material_default_instance_;
+  class Scene_Material_Albedo;
+  class Scene_Material_AlbedoDefaultTypeInternal;
+  extern Scene_Material_AlbedoDefaultTypeInternal _Scene_Material_Albedo_default_instance_;
+  class Scene_Material_Color_diff;
+  class Scene_Material_Color_diffDefaultTypeInternal;
+  extern Scene_Material_Color_diffDefaultTypeInternal _Scene_Material_Color_diff_default_instance_;
   class Scene_Obj;
   class Scene_ObjDefaultTypeInternal;
   extern Scene_ObjDefaultTypeInternal _Scene_Obj_default_instance_;
@@ -79,7 +94,17 @@ PROTOBUF_NAMESPACE_OPEN
 template<>
 ::tracerr::Scene *Arena::CreateMaybeMessage<::tracerr::Scene>(Arena *);
 template<>
+::tracerr::Scene_Albedo *Arena::CreateMaybeMessage<::tracerr::Scene_Albedo>(Arena *);
+template<>
+::tracerr::Scene_Color *Arena::CreateMaybeMessage<::tracerr::Scene_Color>(Arena *);
+template<>
 ::tracerr::Scene_Light *Arena::CreateMaybeMessage<::tracerr::Scene_Light>(Arena *);
+template<>
+::tracerr::Scene_Material *Arena::CreateMaybeMessage<::tracerr::Scene_Material>(Arena *);
+template<>
+::tracerr::Scene_Material_Albedo *Arena::CreateMaybeMessage<::tracerr::Scene_Material_Albedo>(Arena *);
+template<>
+::tracerr::Scene_Material_Color_diff *Arena::CreateMaybeMessage<::tracerr::Scene_Material_Color_diff>(Arena *);
 template<>
 ::tracerr::Scene_Obj *Arena::CreateMaybeMessage<::tracerr::Scene_Obj>(Arena *);
 template<>
@@ -93,29 +118,37 @@ template<>
 PROTOBUF_NAMESPACE_CLOSE
 namespace tracerr {
 
-  enum Scene_ShapeType : int {
-    Scene_ShapeType_tSphere = 0,
-    Scene_ShapeType_tTriangle = 1,
-    Scene_ShapeType_tRectangle = 2
+  enum Scene_MaterialType : int {
+    Scene_MaterialType_ivory = 0,
+    Scene_MaterialType_red_rubber = 1,
+    Scene_MaterialType_green_rubber = 2,
+    Scene_MaterialType_blue_rubber = 3,
+    Scene_MaterialType_orange_rubber = 4,
+    Scene_MaterialType_pink_rubber = 5,
+    Scene_MaterialType_red_plastic = 6,
+    Scene_MaterialType_black_plastic = 7,
+    Scene_MaterialType_mirror = 8,
+    Scene_MaterialType_glass = 9,
+    Scene_MaterialType_chessboard = 10
   };
-  bool Scene_ShapeType_IsValid(int value);
-  constexpr Scene_ShapeType Scene_ShapeType_ShapeType_MIN = Scene_ShapeType_tSphere;
-  constexpr Scene_ShapeType Scene_ShapeType_ShapeType_MAX = Scene_ShapeType_tRectangle;
-  constexpr int Scene_ShapeType_ShapeType_ARRAYSIZE = Scene_ShapeType_ShapeType_MAX + 1;
+  bool Scene_MaterialType_IsValid(int value);
+  constexpr Scene_MaterialType Scene_MaterialType_MaterialType_MIN = Scene_MaterialType_ivory;
+  constexpr Scene_MaterialType Scene_MaterialType_MaterialType_MAX = Scene_MaterialType_chessboard;
+  constexpr int Scene_MaterialType_MaterialType_ARRAYSIZE = Scene_MaterialType_MaterialType_MAX + 1;
 
-  const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor *Scene_ShapeType_descriptor();
+  const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor *Scene_MaterialType_descriptor();
   template<typename T>
-  inline const std::string &Scene_ShapeType_Name(T enum_t_value) {
-    static_assert(::std::is_same<T, Scene_ShapeType>::value ||
+  inline const std::string &Scene_MaterialType_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, Scene_MaterialType>::value ||
                           ::std::is_integral<T>::value,
-                  "Incorrect type passed to function Scene_ShapeType_Name.");
+                  "Incorrect type passed to function Scene_MaterialType_Name.");
     return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-            Scene_ShapeType_descriptor(), enum_t_value);
+            Scene_MaterialType_descriptor(), enum_t_value);
   }
-  inline bool Scene_ShapeType_Parse(
-          const std::string &name, Scene_ShapeType *value) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Scene_ShapeType>(
-            Scene_ShapeType_descriptor(), name, value);
+  inline bool Scene_MaterialType_Parse(
+          const std::string &name, Scene_MaterialType *value) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Scene_MaterialType>(
+            Scene_MaterialType_descriptor(), name, value);
   }
   // ===================================================================
 
@@ -433,30 +466,30 @@ public:
     // accessors -------------------------------------------------------
 
     enum : int {
-      kPFieldNumber = 1,
+      kPositionFieldNumber = 1,
       kIntensityFieldNumber = 2,
     };
-    // required .tracerr.Scene.Pos p = 1;
-    bool has_p() const;
+    // required .tracerr.Scene.Pos position = 1;
+    bool has_position() const;
 
 private:
-    bool _internal_has_p() const;
+    bool _internal_has_position() const;
 
 public:
-    void clear_p();
-    const ::tracerr::Scene_Pos &p() const;
-    ::tracerr::Scene_Pos *release_p();
-    ::tracerr::Scene_Pos *mutable_p();
-    void set_allocated_p(::tracerr::Scene_Pos *p);
+    void clear_position();
+    const ::tracerr::Scene_Pos &position() const;
+    ::tracerr::Scene_Pos *release_position();
+    ::tracerr::Scene_Pos *mutable_position();
+    void set_allocated_position(::tracerr::Scene_Pos *position);
 
 private:
-    const ::tracerr::Scene_Pos &_internal_p() const;
-    ::tracerr::Scene_Pos *_internal_mutable_p();
+    const ::tracerr::Scene_Pos &_internal_position() const;
+    ::tracerr::Scene_Pos *_internal_mutable_position();
 
 public:
-    void unsafe_arena_set_allocated_p(
-            ::tracerr::Scene_Pos *p);
-    ::tracerr::Scene_Pos *unsafe_arena_release_p();
+    void unsafe_arena_set_allocated_position(
+            ::tracerr::Scene_Pos *position);
+    ::tracerr::Scene_Pos *unsafe_arena_release_position();
 
     // required float intensity = 2;
     bool has_intensity() const;
@@ -487,7 +520,7 @@ private:
     typedef void DestructorSkippable_;
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::tracerr::Scene_Pos *p_;
+    ::tracerr::Scene_Pos *position_;
     float intensity_;
     friend struct ::TableStruct_scene_2eproto;
   };
@@ -614,63 +647,55 @@ public:
     // accessors -------------------------------------------------------
 
     enum : int {
-      kMaterialFieldNumber = 3,
-      kPFieldNumber = 1,
+      kPositionFieldNumber = 1,
+      kCustomMaterialFieldNumber = 5,
       kRadiusFieldNumber = 2,
+      kMaterialFieldNumber = 3,
+      kCustomMaterialEnabledFieldNumber = 4,
     };
-    // required string material = 3;
-    bool has_material() const;
+    // required .tracerr.Scene.Pos position = 1;
+    bool has_position() const;
 
 private:
-    bool _internal_has_material() const;
+    bool _internal_has_position() const;
 
 public:
-    void clear_material();
-    const std::string &material() const;
-    void set_material(const std::string &value);
-    void set_material(std::string &&value);
-    void set_material(const char *value);
-    void set_material(const char *value, size_t size);
-    std::string *mutable_material();
-    std::string *release_material();
-    void set_allocated_material(std::string *material);
-    GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
-                                       "    string fields are deprecated and will be removed in a"
-                                       "    future release.")
-    std::string *unsafe_arena_release_material();
-    GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
-                                       "    string fields are deprecated and will be removed in a"
-                                       "    future release.")
-    void unsafe_arena_set_allocated_material(
-            std::string *material);
+    void clear_position();
+    const ::tracerr::Scene_Pos &position() const;
+    ::tracerr::Scene_Pos *release_position();
+    ::tracerr::Scene_Pos *mutable_position();
+    void set_allocated_position(::tracerr::Scene_Pos *position);
 
 private:
-    const std::string &_internal_material() const;
-    void _internal_set_material(const std::string &value);
-    std::string *_internal_mutable_material();
+    const ::tracerr::Scene_Pos &_internal_position() const;
+    ::tracerr::Scene_Pos *_internal_mutable_position();
 
 public:
-    // required .tracerr.Scene.Pos p = 1;
-    bool has_p() const;
+    void unsafe_arena_set_allocated_position(
+            ::tracerr::Scene_Pos *position);
+    ::tracerr::Scene_Pos *unsafe_arena_release_position();
+
+    // optional .tracerr.Scene.Material custom_material = 5;
+    bool has_custom_material() const;
 
 private:
-    bool _internal_has_p() const;
+    bool _internal_has_custom_material() const;
 
 public:
-    void clear_p();
-    const ::tracerr::Scene_Pos &p() const;
-    ::tracerr::Scene_Pos *release_p();
-    ::tracerr::Scene_Pos *mutable_p();
-    void set_allocated_p(::tracerr::Scene_Pos *p);
+    void clear_custom_material();
+    const ::tracerr::Scene_Material &custom_material() const;
+    ::tracerr::Scene_Material *release_custom_material();
+    ::tracerr::Scene_Material *mutable_custom_material();
+    void set_allocated_custom_material(::tracerr::Scene_Material *custom_material);
 
 private:
-    const ::tracerr::Scene_Pos &_internal_p() const;
-    ::tracerr::Scene_Pos *_internal_mutable_p();
+    const ::tracerr::Scene_Material &_internal_custom_material() const;
+    ::tracerr::Scene_Material *_internal_mutable_custom_material();
 
 public:
-    void unsafe_arena_set_allocated_p(
-            ::tracerr::Scene_Pos *p);
-    ::tracerr::Scene_Pos *unsafe_arena_release_p();
+    void unsafe_arena_set_allocated_custom_material(
+            ::tracerr::Scene_Material *custom_material);
+    ::tracerr::Scene_Material *unsafe_arena_release_custom_material();
 
     // required float radius = 2;
     bool has_radius() const;
@@ -688,6 +713,38 @@ private:
     void _internal_set_radius(float value);
 
 public:
+    // optional .tracerr.Scene.MaterialType material = 3;
+    bool has_material() const;
+
+private:
+    bool _internal_has_material() const;
+
+public:
+    void clear_material();
+    ::tracerr::Scene_MaterialType material() const;
+    void set_material(::tracerr::Scene_MaterialType value);
+
+private:
+    ::tracerr::Scene_MaterialType _internal_material() const;
+    void _internal_set_material(::tracerr::Scene_MaterialType value);
+
+public:
+    // optional bool custom_material_enabled = 4 [default = false];
+    bool has_custom_material_enabled() const;
+
+private:
+    bool _internal_has_custom_material_enabled() const;
+
+public:
+    void clear_custom_material_enabled();
+    bool custom_material_enabled() const;
+    void set_custom_material_enabled(bool value);
+
+private:
+    bool _internal_custom_material_enabled() const;
+    void _internal_set_custom_material_enabled(bool value);
+
+public:
     // @@protoc_insertion_point(class_scope:tracerr.Scene.Sphere)
 private:
     class _Internal;
@@ -701,9 +758,11 @@ private:
     typedef void DestructorSkippable_;
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr material_;
-    ::tracerr::Scene_Pos *p_;
+    ::tracerr::Scene_Pos *position_;
+    ::tracerr::Scene_Material *custom_material_;
     float radius_;
+    int material_;
+    bool custom_material_enabled_;
     friend struct ::TableStruct_scene_2eproto;
   };
   // -------------------------------------------------------------------
@@ -829,43 +888,13 @@ public:
     // accessors -------------------------------------------------------
 
     enum : int {
-      kMaterialFieldNumber = 4,
       kP0FieldNumber = 1,
       kP1FieldNumber = 2,
       kP2FieldNumber = 3,
+      kCustomMaterialFieldNumber = 6,
+      kMaterialFieldNumber = 4,
+      kCustomMaterialEnabledFieldNumber = 5,
     };
-    // required string material = 4;
-    bool has_material() const;
-
-private:
-    bool _internal_has_material() const;
-
-public:
-    void clear_material();
-    const std::string &material() const;
-    void set_material(const std::string &value);
-    void set_material(std::string &&value);
-    void set_material(const char *value);
-    void set_material(const char *value, size_t size);
-    std::string *mutable_material();
-    std::string *release_material();
-    void set_allocated_material(std::string *material);
-    GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
-                                       "    string fields are deprecated and will be removed in a"
-                                       "    future release.")
-    std::string *unsafe_arena_release_material();
-    GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
-                                       "    string fields are deprecated and will be removed in a"
-                                       "    future release.")
-    void unsafe_arena_set_allocated_material(
-            std::string *material);
-
-private:
-    const std::string &_internal_material() const;
-    void _internal_set_material(const std::string &value);
-    std::string *_internal_mutable_material();
-
-public:
     // required .tracerr.Scene.Pos p0 = 1;
     bool has_p0() const;
 
@@ -932,6 +961,60 @@ public:
             ::tracerr::Scene_Pos *p2);
     ::tracerr::Scene_Pos *unsafe_arena_release_p2();
 
+    // optional .tracerr.Scene.Material custom_material = 6;
+    bool has_custom_material() const;
+
+private:
+    bool _internal_has_custom_material() const;
+
+public:
+    void clear_custom_material();
+    const ::tracerr::Scene_Material &custom_material() const;
+    ::tracerr::Scene_Material *release_custom_material();
+    ::tracerr::Scene_Material *mutable_custom_material();
+    void set_allocated_custom_material(::tracerr::Scene_Material *custom_material);
+
+private:
+    const ::tracerr::Scene_Material &_internal_custom_material() const;
+    ::tracerr::Scene_Material *_internal_mutable_custom_material();
+
+public:
+    void unsafe_arena_set_allocated_custom_material(
+            ::tracerr::Scene_Material *custom_material);
+    ::tracerr::Scene_Material *unsafe_arena_release_custom_material();
+
+    // optional .tracerr.Scene.MaterialType material = 4;
+    bool has_material() const;
+
+private:
+    bool _internal_has_material() const;
+
+public:
+    void clear_material();
+    ::tracerr::Scene_MaterialType material() const;
+    void set_material(::tracerr::Scene_MaterialType value);
+
+private:
+    ::tracerr::Scene_MaterialType _internal_material() const;
+    void _internal_set_material(::tracerr::Scene_MaterialType value);
+
+public:
+    // optional bool custom_material_enabled = 5 [default = false];
+    bool has_custom_material_enabled() const;
+
+private:
+    bool _internal_has_custom_material_enabled() const;
+
+public:
+    void clear_custom_material_enabled();
+    bool custom_material_enabled() const;
+    void set_custom_material_enabled(bool value);
+
+private:
+    bool _internal_custom_material_enabled() const;
+    void _internal_set_custom_material_enabled(bool value);
+
+public:
     // @@protoc_insertion_point(class_scope:tracerr.Scene.Triangle)
 private:
     class _Internal;
@@ -945,10 +1028,12 @@ private:
     typedef void DestructorSkippable_;
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr material_;
     ::tracerr::Scene_Pos *p0_;
     ::tracerr::Scene_Pos *p1_;
     ::tracerr::Scene_Pos *p2_;
+    ::tracerr::Scene_Material *custom_material_;
+    int material_;
+    bool custom_material_enabled_;
     friend struct ::TableStruct_scene_2eproto;
   };
   // -------------------------------------------------------------------
@@ -1074,44 +1159,14 @@ public:
     // accessors -------------------------------------------------------
 
     enum : int {
-      kMaterialFieldNumber = 5,
       kP0FieldNumber = 1,
       kP1FieldNumber = 2,
       kP2FieldNumber = 3,
       kP3FieldNumber = 4,
+      kCustomMaterialFieldNumber = 7,
+      kMaterialFieldNumber = 5,
+      kCustomMaterialEnabledFieldNumber = 6,
     };
-    // required string material = 5;
-    bool has_material() const;
-
-private:
-    bool _internal_has_material() const;
-
-public:
-    void clear_material();
-    const std::string &material() const;
-    void set_material(const std::string &value);
-    void set_material(std::string &&value);
-    void set_material(const char *value);
-    void set_material(const char *value, size_t size);
-    std::string *mutable_material();
-    std::string *release_material();
-    void set_allocated_material(std::string *material);
-    GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
-                                       "    string fields are deprecated and will be removed in a"
-                                       "    future release.")
-    std::string *unsafe_arena_release_material();
-    GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
-                                       "    string fields are deprecated and will be removed in a"
-                                       "    future release.")
-    void unsafe_arena_set_allocated_material(
-            std::string *material);
-
-private:
-    const std::string &_internal_material() const;
-    void _internal_set_material(const std::string &value);
-    std::string *_internal_mutable_material();
-
-public:
     // required .tracerr.Scene.Pos p0 = 1;
     bool has_p0() const;
 
@@ -1200,6 +1255,60 @@ public:
             ::tracerr::Scene_Pos *p3);
     ::tracerr::Scene_Pos *unsafe_arena_release_p3();
 
+    // optional .tracerr.Scene.Material custom_material = 7;
+    bool has_custom_material() const;
+
+private:
+    bool _internal_has_custom_material() const;
+
+public:
+    void clear_custom_material();
+    const ::tracerr::Scene_Material &custom_material() const;
+    ::tracerr::Scene_Material *release_custom_material();
+    ::tracerr::Scene_Material *mutable_custom_material();
+    void set_allocated_custom_material(::tracerr::Scene_Material *custom_material);
+
+private:
+    const ::tracerr::Scene_Material &_internal_custom_material() const;
+    ::tracerr::Scene_Material *_internal_mutable_custom_material();
+
+public:
+    void unsafe_arena_set_allocated_custom_material(
+            ::tracerr::Scene_Material *custom_material);
+    ::tracerr::Scene_Material *unsafe_arena_release_custom_material();
+
+    // optional .tracerr.Scene.MaterialType material = 5;
+    bool has_material() const;
+
+private:
+    bool _internal_has_material() const;
+
+public:
+    void clear_material();
+    ::tracerr::Scene_MaterialType material() const;
+    void set_material(::tracerr::Scene_MaterialType value);
+
+private:
+    ::tracerr::Scene_MaterialType _internal_material() const;
+    void _internal_set_material(::tracerr::Scene_MaterialType value);
+
+public:
+    // optional bool custom_material_enabled = 6 [default = false];
+    bool has_custom_material_enabled() const;
+
+private:
+    bool _internal_has_custom_material_enabled() const;
+
+public:
+    void clear_custom_material_enabled();
+    bool custom_material_enabled() const;
+    void set_custom_material_enabled(bool value);
+
+private:
+    bool _internal_custom_material_enabled() const;
+    void _internal_set_custom_material_enabled(bool value);
+
+public:
     // @@protoc_insertion_point(class_scope:tracerr.Scene.Rectangle)
 private:
     class _Internal;
@@ -1213,11 +1322,13 @@ private:
     typedef void DestructorSkippable_;
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr material_;
     ::tracerr::Scene_Pos *p0_;
     ::tracerr::Scene_Pos *p1_;
     ::tracerr::Scene_Pos *p2_;
     ::tracerr::Scene_Pos *p3_;
+    ::tracerr::Scene_Material *custom_material_;
+    int material_;
+    bool custom_material_enabled_;
     friend struct ::TableStruct_scene_2eproto;
   };
   // -------------------------------------------------------------------
@@ -1344,8 +1455,10 @@ public:
 
     enum : int {
       kFnameFieldNumber = 1,
-      kMaterialFieldNumber = 2,
       kTranslationFieldNumber = 3,
+      kCustomMaterialFieldNumber = 5,
+      kMaterialFieldNumber = 2,
+      kCustomMaterialEnabledFieldNumber = 4,
     };
     // required string fname = 1;
     bool has_fname() const;
@@ -1379,38 +1492,6 @@ private:
     std::string *_internal_mutable_fname();
 
 public:
-    // required string material = 2;
-    bool has_material() const;
-
-private:
-    bool _internal_has_material() const;
-
-public:
-    void clear_material();
-    const std::string &material() const;
-    void set_material(const std::string &value);
-    void set_material(std::string &&value);
-    void set_material(const char *value);
-    void set_material(const char *value, size_t size);
-    std::string *mutable_material();
-    std::string *release_material();
-    void set_allocated_material(std::string *material);
-    GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
-                                       "    string fields are deprecated and will be removed in a"
-                                       "    future release.")
-    std::string *unsafe_arena_release_material();
-    GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
-                                       "    string fields are deprecated and will be removed in a"
-                                       "    future release.")
-    void unsafe_arena_set_allocated_material(
-            std::string *material);
-
-private:
-    const std::string &_internal_material() const;
-    void _internal_set_material(const std::string &value);
-    std::string *_internal_mutable_material();
-
-public:
     // optional .tracerr.Scene.Pos translation = 3;
     bool has_translation() const;
 
@@ -1433,7 +1514,253 @@ public:
             ::tracerr::Scene_Pos *translation);
     ::tracerr::Scene_Pos *unsafe_arena_release_translation();
 
+    // optional .tracerr.Scene.Material custom_material = 5;
+    bool has_custom_material() const;
+
+private:
+    bool _internal_has_custom_material() const;
+
+public:
+    void clear_custom_material();
+    const ::tracerr::Scene_Material &custom_material() const;
+    ::tracerr::Scene_Material *release_custom_material();
+    ::tracerr::Scene_Material *mutable_custom_material();
+    void set_allocated_custom_material(::tracerr::Scene_Material *custom_material);
+
+private:
+    const ::tracerr::Scene_Material &_internal_custom_material() const;
+    ::tracerr::Scene_Material *_internal_mutable_custom_material();
+
+public:
+    void unsafe_arena_set_allocated_custom_material(
+            ::tracerr::Scene_Material *custom_material);
+    ::tracerr::Scene_Material *unsafe_arena_release_custom_material();
+
+    // optional .tracerr.Scene.MaterialType material = 2;
+    bool has_material() const;
+
+private:
+    bool _internal_has_material() const;
+
+public:
+    void clear_material();
+    ::tracerr::Scene_MaterialType material() const;
+    void set_material(::tracerr::Scene_MaterialType value);
+
+private:
+    ::tracerr::Scene_MaterialType _internal_material() const;
+    void _internal_set_material(::tracerr::Scene_MaterialType value);
+
+public:
+    // optional bool custom_material_enabled = 4 [default = false];
+    bool has_custom_material_enabled() const;
+
+private:
+    bool _internal_has_custom_material_enabled() const;
+
+public:
+    void clear_custom_material_enabled();
+    bool custom_material_enabled() const;
+    void set_custom_material_enabled(bool value);
+
+private:
+    bool _internal_custom_material_enabled() const;
+    void _internal_set_custom_material_enabled(bool value);
+
+public:
     // @@protoc_insertion_point(class_scope:tracerr.Scene.Obj)
+private:
+    class _Internal;
+
+    template<typename T>
+    friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+    typedef void InternalArenaConstructable_;
+    typedef void DestructorSkippable_;
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr fname_;
+    ::tracerr::Scene_Pos *translation_;
+    ::tracerr::Scene_Material *custom_material_;
+    int material_;
+    bool custom_material_enabled_;
+    friend struct ::TableStruct_scene_2eproto;
+  };
+  // -------------------------------------------------------------------
+
+  class Scene_Color PROTOBUF_FINAL : public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:tracerr.Scene.Color) */ {
+public:
+    inline Scene_Color() : Scene_Color(nullptr){};
+    virtual ~Scene_Color();
+
+    Scene_Color(const Scene_Color &from);
+    Scene_Color(Scene_Color &&from) noexcept
+        : Scene_Color() {
+      *this = ::std::move(from);
+    }
+
+    inline Scene_Color &operator=(const Scene_Color &from) {
+      CopyFrom(from);
+      return *this;
+    }
+    inline Scene_Color &operator=(Scene_Color &&from) noexcept {
+      if (GetArena() == from.GetArena()) {
+        if (this != &from) InternalSwap(&from);
+      } else {
+        CopyFrom(from);
+      }
+      return *this;
+    }
+
+    inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet &unknown_fields() const {
+      return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+    }
+    inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet *mutable_unknown_fields() {
+      return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+    }
+
+    static const ::PROTOBUF_NAMESPACE_ID::Descriptor *descriptor() {
+      return GetDescriptor();
+    }
+    static const ::PROTOBUF_NAMESPACE_ID::Descriptor *GetDescriptor() {
+      return GetMetadataStatic().descriptor;
+    }
+    static const ::PROTOBUF_NAMESPACE_ID::Reflection *GetReflection() {
+      return GetMetadataStatic().reflection;
+    }
+    static const Scene_Color &default_instance();
+
+    static void InitAsDefaultInstance();// FOR INTERNAL USE ONLY
+    static inline const Scene_Color *internal_default_instance() {
+      return reinterpret_cast<const Scene_Color *>(
+              &_Scene_Color_default_instance_);
+    }
+    static constexpr int kIndexInFileMessages =
+            6;
+
+    friend void swap(Scene_Color &a, Scene_Color &b) {
+      a.Swap(&b);
+    }
+    inline void Swap(Scene_Color *other) {
+      if (other == this) return;
+      if (GetArena() == other->GetArena()) {
+        InternalSwap(other);
+      } else {
+        ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+      }
+    }
+    void UnsafeArenaSwap(Scene_Color *other) {
+      if (other == this) return;
+      GOOGLE_DCHECK(GetArena() == other->GetArena());
+      InternalSwap(other);
+    }
+
+    // implements Message ----------------------------------------------
+
+    inline Scene_Color *New() const final {
+      return CreateMaybeMessage<Scene_Color>(nullptr);
+    }
+
+    Scene_Color *New(::PROTOBUF_NAMESPACE_ID::Arena *arena) const final {
+      return CreateMaybeMessage<Scene_Color>(arena);
+    }
+    void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) final;
+    void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) final;
+    void CopyFrom(const Scene_Color &from);
+    void MergeFrom(const Scene_Color &from);
+    PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+    bool IsInitialized() const final;
+
+    size_t ByteSizeLong() const final;
+    const char *_InternalParse(const char *ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext *ctx) final;
+    ::PROTOBUF_NAMESPACE_ID::uint8 *_InternalSerialize(
+            ::PROTOBUF_NAMESPACE_ID::uint8 *target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream *stream) const final;
+    int GetCachedSize() const final { return _cached_size_.Get(); }
+
+private:
+    inline void SharedCtor();
+    inline void SharedDtor();
+    void SetCachedSize(int size) const final;
+    void InternalSwap(Scene_Color *other);
+    friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+    static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+      return "tracerr.Scene.Color";
+    }
+
+protected:
+    explicit Scene_Color(::PROTOBUF_NAMESPACE_ID::Arena *arena);
+
+private:
+    static void ArenaDtor(void *object);
+    inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena *arena);
+
+public:
+    ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+private:
+    static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+      ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_scene_2eproto);
+      return ::descriptor_table_scene_2eproto.file_level_metadata[kIndexInFileMessages];
+    }
+
+public:
+    // nested types ----------------------------------------------------
+
+    // accessors -------------------------------------------------------
+
+    enum : int {
+      kRFieldNumber = 1,
+      kGFieldNumber = 2,
+      kBFieldNumber = 3,
+    };
+    // required int32 r = 1;
+    bool has_r() const;
+
+private:
+    bool _internal_has_r() const;
+
+public:
+    void clear_r();
+    ::PROTOBUF_NAMESPACE_ID::int32 r() const;
+    void set_r(::PROTOBUF_NAMESPACE_ID::int32 value);
+
+private:
+    ::PROTOBUF_NAMESPACE_ID::int32 _internal_r() const;
+    void _internal_set_r(::PROTOBUF_NAMESPACE_ID::int32 value);
+
+public:
+    // required int32 g = 2;
+    bool has_g() const;
+
+private:
+    bool _internal_has_g() const;
+
+public:
+    void clear_g();
+    ::PROTOBUF_NAMESPACE_ID::int32 g() const;
+    void set_g(::PROTOBUF_NAMESPACE_ID::int32 value);
+
+private:
+    ::PROTOBUF_NAMESPACE_ID::int32 _internal_g() const;
+    void _internal_set_g(::PROTOBUF_NAMESPACE_ID::int32 value);
+
+public:
+    // required int32 b = 3;
+    bool has_b() const;
+
+private:
+    bool _internal_has_b() const;
+
+public:
+    void clear_b();
+    ::PROTOBUF_NAMESPACE_ID::int32 b() const;
+    void set_b(::PROTOBUF_NAMESPACE_ID::int32 value);
+
+private:
+    ::PROTOBUF_NAMESPACE_ID::int32 _internal_b() const;
+    void _internal_set_b(::PROTOBUF_NAMESPACE_ID::int32 value);
+
+public:
+    // @@protoc_insertion_point(class_scope:tracerr.Scene.Color)
 private:
     class _Internal;
 
@@ -1446,9 +1773,850 @@ private:
     typedef void DestructorSkippable_;
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr fname_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr material_;
-    ::tracerr::Scene_Pos *translation_;
+    ::PROTOBUF_NAMESPACE_ID::int32 r_;
+    ::PROTOBUF_NAMESPACE_ID::int32 g_;
+    ::PROTOBUF_NAMESPACE_ID::int32 b_;
+    friend struct ::TableStruct_scene_2eproto;
+  };
+  // -------------------------------------------------------------------
+
+  class Scene_Albedo PROTOBUF_FINAL : public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:tracerr.Scene.Albedo) */ {
+public:
+    inline Scene_Albedo() : Scene_Albedo(nullptr){};
+    virtual ~Scene_Albedo();
+
+    Scene_Albedo(const Scene_Albedo &from);
+    Scene_Albedo(Scene_Albedo &&from) noexcept
+        : Scene_Albedo() {
+      *this = ::std::move(from);
+    }
+
+    inline Scene_Albedo &operator=(const Scene_Albedo &from) {
+      CopyFrom(from);
+      return *this;
+    }
+    inline Scene_Albedo &operator=(Scene_Albedo &&from) noexcept {
+      if (GetArena() == from.GetArena()) {
+        if (this != &from) InternalSwap(&from);
+      } else {
+        CopyFrom(from);
+      }
+      return *this;
+    }
+
+    inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet &unknown_fields() const {
+      return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+    }
+    inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet *mutable_unknown_fields() {
+      return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+    }
+
+    static const ::PROTOBUF_NAMESPACE_ID::Descriptor *descriptor() {
+      return GetDescriptor();
+    }
+    static const ::PROTOBUF_NAMESPACE_ID::Descriptor *GetDescriptor() {
+      return GetMetadataStatic().descriptor;
+    }
+    static const ::PROTOBUF_NAMESPACE_ID::Reflection *GetReflection() {
+      return GetMetadataStatic().reflection;
+    }
+    static const Scene_Albedo &default_instance();
+
+    static void InitAsDefaultInstance();// FOR INTERNAL USE ONLY
+    static inline const Scene_Albedo *internal_default_instance() {
+      return reinterpret_cast<const Scene_Albedo *>(
+              &_Scene_Albedo_default_instance_);
+    }
+    static constexpr int kIndexInFileMessages =
+            7;
+
+    friend void swap(Scene_Albedo &a, Scene_Albedo &b) {
+      a.Swap(&b);
+    }
+    inline void Swap(Scene_Albedo *other) {
+      if (other == this) return;
+      if (GetArena() == other->GetArena()) {
+        InternalSwap(other);
+      } else {
+        ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+      }
+    }
+    void UnsafeArenaSwap(Scene_Albedo *other) {
+      if (other == this) return;
+      GOOGLE_DCHECK(GetArena() == other->GetArena());
+      InternalSwap(other);
+    }
+
+    // implements Message ----------------------------------------------
+
+    inline Scene_Albedo *New() const final {
+      return CreateMaybeMessage<Scene_Albedo>(nullptr);
+    }
+
+    Scene_Albedo *New(::PROTOBUF_NAMESPACE_ID::Arena *arena) const final {
+      return CreateMaybeMessage<Scene_Albedo>(arena);
+    }
+    void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) final;
+    void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) final;
+    void CopyFrom(const Scene_Albedo &from);
+    void MergeFrom(const Scene_Albedo &from);
+    PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+    bool IsInitialized() const final;
+
+    size_t ByteSizeLong() const final;
+    const char *_InternalParse(const char *ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext *ctx) final;
+    ::PROTOBUF_NAMESPACE_ID::uint8 *_InternalSerialize(
+            ::PROTOBUF_NAMESPACE_ID::uint8 *target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream *stream) const final;
+    int GetCachedSize() const final { return _cached_size_.Get(); }
+
+private:
+    inline void SharedCtor();
+    inline void SharedDtor();
+    void SetCachedSize(int size) const final;
+    void InternalSwap(Scene_Albedo *other);
+    friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+    static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+      return "tracerr.Scene.Albedo";
+    }
+
+protected:
+    explicit Scene_Albedo(::PROTOBUF_NAMESPACE_ID::Arena *arena);
+
+private:
+    static void ArenaDtor(void *object);
+    inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena *arena);
+
+public:
+    ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+private:
+    static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+      ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_scene_2eproto);
+      return ::descriptor_table_scene_2eproto.file_level_metadata[kIndexInFileMessages];
+    }
+
+public:
+    // nested types ----------------------------------------------------
+
+    // accessors -------------------------------------------------------
+
+    enum : int {
+      kA0FieldNumber = 1,
+      kA1FieldNumber = 2,
+      kA2FieldNumber = 3,
+      kA3FieldNumber = 4,
+    };
+    // required float a0 = 1;
+    bool has_a0() const;
+
+private:
+    bool _internal_has_a0() const;
+
+public:
+    void clear_a0();
+    float a0() const;
+    void set_a0(float value);
+
+private:
+    float _internal_a0() const;
+    void _internal_set_a0(float value);
+
+public:
+    // required float a1 = 2;
+    bool has_a1() const;
+
+private:
+    bool _internal_has_a1() const;
+
+public:
+    void clear_a1();
+    float a1() const;
+    void set_a1(float value);
+
+private:
+    float _internal_a1() const;
+    void _internal_set_a1(float value);
+
+public:
+    // required float a2 = 3;
+    bool has_a2() const;
+
+private:
+    bool _internal_has_a2() const;
+
+public:
+    void clear_a2();
+    float a2() const;
+    void set_a2(float value);
+
+private:
+    float _internal_a2() const;
+    void _internal_set_a2(float value);
+
+public:
+    // required float a3 = 4;
+    bool has_a3() const;
+
+private:
+    bool _internal_has_a3() const;
+
+public:
+    void clear_a3();
+    float a3() const;
+    void set_a3(float value);
+
+private:
+    float _internal_a3() const;
+    void _internal_set_a3(float value);
+
+public:
+    // @@protoc_insertion_point(class_scope:tracerr.Scene.Albedo)
+private:
+    class _Internal;
+
+    // helper for ByteSizeLong()
+    size_t RequiredFieldsByteSizeFallback() const;
+
+    template<typename T>
+    friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+    typedef void InternalArenaConstructable_;
+    typedef void DestructorSkippable_;
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    float a0_;
+    float a1_;
+    float a2_;
+    float a3_;
+    friend struct ::TableStruct_scene_2eproto;
+  };
+  // -------------------------------------------------------------------
+
+  class Scene_Material_Color_diff PROTOBUF_FINAL : public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:tracerr.Scene.Material.Color_diff) */ {
+public:
+    inline Scene_Material_Color_diff() : Scene_Material_Color_diff(nullptr){};
+    virtual ~Scene_Material_Color_diff();
+
+    Scene_Material_Color_diff(const Scene_Material_Color_diff &from);
+    Scene_Material_Color_diff(Scene_Material_Color_diff &&from) noexcept
+        : Scene_Material_Color_diff() {
+      *this = ::std::move(from);
+    }
+
+    inline Scene_Material_Color_diff &operator=(const Scene_Material_Color_diff &from) {
+      CopyFrom(from);
+      return *this;
+    }
+    inline Scene_Material_Color_diff &operator=(Scene_Material_Color_diff &&from) noexcept {
+      if (GetArena() == from.GetArena()) {
+        if (this != &from) InternalSwap(&from);
+      } else {
+        CopyFrom(from);
+      }
+      return *this;
+    }
+
+    inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet &unknown_fields() const {
+      return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+    }
+    inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet *mutable_unknown_fields() {
+      return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+    }
+
+    static const ::PROTOBUF_NAMESPACE_ID::Descriptor *descriptor() {
+      return GetDescriptor();
+    }
+    static const ::PROTOBUF_NAMESPACE_ID::Descriptor *GetDescriptor() {
+      return GetMetadataStatic().descriptor;
+    }
+    static const ::PROTOBUF_NAMESPACE_ID::Reflection *GetReflection() {
+      return GetMetadataStatic().reflection;
+    }
+    static const Scene_Material_Color_diff &default_instance();
+
+    static void InitAsDefaultInstance();// FOR INTERNAL USE ONLY
+    static inline const Scene_Material_Color_diff *internal_default_instance() {
+      return reinterpret_cast<const Scene_Material_Color_diff *>(
+              &_Scene_Material_Color_diff_default_instance_);
+    }
+    static constexpr int kIndexInFileMessages =
+            8;
+
+    friend void swap(Scene_Material_Color_diff &a, Scene_Material_Color_diff &b) {
+      a.Swap(&b);
+    }
+    inline void Swap(Scene_Material_Color_diff *other) {
+      if (other == this) return;
+      if (GetArena() == other->GetArena()) {
+        InternalSwap(other);
+      } else {
+        ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+      }
+    }
+    void UnsafeArenaSwap(Scene_Material_Color_diff *other) {
+      if (other == this) return;
+      GOOGLE_DCHECK(GetArena() == other->GetArena());
+      InternalSwap(other);
+    }
+
+    // implements Message ----------------------------------------------
+
+    inline Scene_Material_Color_diff *New() const final {
+      return CreateMaybeMessage<Scene_Material_Color_diff>(nullptr);
+    }
+
+    Scene_Material_Color_diff *New(::PROTOBUF_NAMESPACE_ID::Arena *arena) const final {
+      return CreateMaybeMessage<Scene_Material_Color_diff>(arena);
+    }
+    void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) final;
+    void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) final;
+    void CopyFrom(const Scene_Material_Color_diff &from);
+    void MergeFrom(const Scene_Material_Color_diff &from);
+    PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+    bool IsInitialized() const final;
+
+    size_t ByteSizeLong() const final;
+    const char *_InternalParse(const char *ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext *ctx) final;
+    ::PROTOBUF_NAMESPACE_ID::uint8 *_InternalSerialize(
+            ::PROTOBUF_NAMESPACE_ID::uint8 *target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream *stream) const final;
+    int GetCachedSize() const final { return _cached_size_.Get(); }
+
+private:
+    inline void SharedCtor();
+    inline void SharedDtor();
+    void SetCachedSize(int size) const final;
+    void InternalSwap(Scene_Material_Color_diff *other);
+    friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+    static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+      return "tracerr.Scene.Material.Color_diff";
+    }
+
+protected:
+    explicit Scene_Material_Color_diff(::PROTOBUF_NAMESPACE_ID::Arena *arena);
+
+private:
+    static void ArenaDtor(void *object);
+    inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena *arena);
+
+public:
+    ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+private:
+    static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+      ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_scene_2eproto);
+      return ::descriptor_table_scene_2eproto.file_level_metadata[kIndexInFileMessages];
+    }
+
+public:
+    // nested types ----------------------------------------------------
+
+    // accessors -------------------------------------------------------
+
+    enum : int {
+      kRFieldNumber = 1,
+      kGFieldNumber = 2,
+      kBFieldNumber = 3,
+    };
+    // required int32 r = 1;
+    bool has_r() const;
+
+private:
+    bool _internal_has_r() const;
+
+public:
+    void clear_r();
+    ::PROTOBUF_NAMESPACE_ID::int32 r() const;
+    void set_r(::PROTOBUF_NAMESPACE_ID::int32 value);
+
+private:
+    ::PROTOBUF_NAMESPACE_ID::int32 _internal_r() const;
+    void _internal_set_r(::PROTOBUF_NAMESPACE_ID::int32 value);
+
+public:
+    // required int32 g = 2;
+    bool has_g() const;
+
+private:
+    bool _internal_has_g() const;
+
+public:
+    void clear_g();
+    ::PROTOBUF_NAMESPACE_ID::int32 g() const;
+    void set_g(::PROTOBUF_NAMESPACE_ID::int32 value);
+
+private:
+    ::PROTOBUF_NAMESPACE_ID::int32 _internal_g() const;
+    void _internal_set_g(::PROTOBUF_NAMESPACE_ID::int32 value);
+
+public:
+    // required int32 b = 3;
+    bool has_b() const;
+
+private:
+    bool _internal_has_b() const;
+
+public:
+    void clear_b();
+    ::PROTOBUF_NAMESPACE_ID::int32 b() const;
+    void set_b(::PROTOBUF_NAMESPACE_ID::int32 value);
+
+private:
+    ::PROTOBUF_NAMESPACE_ID::int32 _internal_b() const;
+    void _internal_set_b(::PROTOBUF_NAMESPACE_ID::int32 value);
+
+public:
+    // @@protoc_insertion_point(class_scope:tracerr.Scene.Material.Color_diff)
+private:
+    class _Internal;
+
+    // helper for ByteSizeLong()
+    size_t RequiredFieldsByteSizeFallback() const;
+
+    template<typename T>
+    friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+    typedef void InternalArenaConstructable_;
+    typedef void DestructorSkippable_;
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::int32 r_;
+    ::PROTOBUF_NAMESPACE_ID::int32 g_;
+    ::PROTOBUF_NAMESPACE_ID::int32 b_;
+    friend struct ::TableStruct_scene_2eproto;
+  };
+  // -------------------------------------------------------------------
+
+  class Scene_Material_Albedo PROTOBUF_FINAL : public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:tracerr.Scene.Material.Albedo) */ {
+public:
+    inline Scene_Material_Albedo() : Scene_Material_Albedo(nullptr){};
+    virtual ~Scene_Material_Albedo();
+
+    Scene_Material_Albedo(const Scene_Material_Albedo &from);
+    Scene_Material_Albedo(Scene_Material_Albedo &&from) noexcept
+        : Scene_Material_Albedo() {
+      *this = ::std::move(from);
+    }
+
+    inline Scene_Material_Albedo &operator=(const Scene_Material_Albedo &from) {
+      CopyFrom(from);
+      return *this;
+    }
+    inline Scene_Material_Albedo &operator=(Scene_Material_Albedo &&from) noexcept {
+      if (GetArena() == from.GetArena()) {
+        if (this != &from) InternalSwap(&from);
+      } else {
+        CopyFrom(from);
+      }
+      return *this;
+    }
+
+    inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet &unknown_fields() const {
+      return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+    }
+    inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet *mutable_unknown_fields() {
+      return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+    }
+
+    static const ::PROTOBUF_NAMESPACE_ID::Descriptor *descriptor() {
+      return GetDescriptor();
+    }
+    static const ::PROTOBUF_NAMESPACE_ID::Descriptor *GetDescriptor() {
+      return GetMetadataStatic().descriptor;
+    }
+    static const ::PROTOBUF_NAMESPACE_ID::Reflection *GetReflection() {
+      return GetMetadataStatic().reflection;
+    }
+    static const Scene_Material_Albedo &default_instance();
+
+    static void InitAsDefaultInstance();// FOR INTERNAL USE ONLY
+    static inline const Scene_Material_Albedo *internal_default_instance() {
+      return reinterpret_cast<const Scene_Material_Albedo *>(
+              &_Scene_Material_Albedo_default_instance_);
+    }
+    static constexpr int kIndexInFileMessages =
+            9;
+
+    friend void swap(Scene_Material_Albedo &a, Scene_Material_Albedo &b) {
+      a.Swap(&b);
+    }
+    inline void Swap(Scene_Material_Albedo *other) {
+      if (other == this) return;
+      if (GetArena() == other->GetArena()) {
+        InternalSwap(other);
+      } else {
+        ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+      }
+    }
+    void UnsafeArenaSwap(Scene_Material_Albedo *other) {
+      if (other == this) return;
+      GOOGLE_DCHECK(GetArena() == other->GetArena());
+      InternalSwap(other);
+    }
+
+    // implements Message ----------------------------------------------
+
+    inline Scene_Material_Albedo *New() const final {
+      return CreateMaybeMessage<Scene_Material_Albedo>(nullptr);
+    }
+
+    Scene_Material_Albedo *New(::PROTOBUF_NAMESPACE_ID::Arena *arena) const final {
+      return CreateMaybeMessage<Scene_Material_Albedo>(arena);
+    }
+    void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) final;
+    void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) final;
+    void CopyFrom(const Scene_Material_Albedo &from);
+    void MergeFrom(const Scene_Material_Albedo &from);
+    PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+    bool IsInitialized() const final;
+
+    size_t ByteSizeLong() const final;
+    const char *_InternalParse(const char *ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext *ctx) final;
+    ::PROTOBUF_NAMESPACE_ID::uint8 *_InternalSerialize(
+            ::PROTOBUF_NAMESPACE_ID::uint8 *target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream *stream) const final;
+    int GetCachedSize() const final { return _cached_size_.Get(); }
+
+private:
+    inline void SharedCtor();
+    inline void SharedDtor();
+    void SetCachedSize(int size) const final;
+    void InternalSwap(Scene_Material_Albedo *other);
+    friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+    static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+      return "tracerr.Scene.Material.Albedo";
+    }
+
+protected:
+    explicit Scene_Material_Albedo(::PROTOBUF_NAMESPACE_ID::Arena *arena);
+
+private:
+    static void ArenaDtor(void *object);
+    inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena *arena);
+
+public:
+    ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+private:
+    static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+      ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_scene_2eproto);
+      return ::descriptor_table_scene_2eproto.file_level_metadata[kIndexInFileMessages];
+    }
+
+public:
+    // nested types ----------------------------------------------------
+
+    // accessors -------------------------------------------------------
+
+    enum : int {
+      kA0FieldNumber = 1,
+      kA1FieldNumber = 2,
+      kA2FieldNumber = 3,
+      kA3FieldNumber = 4,
+    };
+    // required float a0 = 1;
+    bool has_a0() const;
+
+private:
+    bool _internal_has_a0() const;
+
+public:
+    void clear_a0();
+    float a0() const;
+    void set_a0(float value);
+
+private:
+    float _internal_a0() const;
+    void _internal_set_a0(float value);
+
+public:
+    // required float a1 = 2;
+    bool has_a1() const;
+
+private:
+    bool _internal_has_a1() const;
+
+public:
+    void clear_a1();
+    float a1() const;
+    void set_a1(float value);
+
+private:
+    float _internal_a1() const;
+    void _internal_set_a1(float value);
+
+public:
+    // required float a2 = 3;
+    bool has_a2() const;
+
+private:
+    bool _internal_has_a2() const;
+
+public:
+    void clear_a2();
+    float a2() const;
+    void set_a2(float value);
+
+private:
+    float _internal_a2() const;
+    void _internal_set_a2(float value);
+
+public:
+    // required float a3 = 4;
+    bool has_a3() const;
+
+private:
+    bool _internal_has_a3() const;
+
+public:
+    void clear_a3();
+    float a3() const;
+    void set_a3(float value);
+
+private:
+    float _internal_a3() const;
+    void _internal_set_a3(float value);
+
+public:
+    // @@protoc_insertion_point(class_scope:tracerr.Scene.Material.Albedo)
+private:
+    class _Internal;
+
+    // helper for ByteSizeLong()
+    size_t RequiredFieldsByteSizeFallback() const;
+
+    template<typename T>
+    friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+    typedef void InternalArenaConstructable_;
+    typedef void DestructorSkippable_;
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    float a0_;
+    float a1_;
+    float a2_;
+    float a3_;
+    friend struct ::TableStruct_scene_2eproto;
+  };
+  // -------------------------------------------------------------------
+
+  class Scene_Material PROTOBUF_FINAL : public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:tracerr.Scene.Material) */ {
+public:
+    inline Scene_Material() : Scene_Material(nullptr){};
+    virtual ~Scene_Material();
+
+    Scene_Material(const Scene_Material &from);
+    Scene_Material(Scene_Material &&from) noexcept
+        : Scene_Material() {
+      *this = ::std::move(from);
+    }
+
+    inline Scene_Material &operator=(const Scene_Material &from) {
+      CopyFrom(from);
+      return *this;
+    }
+    inline Scene_Material &operator=(Scene_Material &&from) noexcept {
+      if (GetArena() == from.GetArena()) {
+        if (this != &from) InternalSwap(&from);
+      } else {
+        CopyFrom(from);
+      }
+      return *this;
+    }
+
+    inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet &unknown_fields() const {
+      return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+    }
+    inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet *mutable_unknown_fields() {
+      return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+    }
+
+    static const ::PROTOBUF_NAMESPACE_ID::Descriptor *descriptor() {
+      return GetDescriptor();
+    }
+    static const ::PROTOBUF_NAMESPACE_ID::Descriptor *GetDescriptor() {
+      return GetMetadataStatic().descriptor;
+    }
+    static const ::PROTOBUF_NAMESPACE_ID::Reflection *GetReflection() {
+      return GetMetadataStatic().reflection;
+    }
+    static const Scene_Material &default_instance();
+
+    static void InitAsDefaultInstance();// FOR INTERNAL USE ONLY
+    static inline const Scene_Material *internal_default_instance() {
+      return reinterpret_cast<const Scene_Material *>(
+              &_Scene_Material_default_instance_);
+    }
+    static constexpr int kIndexInFileMessages =
+            10;
+
+    friend void swap(Scene_Material &a, Scene_Material &b) {
+      a.Swap(&b);
+    }
+    inline void Swap(Scene_Material *other) {
+      if (other == this) return;
+      if (GetArena() == other->GetArena()) {
+        InternalSwap(other);
+      } else {
+        ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+      }
+    }
+    void UnsafeArenaSwap(Scene_Material *other) {
+      if (other == this) return;
+      GOOGLE_DCHECK(GetArena() == other->GetArena());
+      InternalSwap(other);
+    }
+
+    // implements Message ----------------------------------------------
+
+    inline Scene_Material *New() const final {
+      return CreateMaybeMessage<Scene_Material>(nullptr);
+    }
+
+    Scene_Material *New(::PROTOBUF_NAMESPACE_ID::Arena *arena) const final {
+      return CreateMaybeMessage<Scene_Material>(arena);
+    }
+    void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) final;
+    void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) final;
+    void CopyFrom(const Scene_Material &from);
+    void MergeFrom(const Scene_Material &from);
+    PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+    bool IsInitialized() const final;
+
+    size_t ByteSizeLong() const final;
+    const char *_InternalParse(const char *ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext *ctx) final;
+    ::PROTOBUF_NAMESPACE_ID::uint8 *_InternalSerialize(
+            ::PROTOBUF_NAMESPACE_ID::uint8 *target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream *stream) const final;
+    int GetCachedSize() const final { return _cached_size_.Get(); }
+
+private:
+    inline void SharedCtor();
+    inline void SharedDtor();
+    void SetCachedSize(int size) const final;
+    void InternalSwap(Scene_Material *other);
+    friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+    static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+      return "tracerr.Scene.Material";
+    }
+
+protected:
+    explicit Scene_Material(::PROTOBUF_NAMESPACE_ID::Arena *arena);
+
+private:
+    static void ArenaDtor(void *object);
+    inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena *arena);
+
+public:
+    ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+private:
+    static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+      ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_scene_2eproto);
+      return ::descriptor_table_scene_2eproto.file_level_metadata[kIndexInFileMessages];
+    }
+
+public:
+    // nested types ----------------------------------------------------
+
+    typedef Scene_Material_Color_diff Color_diff;
+    typedef Scene_Material_Albedo Albedo;
+
+    // accessors -------------------------------------------------------
+
+    enum : int {
+      kColorFieldNumber = 1,
+      kAlbedoFieldNumber = 2,
+      kSpecularCompFieldNumber = 3,
+      kRefractiveIndexFieldNumber = 4,
+    };
+    // required .tracerr.Scene.Material.Color_diff color = 1;
+    bool has_color() const;
+
+private:
+    bool _internal_has_color() const;
+
+public:
+    void clear_color();
+    const ::tracerr::Scene_Material_Color_diff &color() const;
+    ::tracerr::Scene_Material_Color_diff *release_color();
+    ::tracerr::Scene_Material_Color_diff *mutable_color();
+    void set_allocated_color(::tracerr::Scene_Material_Color_diff *color);
+
+private:
+    const ::tracerr::Scene_Material_Color_diff &_internal_color() const;
+    ::tracerr::Scene_Material_Color_diff *_internal_mutable_color();
+
+public:
+    void unsafe_arena_set_allocated_color(
+            ::tracerr::Scene_Material_Color_diff *color);
+    ::tracerr::Scene_Material_Color_diff *unsafe_arena_release_color();
+
+    // required .tracerr.Scene.Material.Albedo albedo = 2;
+    bool has_albedo() const;
+
+private:
+    bool _internal_has_albedo() const;
+
+public:
+    void clear_albedo();
+    const ::tracerr::Scene_Material_Albedo &albedo() const;
+    ::tracerr::Scene_Material_Albedo *release_albedo();
+    ::tracerr::Scene_Material_Albedo *mutable_albedo();
+    void set_allocated_albedo(::tracerr::Scene_Material_Albedo *albedo);
+
+private:
+    const ::tracerr::Scene_Material_Albedo &_internal_albedo() const;
+    ::tracerr::Scene_Material_Albedo *_internal_mutable_albedo();
+
+public:
+    void unsafe_arena_set_allocated_albedo(
+            ::tracerr::Scene_Material_Albedo *albedo);
+    ::tracerr::Scene_Material_Albedo *unsafe_arena_release_albedo();
+
+    // required float specular_comp = 3;
+    bool has_specular_comp() const;
+
+private:
+    bool _internal_has_specular_comp() const;
+
+public:
+    void clear_specular_comp();
+    float specular_comp() const;
+    void set_specular_comp(float value);
+
+private:
+    float _internal_specular_comp() const;
+    void _internal_set_specular_comp(float value);
+
+public:
+    // required float refractive_index = 4;
+    bool has_refractive_index() const;
+
+private:
+    bool _internal_has_refractive_index() const;
+
+public:
+    void clear_refractive_index();
+    float refractive_index() const;
+    void set_refractive_index(float value);
+
+private:
+    float _internal_refractive_index() const;
+    void _internal_set_refractive_index(float value);
+
+public:
+    // @@protoc_insertion_point(class_scope:tracerr.Scene.Material)
+private:
+    class _Internal;
+
+    // helper for ByteSizeLong()
+    size_t RequiredFieldsByteSizeFallback() const;
+
+    template<typename T>
+    friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+    typedef void InternalArenaConstructable_;
+    typedef void DestructorSkippable_;
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::tracerr::Scene_Material_Color_diff *color_;
+    ::tracerr::Scene_Material_Albedo *albedo_;
+    float specular_comp_;
+    float refractive_index_;
     friend struct ::TableStruct_scene_2eproto;
   };
   // -------------------------------------------------------------------
@@ -1501,7 +2669,7 @@ public:
               &_Scene_default_instance_);
     }
     static constexpr int kIndexInFileMessages =
-            6;
+            11;
 
     friend void swap(Scene &a, Scene &b) {
       a.Swap(&b);
@@ -1577,37 +2745,56 @@ public:
     typedef Scene_Triangle Triangle;
     typedef Scene_Rectangle Rectangle;
     typedef Scene_Obj Obj;
+    typedef Scene_Color Color;
+    typedef Scene_Albedo Albedo;
+    typedef Scene_Material Material;
 
-    typedef Scene_ShapeType ShapeType;
-    static constexpr ShapeType tSphere =
-            Scene_ShapeType_tSphere;
-    static constexpr ShapeType tTriangle =
-            Scene_ShapeType_tTriangle;
-    static constexpr ShapeType tRectangle =
-            Scene_ShapeType_tRectangle;
-    static inline bool ShapeType_IsValid(int value) {
-      return Scene_ShapeType_IsValid(value);
+    typedef Scene_MaterialType MaterialType;
+    static constexpr MaterialType ivory =
+            Scene_MaterialType_ivory;
+    static constexpr MaterialType red_rubber =
+            Scene_MaterialType_red_rubber;
+    static constexpr MaterialType green_rubber =
+            Scene_MaterialType_green_rubber;
+    static constexpr MaterialType blue_rubber =
+            Scene_MaterialType_blue_rubber;
+    static constexpr MaterialType orange_rubber =
+            Scene_MaterialType_orange_rubber;
+    static constexpr MaterialType pink_rubber =
+            Scene_MaterialType_pink_rubber;
+    static constexpr MaterialType red_plastic =
+            Scene_MaterialType_red_plastic;
+    static constexpr MaterialType black_plastic =
+            Scene_MaterialType_black_plastic;
+    static constexpr MaterialType mirror =
+            Scene_MaterialType_mirror;
+    static constexpr MaterialType glass =
+            Scene_MaterialType_glass;
+    static constexpr MaterialType chessboard =
+            Scene_MaterialType_chessboard;
+    static inline bool MaterialType_IsValid(int value) {
+      return Scene_MaterialType_IsValid(value);
     }
-    static constexpr ShapeType ShapeType_MIN =
-            Scene_ShapeType_ShapeType_MIN;
-    static constexpr ShapeType ShapeType_MAX =
-            Scene_ShapeType_ShapeType_MAX;
-    static constexpr int ShapeType_ARRAYSIZE =
-            Scene_ShapeType_ShapeType_ARRAYSIZE;
+    static constexpr MaterialType MaterialType_MIN =
+            Scene_MaterialType_MaterialType_MIN;
+    static constexpr MaterialType MaterialType_MAX =
+            Scene_MaterialType_MaterialType_MAX;
+    static constexpr int MaterialType_ARRAYSIZE =
+            Scene_MaterialType_MaterialType_ARRAYSIZE;
     static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor *
-    ShapeType_descriptor() {
-      return Scene_ShapeType_descriptor();
+    MaterialType_descriptor() {
+      return Scene_MaterialType_descriptor();
     }
     template<typename T>
-    static inline const std::string &ShapeType_Name(T enum_t_value) {
-      static_assert(::std::is_same<T, ShapeType>::value ||
+    static inline const std::string &MaterialType_Name(T enum_t_value) {
+      static_assert(::std::is_same<T, MaterialType>::value ||
                             ::std::is_integral<T>::value,
-                    "Incorrect type passed to function ShapeType_Name.");
-      return Scene_ShapeType_Name(enum_t_value);
+                    "Incorrect type passed to function MaterialType_Name.");
+      return Scene_MaterialType_Name(enum_t_value);
     }
-    static inline bool ShapeType_Parse(const std::string &name,
-                                       ShapeType *value) {
-      return Scene_ShapeType_Parse(name, value);
+    static inline bool MaterialType_Parse(const std::string &name,
+                                          MaterialType *value) {
+      return Scene_MaterialType_Parse(name, value);
     }
 
     // accessors -------------------------------------------------------
@@ -1619,8 +2806,10 @@ public:
       kRectangleFieldNumber = 9,
       kObjFieldNumber = 10,
       kFnameFieldNumber = 4,
+      kBackgroundColorFieldNumber = 13,
       kWidthFieldNumber = 1,
       kHeightFieldNumber = 2,
+      kShowCheckerboardFieldNumber = 12,
       kSaveFileFieldNumber = 3,
       kMultiThreadFieldNumber = 5,
       kShowElapsedTimeFieldNumber = 11,
@@ -1767,6 +2956,28 @@ private:
     std::string *_internal_mutable_fname();
 
 public:
+    // optional .tracerr.Scene.Color background_color = 13;
+    bool has_background_color() const;
+
+private:
+    bool _internal_has_background_color() const;
+
+public:
+    void clear_background_color();
+    const ::tracerr::Scene_Color &background_color() const;
+    ::tracerr::Scene_Color *release_background_color();
+    ::tracerr::Scene_Color *mutable_background_color();
+    void set_allocated_background_color(::tracerr::Scene_Color *background_color);
+
+private:
+    const ::tracerr::Scene_Color &_internal_background_color() const;
+    ::tracerr::Scene_Color *_internal_mutable_background_color();
+
+public:
+    void unsafe_arena_set_allocated_background_color(
+            ::tracerr::Scene_Color *background_color);
+    ::tracerr::Scene_Color *unsafe_arena_release_background_color();
+
     // required int32 width = 1;
     bool has_width() const;
 
@@ -1797,6 +3008,22 @@ public:
 private:
     ::PROTOBUF_NAMESPACE_ID::int32 _internal_height() const;
     void _internal_set_height(::PROTOBUF_NAMESPACE_ID::int32 value);
+
+public:
+    // optional bool show_checkerboard = 12 [default = false];
+    bool has_show_checkerboard() const;
+
+private:
+    bool _internal_has_show_checkerboard() const;
+
+public:
+    void clear_show_checkerboard();
+    bool show_checkerboard() const;
+    void set_show_checkerboard(bool value);
+
+private:
+    bool _internal_show_checkerboard() const;
+    void _internal_set_show_checkerboard(bool value);
 
 public:
     // required bool saveFile = 3 [default = true];
@@ -1871,8 +3098,10 @@ public:
 
 private:
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr fname_;
+    ::tracerr::Scene_Color *background_color_;
     ::PROTOBUF_NAMESPACE_ID::int32 width_;
     ::PROTOBUF_NAMESPACE_ID::int32 height_;
+    bool show_checkerboard_;
     bool savefile_;
     bool multithread_;
     bool show_elapsed_time_;
@@ -1977,84 +3206,84 @@ private:
 
   // Scene_Light
 
-  // required .tracerr.Scene.Pos p = 1;
-  inline bool Scene_Light::_internal_has_p() const {
+  // required .tracerr.Scene.Pos position = 1;
+  inline bool Scene_Light::_internal_has_position() const {
     bool value = (_has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || p_ != nullptr);
+    PROTOBUF_ASSUME(!value || position_ != nullptr);
     return value;
   }
-  inline bool Scene_Light::has_p() const {
-    return _internal_has_p();
+  inline bool Scene_Light::has_position() const {
+    return _internal_has_position();
   }
-  inline void Scene_Light::clear_p() {
-    if (p_ != nullptr) p_->Clear();
+  inline void Scene_Light::clear_position() {
+    if (position_ != nullptr) position_->Clear();
     _has_bits_[0] &= ~0x00000001u;
   }
-  inline const ::tracerr::Scene_Pos &Scene_Light::_internal_p() const {
-    const ::tracerr::Scene_Pos *p = p_;
+  inline const ::tracerr::Scene_Pos &Scene_Light::_internal_position() const {
+    const ::tracerr::Scene_Pos *p = position_;
     return p != nullptr ? *p : *reinterpret_cast<const ::tracerr::Scene_Pos *>(&::tracerr::_Scene_Pos_default_instance_);
   }
-  inline const ::tracerr::Scene_Pos &Scene_Light::p() const {
-    // @@protoc_insertion_point(field_get:tracerr.Scene.Light.p)
-    return _internal_p();
+  inline const ::tracerr::Scene_Pos &Scene_Light::position() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Light.position)
+    return _internal_position();
   }
-  inline void Scene_Light::unsafe_arena_set_allocated_p(
-          ::tracerr::Scene_Pos *p) {
+  inline void Scene_Light::unsafe_arena_set_allocated_position(
+          ::tracerr::Scene_Pos *position) {
     if (GetArena() == nullptr) {
-      delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite *>(p_);
+      delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite *>(position_);
     }
-    p_ = p;
-    if (p) {
+    position_ = position;
+    if (position) {
       _has_bits_[0] |= 0x00000001u;
     } else {
       _has_bits_[0] &= ~0x00000001u;
     }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Light.p)
+    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Light.position)
   }
-  inline ::tracerr::Scene_Pos *Scene_Light::release_p() {
-    auto temp = unsafe_arena_release_p();
+  inline ::tracerr::Scene_Pos *Scene_Light::release_position() {
+    auto temp = unsafe_arena_release_position();
     if (GetArena() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
     return temp;
   }
-  inline ::tracerr::Scene_Pos *Scene_Light::unsafe_arena_release_p() {
-    // @@protoc_insertion_point(field_release:tracerr.Scene.Light.p)
+  inline ::tracerr::Scene_Pos *Scene_Light::unsafe_arena_release_position() {
+    // @@protoc_insertion_point(field_release:tracerr.Scene.Light.position)
     _has_bits_[0] &= ~0x00000001u;
-    ::tracerr::Scene_Pos *temp = p_;
-    p_ = nullptr;
+    ::tracerr::Scene_Pos *temp = position_;
+    position_ = nullptr;
     return temp;
   }
-  inline ::tracerr::Scene_Pos *Scene_Light::_internal_mutable_p() {
+  inline ::tracerr::Scene_Pos *Scene_Light::_internal_mutable_position() {
     _has_bits_[0] |= 0x00000001u;
-    if (p_ == nullptr) {
+    if (position_ == nullptr) {
       auto *p = CreateMaybeMessage<::tracerr::Scene_Pos>(GetArena());
-      p_ = p;
+      position_ = p;
     }
-    return p_;
+    return position_;
   }
-  inline ::tracerr::Scene_Pos *Scene_Light::mutable_p() {
-    // @@protoc_insertion_point(field_mutable:tracerr.Scene.Light.p)
-    return _internal_mutable_p();
+  inline ::tracerr::Scene_Pos *Scene_Light::mutable_position() {
+    // @@protoc_insertion_point(field_mutable:tracerr.Scene.Light.position)
+    return _internal_mutable_position();
   }
-  inline void Scene_Light::set_allocated_p(::tracerr::Scene_Pos *p) {
+  inline void Scene_Light::set_allocated_position(::tracerr::Scene_Pos *position) {
     ::PROTOBUF_NAMESPACE_ID::Arena *message_arena = GetArena();
     if (message_arena == nullptr) {
-      delete p_;
+      delete position_;
     }
-    if (p) {
+    if (position) {
       ::PROTOBUF_NAMESPACE_ID::Arena *submessage_arena =
-              ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(p);
+              ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(position);
       if (message_arena != submessage_arena) {
-        p = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-                message_arena, p, submessage_arena);
+        position = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+                message_arena, position, submessage_arena);
       }
       _has_bits_[0] |= 0x00000001u;
     } else {
       _has_bits_[0] &= ~0x00000001u;
     }
-    p_ = p;
-    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Light.p)
+    position_ = position;
+    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Light.position)
   }
 
   // required float intensity = 2;
@@ -2089,84 +3318,84 @@ private:
 
   // Scene_Sphere
 
-  // required .tracerr.Scene.Pos p = 1;
-  inline bool Scene_Sphere::_internal_has_p() const {
-    bool value = (_has_bits_[0] & 0x00000002u) != 0;
-    PROTOBUF_ASSUME(!value || p_ != nullptr);
+  // required .tracerr.Scene.Pos position = 1;
+  inline bool Scene_Sphere::_internal_has_position() const {
+    bool value = (_has_bits_[0] & 0x00000001u) != 0;
+    PROTOBUF_ASSUME(!value || position_ != nullptr);
     return value;
   }
-  inline bool Scene_Sphere::has_p() const {
-    return _internal_has_p();
+  inline bool Scene_Sphere::has_position() const {
+    return _internal_has_position();
   }
-  inline void Scene_Sphere::clear_p() {
-    if (p_ != nullptr) p_->Clear();
-    _has_bits_[0] &= ~0x00000002u;
+  inline void Scene_Sphere::clear_position() {
+    if (position_ != nullptr) position_->Clear();
+    _has_bits_[0] &= ~0x00000001u;
   }
-  inline const ::tracerr::Scene_Pos &Scene_Sphere::_internal_p() const {
-    const ::tracerr::Scene_Pos *p = p_;
+  inline const ::tracerr::Scene_Pos &Scene_Sphere::_internal_position() const {
+    const ::tracerr::Scene_Pos *p = position_;
     return p != nullptr ? *p : *reinterpret_cast<const ::tracerr::Scene_Pos *>(&::tracerr::_Scene_Pos_default_instance_);
   }
-  inline const ::tracerr::Scene_Pos &Scene_Sphere::p() const {
-    // @@protoc_insertion_point(field_get:tracerr.Scene.Sphere.p)
-    return _internal_p();
+  inline const ::tracerr::Scene_Pos &Scene_Sphere::position() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Sphere.position)
+    return _internal_position();
   }
-  inline void Scene_Sphere::unsafe_arena_set_allocated_p(
-          ::tracerr::Scene_Pos *p) {
+  inline void Scene_Sphere::unsafe_arena_set_allocated_position(
+          ::tracerr::Scene_Pos *position) {
     if (GetArena() == nullptr) {
-      delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite *>(p_);
+      delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite *>(position_);
     }
-    p_ = p;
-    if (p) {
-      _has_bits_[0] |= 0x00000002u;
+    position_ = position;
+    if (position) {
+      _has_bits_[0] |= 0x00000001u;
     } else {
-      _has_bits_[0] &= ~0x00000002u;
+      _has_bits_[0] &= ~0x00000001u;
     }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Sphere.p)
+    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Sphere.position)
   }
-  inline ::tracerr::Scene_Pos *Scene_Sphere::release_p() {
-    auto temp = unsafe_arena_release_p();
+  inline ::tracerr::Scene_Pos *Scene_Sphere::release_position() {
+    auto temp = unsafe_arena_release_position();
     if (GetArena() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
     return temp;
   }
-  inline ::tracerr::Scene_Pos *Scene_Sphere::unsafe_arena_release_p() {
-    // @@protoc_insertion_point(field_release:tracerr.Scene.Sphere.p)
-    _has_bits_[0] &= ~0x00000002u;
-    ::tracerr::Scene_Pos *temp = p_;
-    p_ = nullptr;
+  inline ::tracerr::Scene_Pos *Scene_Sphere::unsafe_arena_release_position() {
+    // @@protoc_insertion_point(field_release:tracerr.Scene.Sphere.position)
+    _has_bits_[0] &= ~0x00000001u;
+    ::tracerr::Scene_Pos *temp = position_;
+    position_ = nullptr;
     return temp;
   }
-  inline ::tracerr::Scene_Pos *Scene_Sphere::_internal_mutable_p() {
-    _has_bits_[0] |= 0x00000002u;
-    if (p_ == nullptr) {
+  inline ::tracerr::Scene_Pos *Scene_Sphere::_internal_mutable_position() {
+    _has_bits_[0] |= 0x00000001u;
+    if (position_ == nullptr) {
       auto *p = CreateMaybeMessage<::tracerr::Scene_Pos>(GetArena());
-      p_ = p;
+      position_ = p;
     }
-    return p_;
+    return position_;
   }
-  inline ::tracerr::Scene_Pos *Scene_Sphere::mutable_p() {
-    // @@protoc_insertion_point(field_mutable:tracerr.Scene.Sphere.p)
-    return _internal_mutable_p();
+  inline ::tracerr::Scene_Pos *Scene_Sphere::mutable_position() {
+    // @@protoc_insertion_point(field_mutable:tracerr.Scene.Sphere.position)
+    return _internal_mutable_position();
   }
-  inline void Scene_Sphere::set_allocated_p(::tracerr::Scene_Pos *p) {
+  inline void Scene_Sphere::set_allocated_position(::tracerr::Scene_Pos *position) {
     ::PROTOBUF_NAMESPACE_ID::Arena *message_arena = GetArena();
     if (message_arena == nullptr) {
-      delete p_;
+      delete position_;
     }
-    if (p) {
+    if (position) {
       ::PROTOBUF_NAMESPACE_ID::Arena *submessage_arena =
-              ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(p);
+              ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(position);
       if (message_arena != submessage_arena) {
-        p = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-                message_arena, p, submessage_arena);
+        position = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+                message_arena, position, submessage_arena);
       }
-      _has_bits_[0] |= 0x00000002u;
+      _has_bits_[0] |= 0x00000001u;
     } else {
-      _has_bits_[0] &= ~0x00000002u;
+      _has_bits_[0] &= ~0x00000001u;
     }
-    p_ = p;
-    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Sphere.p)
+    position_ = position;
+    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Sphere.position)
   }
 
   // required float radius = 2;
@@ -2197,96 +3426,141 @@ private:
     // @@protoc_insertion_point(field_set:tracerr.Scene.Sphere.radius)
   }
 
-  // required string material = 3;
+  // optional .tracerr.Scene.MaterialType material = 3;
   inline bool Scene_Sphere::_internal_has_material() const {
-    bool value = (_has_bits_[0] & 0x00000001u) != 0;
+    bool value = (_has_bits_[0] & 0x00000008u) != 0;
     return value;
   }
   inline bool Scene_Sphere::has_material() const {
     return _internal_has_material();
   }
   inline void Scene_Sphere::clear_material() {
-    material_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-    _has_bits_[0] &= ~0x00000001u;
+    material_ = 0;
+    _has_bits_[0] &= ~0x00000008u;
   }
-  inline const std::string &Scene_Sphere::material() const {
+  inline ::tracerr::Scene_MaterialType Scene_Sphere::_internal_material() const {
+    return static_cast<::tracerr::Scene_MaterialType>(material_);
+  }
+  inline ::tracerr::Scene_MaterialType Scene_Sphere::material() const {
     // @@protoc_insertion_point(field_get:tracerr.Scene.Sphere.material)
     return _internal_material();
   }
-  inline void Scene_Sphere::set_material(const std::string &value) {
+  inline void Scene_Sphere::_internal_set_material(::tracerr::Scene_MaterialType value) {
+    assert(::tracerr::Scene_MaterialType_IsValid(value));
+    _has_bits_[0] |= 0x00000008u;
+    material_ = value;
+  }
+  inline void Scene_Sphere::set_material(::tracerr::Scene_MaterialType value) {
     _internal_set_material(value);
     // @@protoc_insertion_point(field_set:tracerr.Scene.Sphere.material)
   }
-  inline std::string *Scene_Sphere::mutable_material() {
-    // @@protoc_insertion_point(field_mutable:tracerr.Scene.Sphere.material)
-    return _internal_mutable_material();
+
+  // optional bool custom_material_enabled = 4 [default = false];
+  inline bool Scene_Sphere::_internal_has_custom_material_enabled() const {
+    bool value = (_has_bits_[0] & 0x00000010u) != 0;
+    return value;
   }
-  inline const std::string &Scene_Sphere::_internal_material() const {
-    return material_.Get();
+  inline bool Scene_Sphere::has_custom_material_enabled() const {
+    return _internal_has_custom_material_enabled();
   }
-  inline void Scene_Sphere::_internal_set_material(const std::string &value) {
-    _has_bits_[0] |= 0x00000001u;
-    material_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+  inline void Scene_Sphere::clear_custom_material_enabled() {
+    custom_material_enabled_ = false;
+    _has_bits_[0] &= ~0x00000010u;
   }
-  inline void Scene_Sphere::set_material(std::string &&value) {
-    _has_bits_[0] |= 0x00000001u;
-    material_.Set(
-            &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
-    // @@protoc_insertion_point(field_set_rvalue:tracerr.Scene.Sphere.material)
+  inline bool Scene_Sphere::_internal_custom_material_enabled() const {
+    return custom_material_enabled_;
   }
-  inline void Scene_Sphere::set_material(const char *value) {
-    GOOGLE_DCHECK(value != nullptr);
-    _has_bits_[0] |= 0x00000001u;
-    material_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
-                  GetArena());
-    // @@protoc_insertion_point(field_set_char:tracerr.Scene.Sphere.material)
+  inline bool Scene_Sphere::custom_material_enabled() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Sphere.custom_material_enabled)
+    return _internal_custom_material_enabled();
   }
-  inline void Scene_Sphere::set_material(const char *value,
-                                         size_t size) {
-    _has_bits_[0] |= 0x00000001u;
-    material_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(reinterpret_cast<const char *>(value), size), GetArena());
-    // @@protoc_insertion_point(field_set_pointer:tracerr.Scene.Sphere.material)
+  inline void Scene_Sphere::_internal_set_custom_material_enabled(bool value) {
+    _has_bits_[0] |= 0x00000010u;
+    custom_material_enabled_ = value;
   }
-  inline std::string *Scene_Sphere::_internal_mutable_material() {
-    _has_bits_[0] |= 0x00000001u;
-    return material_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  inline void Scene_Sphere::set_custom_material_enabled(bool value) {
+    _internal_set_custom_material_enabled(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Sphere.custom_material_enabled)
   }
-  inline std::string *Scene_Sphere::release_material() {
-    // @@protoc_insertion_point(field_release:tracerr.Scene.Sphere.material)
-    if (!_internal_has_material()) {
-      return nullptr;
+
+  // optional .tracerr.Scene.Material custom_material = 5;
+  inline bool Scene_Sphere::_internal_has_custom_material() const {
+    bool value = (_has_bits_[0] & 0x00000002u) != 0;
+    PROTOBUF_ASSUME(!value || custom_material_ != nullptr);
+    return value;
+  }
+  inline bool Scene_Sphere::has_custom_material() const {
+    return _internal_has_custom_material();
+  }
+  inline void Scene_Sphere::clear_custom_material() {
+    if (custom_material_ != nullptr) custom_material_->Clear();
+    _has_bits_[0] &= ~0x00000002u;
+  }
+  inline const ::tracerr::Scene_Material &Scene_Sphere::_internal_custom_material() const {
+    const ::tracerr::Scene_Material *p = custom_material_;
+    return p != nullptr ? *p : *reinterpret_cast<const ::tracerr::Scene_Material *>(&::tracerr::_Scene_Material_default_instance_);
+  }
+  inline const ::tracerr::Scene_Material &Scene_Sphere::custom_material() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Sphere.custom_material)
+    return _internal_custom_material();
+  }
+  inline void Scene_Sphere::unsafe_arena_set_allocated_custom_material(
+          ::tracerr::Scene_Material *custom_material) {
+    if (GetArena() == nullptr) {
+      delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite *>(custom_material_);
     }
-    _has_bits_[0] &= ~0x00000001u;
-    return material_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  }
-  inline void Scene_Sphere::set_allocated_material(std::string *material) {
-    if (material != nullptr) {
-      _has_bits_[0] |= 0x00000001u;
+    custom_material_ = custom_material;
+    if (custom_material) {
+      _has_bits_[0] |= 0x00000002u;
     } else {
-      _has_bits_[0] &= ~0x00000001u;
+      _has_bits_[0] &= ~0x00000002u;
     }
-    material_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), material,
-                           GetArena());
-    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Sphere.material)
+    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Sphere.custom_material)
   }
-  inline std::string *Scene_Sphere::unsafe_arena_release_material() {
-    // @@protoc_insertion_point(field_unsafe_arena_release:tracerr.Scene.Sphere.material)
-    GOOGLE_DCHECK(GetArena() != nullptr);
-    _has_bits_[0] &= ~0x00000001u;
-    return material_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-                                        GetArena());
+  inline ::tracerr::Scene_Material *Scene_Sphere::release_custom_material() {
+    auto temp = unsafe_arena_release_custom_material();
+    if (GetArena() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    return temp;
   }
-  inline void Scene_Sphere::unsafe_arena_set_allocated_material(
-          std::string *material) {
-    GOOGLE_DCHECK(GetArena() != nullptr);
-    if (material != nullptr) {
-      _has_bits_[0] |= 0x00000001u;
+  inline ::tracerr::Scene_Material *Scene_Sphere::unsafe_arena_release_custom_material() {
+    // @@protoc_insertion_point(field_release:tracerr.Scene.Sphere.custom_material)
+    _has_bits_[0] &= ~0x00000002u;
+    ::tracerr::Scene_Material *temp = custom_material_;
+    custom_material_ = nullptr;
+    return temp;
+  }
+  inline ::tracerr::Scene_Material *Scene_Sphere::_internal_mutable_custom_material() {
+    _has_bits_[0] |= 0x00000002u;
+    if (custom_material_ == nullptr) {
+      auto *p = CreateMaybeMessage<::tracerr::Scene_Material>(GetArena());
+      custom_material_ = p;
+    }
+    return custom_material_;
+  }
+  inline ::tracerr::Scene_Material *Scene_Sphere::mutable_custom_material() {
+    // @@protoc_insertion_point(field_mutable:tracerr.Scene.Sphere.custom_material)
+    return _internal_mutable_custom_material();
+  }
+  inline void Scene_Sphere::set_allocated_custom_material(::tracerr::Scene_Material *custom_material) {
+    ::PROTOBUF_NAMESPACE_ID::Arena *message_arena = GetArena();
+    if (message_arena == nullptr) {
+      delete custom_material_;
+    }
+    if (custom_material) {
+      ::PROTOBUF_NAMESPACE_ID::Arena *submessage_arena =
+              ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(custom_material);
+      if (message_arena != submessage_arena) {
+        custom_material = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+                message_arena, custom_material, submessage_arena);
+      }
+      _has_bits_[0] |= 0x00000002u;
     } else {
-      _has_bits_[0] &= ~0x00000001u;
+      _has_bits_[0] &= ~0x00000002u;
     }
-    material_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-                                      material, GetArena());
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Sphere.material)
+    custom_material_ = custom_material;
+    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Sphere.custom_material)
   }
 
   // -------------------------------------------------------------------
@@ -2295,7 +3569,7 @@ private:
 
   // required .tracerr.Scene.Pos p0 = 1;
   inline bool Scene_Triangle::_internal_has_p0() const {
-    bool value = (_has_bits_[0] & 0x00000002u) != 0;
+    bool value = (_has_bits_[0] & 0x00000001u) != 0;
     PROTOBUF_ASSUME(!value || p0_ != nullptr);
     return value;
   }
@@ -2304,7 +3578,7 @@ private:
   }
   inline void Scene_Triangle::clear_p0() {
     if (p0_ != nullptr) p0_->Clear();
-    _has_bits_[0] &= ~0x00000002u;
+    _has_bits_[0] &= ~0x00000001u;
   }
   inline const ::tracerr::Scene_Pos &Scene_Triangle::_internal_p0() const {
     const ::tracerr::Scene_Pos *p = p0_;
@@ -2321,9 +3595,9 @@ private:
     }
     p0_ = p0;
     if (p0) {
-      _has_bits_[0] |= 0x00000002u;
+      _has_bits_[0] |= 0x00000001u;
     } else {
-      _has_bits_[0] &= ~0x00000002u;
+      _has_bits_[0] &= ~0x00000001u;
     }
     // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Triangle.p0)
   }
@@ -2336,13 +3610,13 @@ private:
   }
   inline ::tracerr::Scene_Pos *Scene_Triangle::unsafe_arena_release_p0() {
     // @@protoc_insertion_point(field_release:tracerr.Scene.Triangle.p0)
-    _has_bits_[0] &= ~0x00000002u;
+    _has_bits_[0] &= ~0x00000001u;
     ::tracerr::Scene_Pos *temp = p0_;
     p0_ = nullptr;
     return temp;
   }
   inline ::tracerr::Scene_Pos *Scene_Triangle::_internal_mutable_p0() {
-    _has_bits_[0] |= 0x00000002u;
+    _has_bits_[0] |= 0x00000001u;
     if (p0_ == nullptr) {
       auto *p = CreateMaybeMessage<::tracerr::Scene_Pos>(GetArena());
       p0_ = p;
@@ -2365,9 +3639,9 @@ private:
         p0 = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
                 message_arena, p0, submessage_arena);
       }
-      _has_bits_[0] |= 0x00000002u;
+      _has_bits_[0] |= 0x00000001u;
     } else {
-      _has_bits_[0] &= ~0x00000002u;
+      _has_bits_[0] &= ~0x00000001u;
     }
     p0_ = p0;
     // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Triangle.p0)
@@ -2375,7 +3649,7 @@ private:
 
   // required .tracerr.Scene.Pos p1 = 2;
   inline bool Scene_Triangle::_internal_has_p1() const {
-    bool value = (_has_bits_[0] & 0x00000004u) != 0;
+    bool value = (_has_bits_[0] & 0x00000002u) != 0;
     PROTOBUF_ASSUME(!value || p1_ != nullptr);
     return value;
   }
@@ -2384,7 +3658,7 @@ private:
   }
   inline void Scene_Triangle::clear_p1() {
     if (p1_ != nullptr) p1_->Clear();
-    _has_bits_[0] &= ~0x00000004u;
+    _has_bits_[0] &= ~0x00000002u;
   }
   inline const ::tracerr::Scene_Pos &Scene_Triangle::_internal_p1() const {
     const ::tracerr::Scene_Pos *p = p1_;
@@ -2401,9 +3675,9 @@ private:
     }
     p1_ = p1;
     if (p1) {
-      _has_bits_[0] |= 0x00000004u;
+      _has_bits_[0] |= 0x00000002u;
     } else {
-      _has_bits_[0] &= ~0x00000004u;
+      _has_bits_[0] &= ~0x00000002u;
     }
     // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Triangle.p1)
   }
@@ -2416,13 +3690,13 @@ private:
   }
   inline ::tracerr::Scene_Pos *Scene_Triangle::unsafe_arena_release_p1() {
     // @@protoc_insertion_point(field_release:tracerr.Scene.Triangle.p1)
-    _has_bits_[0] &= ~0x00000004u;
+    _has_bits_[0] &= ~0x00000002u;
     ::tracerr::Scene_Pos *temp = p1_;
     p1_ = nullptr;
     return temp;
   }
   inline ::tracerr::Scene_Pos *Scene_Triangle::_internal_mutable_p1() {
-    _has_bits_[0] |= 0x00000004u;
+    _has_bits_[0] |= 0x00000002u;
     if (p1_ == nullptr) {
       auto *p = CreateMaybeMessage<::tracerr::Scene_Pos>(GetArena());
       p1_ = p;
@@ -2445,9 +3719,9 @@ private:
         p1 = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
                 message_arena, p1, submessage_arena);
       }
-      _has_bits_[0] |= 0x00000004u;
+      _has_bits_[0] |= 0x00000002u;
     } else {
-      _has_bits_[0] &= ~0x00000004u;
+      _has_bits_[0] &= ~0x00000002u;
     }
     p1_ = p1;
     // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Triangle.p1)
@@ -2455,7 +3729,7 @@ private:
 
   // required .tracerr.Scene.Pos p2 = 3;
   inline bool Scene_Triangle::_internal_has_p2() const {
-    bool value = (_has_bits_[0] & 0x00000008u) != 0;
+    bool value = (_has_bits_[0] & 0x00000004u) != 0;
     PROTOBUF_ASSUME(!value || p2_ != nullptr);
     return value;
   }
@@ -2464,7 +3738,7 @@ private:
   }
   inline void Scene_Triangle::clear_p2() {
     if (p2_ != nullptr) p2_->Clear();
-    _has_bits_[0] &= ~0x00000008u;
+    _has_bits_[0] &= ~0x00000004u;
   }
   inline const ::tracerr::Scene_Pos &Scene_Triangle::_internal_p2() const {
     const ::tracerr::Scene_Pos *p = p2_;
@@ -2481,9 +3755,9 @@ private:
     }
     p2_ = p2;
     if (p2) {
-      _has_bits_[0] |= 0x00000008u;
+      _has_bits_[0] |= 0x00000004u;
     } else {
-      _has_bits_[0] &= ~0x00000008u;
+      _has_bits_[0] &= ~0x00000004u;
     }
     // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Triangle.p2)
   }
@@ -2496,13 +3770,13 @@ private:
   }
   inline ::tracerr::Scene_Pos *Scene_Triangle::unsafe_arena_release_p2() {
     // @@protoc_insertion_point(field_release:tracerr.Scene.Triangle.p2)
-    _has_bits_[0] &= ~0x00000008u;
+    _has_bits_[0] &= ~0x00000004u;
     ::tracerr::Scene_Pos *temp = p2_;
     p2_ = nullptr;
     return temp;
   }
   inline ::tracerr::Scene_Pos *Scene_Triangle::_internal_mutable_p2() {
-    _has_bits_[0] |= 0x00000008u;
+    _has_bits_[0] |= 0x00000004u;
     if (p2_ == nullptr) {
       auto *p = CreateMaybeMessage<::tracerr::Scene_Pos>(GetArena());
       p2_ = p;
@@ -2525,104 +3799,149 @@ private:
         p2 = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
                 message_arena, p2, submessage_arena);
       }
-      _has_bits_[0] |= 0x00000008u;
+      _has_bits_[0] |= 0x00000004u;
     } else {
-      _has_bits_[0] &= ~0x00000008u;
+      _has_bits_[0] &= ~0x00000004u;
     }
     p2_ = p2;
     // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Triangle.p2)
   }
 
-  // required string material = 4;
+  // optional .tracerr.Scene.MaterialType material = 4;
   inline bool Scene_Triangle::_internal_has_material() const {
-    bool value = (_has_bits_[0] & 0x00000001u) != 0;
+    bool value = (_has_bits_[0] & 0x00000010u) != 0;
     return value;
   }
   inline bool Scene_Triangle::has_material() const {
     return _internal_has_material();
   }
   inline void Scene_Triangle::clear_material() {
-    material_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-    _has_bits_[0] &= ~0x00000001u;
+    material_ = 0;
+    _has_bits_[0] &= ~0x00000010u;
   }
-  inline const std::string &Scene_Triangle::material() const {
+  inline ::tracerr::Scene_MaterialType Scene_Triangle::_internal_material() const {
+    return static_cast<::tracerr::Scene_MaterialType>(material_);
+  }
+  inline ::tracerr::Scene_MaterialType Scene_Triangle::material() const {
     // @@protoc_insertion_point(field_get:tracerr.Scene.Triangle.material)
     return _internal_material();
   }
-  inline void Scene_Triangle::set_material(const std::string &value) {
+  inline void Scene_Triangle::_internal_set_material(::tracerr::Scene_MaterialType value) {
+    assert(::tracerr::Scene_MaterialType_IsValid(value));
+    _has_bits_[0] |= 0x00000010u;
+    material_ = value;
+  }
+  inline void Scene_Triangle::set_material(::tracerr::Scene_MaterialType value) {
     _internal_set_material(value);
     // @@protoc_insertion_point(field_set:tracerr.Scene.Triangle.material)
   }
-  inline std::string *Scene_Triangle::mutable_material() {
-    // @@protoc_insertion_point(field_mutable:tracerr.Scene.Triangle.material)
-    return _internal_mutable_material();
+
+  // optional bool custom_material_enabled = 5 [default = false];
+  inline bool Scene_Triangle::_internal_has_custom_material_enabled() const {
+    bool value = (_has_bits_[0] & 0x00000020u) != 0;
+    return value;
   }
-  inline const std::string &Scene_Triangle::_internal_material() const {
-    return material_.Get();
+  inline bool Scene_Triangle::has_custom_material_enabled() const {
+    return _internal_has_custom_material_enabled();
   }
-  inline void Scene_Triangle::_internal_set_material(const std::string &value) {
-    _has_bits_[0] |= 0x00000001u;
-    material_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+  inline void Scene_Triangle::clear_custom_material_enabled() {
+    custom_material_enabled_ = false;
+    _has_bits_[0] &= ~0x00000020u;
   }
-  inline void Scene_Triangle::set_material(std::string &&value) {
-    _has_bits_[0] |= 0x00000001u;
-    material_.Set(
-            &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
-    // @@protoc_insertion_point(field_set_rvalue:tracerr.Scene.Triangle.material)
+  inline bool Scene_Triangle::_internal_custom_material_enabled() const {
+    return custom_material_enabled_;
   }
-  inline void Scene_Triangle::set_material(const char *value) {
-    GOOGLE_DCHECK(value != nullptr);
-    _has_bits_[0] |= 0x00000001u;
-    material_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
-                  GetArena());
-    // @@protoc_insertion_point(field_set_char:tracerr.Scene.Triangle.material)
+  inline bool Scene_Triangle::custom_material_enabled() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Triangle.custom_material_enabled)
+    return _internal_custom_material_enabled();
   }
-  inline void Scene_Triangle::set_material(const char *value,
-                                           size_t size) {
-    _has_bits_[0] |= 0x00000001u;
-    material_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(reinterpret_cast<const char *>(value), size), GetArena());
-    // @@protoc_insertion_point(field_set_pointer:tracerr.Scene.Triangle.material)
+  inline void Scene_Triangle::_internal_set_custom_material_enabled(bool value) {
+    _has_bits_[0] |= 0x00000020u;
+    custom_material_enabled_ = value;
   }
-  inline std::string *Scene_Triangle::_internal_mutable_material() {
-    _has_bits_[0] |= 0x00000001u;
-    return material_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  inline void Scene_Triangle::set_custom_material_enabled(bool value) {
+    _internal_set_custom_material_enabled(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Triangle.custom_material_enabled)
   }
-  inline std::string *Scene_Triangle::release_material() {
-    // @@protoc_insertion_point(field_release:tracerr.Scene.Triangle.material)
-    if (!_internal_has_material()) {
-      return nullptr;
+
+  // optional .tracerr.Scene.Material custom_material = 6;
+  inline bool Scene_Triangle::_internal_has_custom_material() const {
+    bool value = (_has_bits_[0] & 0x00000008u) != 0;
+    PROTOBUF_ASSUME(!value || custom_material_ != nullptr);
+    return value;
+  }
+  inline bool Scene_Triangle::has_custom_material() const {
+    return _internal_has_custom_material();
+  }
+  inline void Scene_Triangle::clear_custom_material() {
+    if (custom_material_ != nullptr) custom_material_->Clear();
+    _has_bits_[0] &= ~0x00000008u;
+  }
+  inline const ::tracerr::Scene_Material &Scene_Triangle::_internal_custom_material() const {
+    const ::tracerr::Scene_Material *p = custom_material_;
+    return p != nullptr ? *p : *reinterpret_cast<const ::tracerr::Scene_Material *>(&::tracerr::_Scene_Material_default_instance_);
+  }
+  inline const ::tracerr::Scene_Material &Scene_Triangle::custom_material() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Triangle.custom_material)
+    return _internal_custom_material();
+  }
+  inline void Scene_Triangle::unsafe_arena_set_allocated_custom_material(
+          ::tracerr::Scene_Material *custom_material) {
+    if (GetArena() == nullptr) {
+      delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite *>(custom_material_);
     }
-    _has_bits_[0] &= ~0x00000001u;
-    return material_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  }
-  inline void Scene_Triangle::set_allocated_material(std::string *material) {
-    if (material != nullptr) {
-      _has_bits_[0] |= 0x00000001u;
+    custom_material_ = custom_material;
+    if (custom_material) {
+      _has_bits_[0] |= 0x00000008u;
     } else {
-      _has_bits_[0] &= ~0x00000001u;
+      _has_bits_[0] &= ~0x00000008u;
     }
-    material_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), material,
-                           GetArena());
-    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Triangle.material)
+    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Triangle.custom_material)
   }
-  inline std::string *Scene_Triangle::unsafe_arena_release_material() {
-    // @@protoc_insertion_point(field_unsafe_arena_release:tracerr.Scene.Triangle.material)
-    GOOGLE_DCHECK(GetArena() != nullptr);
-    _has_bits_[0] &= ~0x00000001u;
-    return material_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-                                        GetArena());
+  inline ::tracerr::Scene_Material *Scene_Triangle::release_custom_material() {
+    auto temp = unsafe_arena_release_custom_material();
+    if (GetArena() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    return temp;
   }
-  inline void Scene_Triangle::unsafe_arena_set_allocated_material(
-          std::string *material) {
-    GOOGLE_DCHECK(GetArena() != nullptr);
-    if (material != nullptr) {
-      _has_bits_[0] |= 0x00000001u;
+  inline ::tracerr::Scene_Material *Scene_Triangle::unsafe_arena_release_custom_material() {
+    // @@protoc_insertion_point(field_release:tracerr.Scene.Triangle.custom_material)
+    _has_bits_[0] &= ~0x00000008u;
+    ::tracerr::Scene_Material *temp = custom_material_;
+    custom_material_ = nullptr;
+    return temp;
+  }
+  inline ::tracerr::Scene_Material *Scene_Triangle::_internal_mutable_custom_material() {
+    _has_bits_[0] |= 0x00000008u;
+    if (custom_material_ == nullptr) {
+      auto *p = CreateMaybeMessage<::tracerr::Scene_Material>(GetArena());
+      custom_material_ = p;
+    }
+    return custom_material_;
+  }
+  inline ::tracerr::Scene_Material *Scene_Triangle::mutable_custom_material() {
+    // @@protoc_insertion_point(field_mutable:tracerr.Scene.Triangle.custom_material)
+    return _internal_mutable_custom_material();
+  }
+  inline void Scene_Triangle::set_allocated_custom_material(::tracerr::Scene_Material *custom_material) {
+    ::PROTOBUF_NAMESPACE_ID::Arena *message_arena = GetArena();
+    if (message_arena == nullptr) {
+      delete custom_material_;
+    }
+    if (custom_material) {
+      ::PROTOBUF_NAMESPACE_ID::Arena *submessage_arena =
+              ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(custom_material);
+      if (message_arena != submessage_arena) {
+        custom_material = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+                message_arena, custom_material, submessage_arena);
+      }
+      _has_bits_[0] |= 0x00000008u;
     } else {
-      _has_bits_[0] &= ~0x00000001u;
+      _has_bits_[0] &= ~0x00000008u;
     }
-    material_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-                                      material, GetArena());
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Triangle.material)
+    custom_material_ = custom_material;
+    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Triangle.custom_material)
   }
 
   // -------------------------------------------------------------------
@@ -2631,7 +3950,7 @@ private:
 
   // required .tracerr.Scene.Pos p0 = 1;
   inline bool Scene_Rectangle::_internal_has_p0() const {
-    bool value = (_has_bits_[0] & 0x00000002u) != 0;
+    bool value = (_has_bits_[0] & 0x00000001u) != 0;
     PROTOBUF_ASSUME(!value || p0_ != nullptr);
     return value;
   }
@@ -2640,7 +3959,7 @@ private:
   }
   inline void Scene_Rectangle::clear_p0() {
     if (p0_ != nullptr) p0_->Clear();
-    _has_bits_[0] &= ~0x00000002u;
+    _has_bits_[0] &= ~0x00000001u;
   }
   inline const ::tracerr::Scene_Pos &Scene_Rectangle::_internal_p0() const {
     const ::tracerr::Scene_Pos *p = p0_;
@@ -2657,9 +3976,9 @@ private:
     }
     p0_ = p0;
     if (p0) {
-      _has_bits_[0] |= 0x00000002u;
+      _has_bits_[0] |= 0x00000001u;
     } else {
-      _has_bits_[0] &= ~0x00000002u;
+      _has_bits_[0] &= ~0x00000001u;
     }
     // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Rectangle.p0)
   }
@@ -2672,13 +3991,13 @@ private:
   }
   inline ::tracerr::Scene_Pos *Scene_Rectangle::unsafe_arena_release_p0() {
     // @@protoc_insertion_point(field_release:tracerr.Scene.Rectangle.p0)
-    _has_bits_[0] &= ~0x00000002u;
+    _has_bits_[0] &= ~0x00000001u;
     ::tracerr::Scene_Pos *temp = p0_;
     p0_ = nullptr;
     return temp;
   }
   inline ::tracerr::Scene_Pos *Scene_Rectangle::_internal_mutable_p0() {
-    _has_bits_[0] |= 0x00000002u;
+    _has_bits_[0] |= 0x00000001u;
     if (p0_ == nullptr) {
       auto *p = CreateMaybeMessage<::tracerr::Scene_Pos>(GetArena());
       p0_ = p;
@@ -2701,9 +4020,9 @@ private:
         p0 = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
                 message_arena, p0, submessage_arena);
       }
-      _has_bits_[0] |= 0x00000002u;
+      _has_bits_[0] |= 0x00000001u;
     } else {
-      _has_bits_[0] &= ~0x00000002u;
+      _has_bits_[0] &= ~0x00000001u;
     }
     p0_ = p0;
     // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Rectangle.p0)
@@ -2711,7 +4030,7 @@ private:
 
   // required .tracerr.Scene.Pos p1 = 2;
   inline bool Scene_Rectangle::_internal_has_p1() const {
-    bool value = (_has_bits_[0] & 0x00000004u) != 0;
+    bool value = (_has_bits_[0] & 0x00000002u) != 0;
     PROTOBUF_ASSUME(!value || p1_ != nullptr);
     return value;
   }
@@ -2720,7 +4039,7 @@ private:
   }
   inline void Scene_Rectangle::clear_p1() {
     if (p1_ != nullptr) p1_->Clear();
-    _has_bits_[0] &= ~0x00000004u;
+    _has_bits_[0] &= ~0x00000002u;
   }
   inline const ::tracerr::Scene_Pos &Scene_Rectangle::_internal_p1() const {
     const ::tracerr::Scene_Pos *p = p1_;
@@ -2737,9 +4056,9 @@ private:
     }
     p1_ = p1;
     if (p1) {
-      _has_bits_[0] |= 0x00000004u;
+      _has_bits_[0] |= 0x00000002u;
     } else {
-      _has_bits_[0] &= ~0x00000004u;
+      _has_bits_[0] &= ~0x00000002u;
     }
     // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Rectangle.p1)
   }
@@ -2752,13 +4071,13 @@ private:
   }
   inline ::tracerr::Scene_Pos *Scene_Rectangle::unsafe_arena_release_p1() {
     // @@protoc_insertion_point(field_release:tracerr.Scene.Rectangle.p1)
-    _has_bits_[0] &= ~0x00000004u;
+    _has_bits_[0] &= ~0x00000002u;
     ::tracerr::Scene_Pos *temp = p1_;
     p1_ = nullptr;
     return temp;
   }
   inline ::tracerr::Scene_Pos *Scene_Rectangle::_internal_mutable_p1() {
-    _has_bits_[0] |= 0x00000004u;
+    _has_bits_[0] |= 0x00000002u;
     if (p1_ == nullptr) {
       auto *p = CreateMaybeMessage<::tracerr::Scene_Pos>(GetArena());
       p1_ = p;
@@ -2781,9 +4100,9 @@ private:
         p1 = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
                 message_arena, p1, submessage_arena);
       }
-      _has_bits_[0] |= 0x00000004u;
+      _has_bits_[0] |= 0x00000002u;
     } else {
-      _has_bits_[0] &= ~0x00000004u;
+      _has_bits_[0] &= ~0x00000002u;
     }
     p1_ = p1;
     // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Rectangle.p1)
@@ -2791,7 +4110,7 @@ private:
 
   // required .tracerr.Scene.Pos p2 = 3;
   inline bool Scene_Rectangle::_internal_has_p2() const {
-    bool value = (_has_bits_[0] & 0x00000008u) != 0;
+    bool value = (_has_bits_[0] & 0x00000004u) != 0;
     PROTOBUF_ASSUME(!value || p2_ != nullptr);
     return value;
   }
@@ -2800,7 +4119,7 @@ private:
   }
   inline void Scene_Rectangle::clear_p2() {
     if (p2_ != nullptr) p2_->Clear();
-    _has_bits_[0] &= ~0x00000008u;
+    _has_bits_[0] &= ~0x00000004u;
   }
   inline const ::tracerr::Scene_Pos &Scene_Rectangle::_internal_p2() const {
     const ::tracerr::Scene_Pos *p = p2_;
@@ -2817,9 +4136,9 @@ private:
     }
     p2_ = p2;
     if (p2) {
-      _has_bits_[0] |= 0x00000008u;
+      _has_bits_[0] |= 0x00000004u;
     } else {
-      _has_bits_[0] &= ~0x00000008u;
+      _has_bits_[0] &= ~0x00000004u;
     }
     // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Rectangle.p2)
   }
@@ -2832,13 +4151,13 @@ private:
   }
   inline ::tracerr::Scene_Pos *Scene_Rectangle::unsafe_arena_release_p2() {
     // @@protoc_insertion_point(field_release:tracerr.Scene.Rectangle.p2)
-    _has_bits_[0] &= ~0x00000008u;
+    _has_bits_[0] &= ~0x00000004u;
     ::tracerr::Scene_Pos *temp = p2_;
     p2_ = nullptr;
     return temp;
   }
   inline ::tracerr::Scene_Pos *Scene_Rectangle::_internal_mutable_p2() {
-    _has_bits_[0] |= 0x00000008u;
+    _has_bits_[0] |= 0x00000004u;
     if (p2_ == nullptr) {
       auto *p = CreateMaybeMessage<::tracerr::Scene_Pos>(GetArena());
       p2_ = p;
@@ -2861,9 +4180,9 @@ private:
         p2 = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
                 message_arena, p2, submessage_arena);
       }
-      _has_bits_[0] |= 0x00000008u;
+      _has_bits_[0] |= 0x00000004u;
     } else {
-      _has_bits_[0] &= ~0x00000008u;
+      _has_bits_[0] &= ~0x00000004u;
     }
     p2_ = p2;
     // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Rectangle.p2)
@@ -2871,7 +4190,7 @@ private:
 
   // required .tracerr.Scene.Pos p3 = 4;
   inline bool Scene_Rectangle::_internal_has_p3() const {
-    bool value = (_has_bits_[0] & 0x00000010u) != 0;
+    bool value = (_has_bits_[0] & 0x00000008u) != 0;
     PROTOBUF_ASSUME(!value || p3_ != nullptr);
     return value;
   }
@@ -2880,7 +4199,7 @@ private:
   }
   inline void Scene_Rectangle::clear_p3() {
     if (p3_ != nullptr) p3_->Clear();
-    _has_bits_[0] &= ~0x00000010u;
+    _has_bits_[0] &= ~0x00000008u;
   }
   inline const ::tracerr::Scene_Pos &Scene_Rectangle::_internal_p3() const {
     const ::tracerr::Scene_Pos *p = p3_;
@@ -2897,9 +4216,9 @@ private:
     }
     p3_ = p3;
     if (p3) {
-      _has_bits_[0] |= 0x00000010u;
+      _has_bits_[0] |= 0x00000008u;
     } else {
-      _has_bits_[0] &= ~0x00000010u;
+      _has_bits_[0] &= ~0x00000008u;
     }
     // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Rectangle.p3)
   }
@@ -2912,13 +4231,13 @@ private:
   }
   inline ::tracerr::Scene_Pos *Scene_Rectangle::unsafe_arena_release_p3() {
     // @@protoc_insertion_point(field_release:tracerr.Scene.Rectangle.p3)
-    _has_bits_[0] &= ~0x00000010u;
+    _has_bits_[0] &= ~0x00000008u;
     ::tracerr::Scene_Pos *temp = p3_;
     p3_ = nullptr;
     return temp;
   }
   inline ::tracerr::Scene_Pos *Scene_Rectangle::_internal_mutable_p3() {
-    _has_bits_[0] |= 0x00000010u;
+    _has_bits_[0] |= 0x00000008u;
     if (p3_ == nullptr) {
       auto *p = CreateMaybeMessage<::tracerr::Scene_Pos>(GetArena());
       p3_ = p;
@@ -2941,104 +4260,149 @@ private:
         p3 = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
                 message_arena, p3, submessage_arena);
       }
-      _has_bits_[0] |= 0x00000010u;
+      _has_bits_[0] |= 0x00000008u;
     } else {
-      _has_bits_[0] &= ~0x00000010u;
+      _has_bits_[0] &= ~0x00000008u;
     }
     p3_ = p3;
     // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Rectangle.p3)
   }
 
-  // required string material = 5;
+  // optional .tracerr.Scene.MaterialType material = 5;
   inline bool Scene_Rectangle::_internal_has_material() const {
-    bool value = (_has_bits_[0] & 0x00000001u) != 0;
+    bool value = (_has_bits_[0] & 0x00000020u) != 0;
     return value;
   }
   inline bool Scene_Rectangle::has_material() const {
     return _internal_has_material();
   }
   inline void Scene_Rectangle::clear_material() {
-    material_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-    _has_bits_[0] &= ~0x00000001u;
+    material_ = 0;
+    _has_bits_[0] &= ~0x00000020u;
   }
-  inline const std::string &Scene_Rectangle::material() const {
+  inline ::tracerr::Scene_MaterialType Scene_Rectangle::_internal_material() const {
+    return static_cast<::tracerr::Scene_MaterialType>(material_);
+  }
+  inline ::tracerr::Scene_MaterialType Scene_Rectangle::material() const {
     // @@protoc_insertion_point(field_get:tracerr.Scene.Rectangle.material)
     return _internal_material();
   }
-  inline void Scene_Rectangle::set_material(const std::string &value) {
+  inline void Scene_Rectangle::_internal_set_material(::tracerr::Scene_MaterialType value) {
+    assert(::tracerr::Scene_MaterialType_IsValid(value));
+    _has_bits_[0] |= 0x00000020u;
+    material_ = value;
+  }
+  inline void Scene_Rectangle::set_material(::tracerr::Scene_MaterialType value) {
     _internal_set_material(value);
     // @@protoc_insertion_point(field_set:tracerr.Scene.Rectangle.material)
   }
-  inline std::string *Scene_Rectangle::mutable_material() {
-    // @@protoc_insertion_point(field_mutable:tracerr.Scene.Rectangle.material)
-    return _internal_mutable_material();
+
+  // optional bool custom_material_enabled = 6 [default = false];
+  inline bool Scene_Rectangle::_internal_has_custom_material_enabled() const {
+    bool value = (_has_bits_[0] & 0x00000040u) != 0;
+    return value;
   }
-  inline const std::string &Scene_Rectangle::_internal_material() const {
-    return material_.Get();
+  inline bool Scene_Rectangle::has_custom_material_enabled() const {
+    return _internal_has_custom_material_enabled();
   }
-  inline void Scene_Rectangle::_internal_set_material(const std::string &value) {
-    _has_bits_[0] |= 0x00000001u;
-    material_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+  inline void Scene_Rectangle::clear_custom_material_enabled() {
+    custom_material_enabled_ = false;
+    _has_bits_[0] &= ~0x00000040u;
   }
-  inline void Scene_Rectangle::set_material(std::string &&value) {
-    _has_bits_[0] |= 0x00000001u;
-    material_.Set(
-            &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
-    // @@protoc_insertion_point(field_set_rvalue:tracerr.Scene.Rectangle.material)
+  inline bool Scene_Rectangle::_internal_custom_material_enabled() const {
+    return custom_material_enabled_;
   }
-  inline void Scene_Rectangle::set_material(const char *value) {
-    GOOGLE_DCHECK(value != nullptr);
-    _has_bits_[0] |= 0x00000001u;
-    material_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
-                  GetArena());
-    // @@protoc_insertion_point(field_set_char:tracerr.Scene.Rectangle.material)
+  inline bool Scene_Rectangle::custom_material_enabled() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Rectangle.custom_material_enabled)
+    return _internal_custom_material_enabled();
   }
-  inline void Scene_Rectangle::set_material(const char *value,
-                                            size_t size) {
-    _has_bits_[0] |= 0x00000001u;
-    material_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(reinterpret_cast<const char *>(value), size), GetArena());
-    // @@protoc_insertion_point(field_set_pointer:tracerr.Scene.Rectangle.material)
+  inline void Scene_Rectangle::_internal_set_custom_material_enabled(bool value) {
+    _has_bits_[0] |= 0x00000040u;
+    custom_material_enabled_ = value;
   }
-  inline std::string *Scene_Rectangle::_internal_mutable_material() {
-    _has_bits_[0] |= 0x00000001u;
-    return material_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  inline void Scene_Rectangle::set_custom_material_enabled(bool value) {
+    _internal_set_custom_material_enabled(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Rectangle.custom_material_enabled)
   }
-  inline std::string *Scene_Rectangle::release_material() {
-    // @@protoc_insertion_point(field_release:tracerr.Scene.Rectangle.material)
-    if (!_internal_has_material()) {
-      return nullptr;
+
+  // optional .tracerr.Scene.Material custom_material = 7;
+  inline bool Scene_Rectangle::_internal_has_custom_material() const {
+    bool value = (_has_bits_[0] & 0x00000010u) != 0;
+    PROTOBUF_ASSUME(!value || custom_material_ != nullptr);
+    return value;
+  }
+  inline bool Scene_Rectangle::has_custom_material() const {
+    return _internal_has_custom_material();
+  }
+  inline void Scene_Rectangle::clear_custom_material() {
+    if (custom_material_ != nullptr) custom_material_->Clear();
+    _has_bits_[0] &= ~0x00000010u;
+  }
+  inline const ::tracerr::Scene_Material &Scene_Rectangle::_internal_custom_material() const {
+    const ::tracerr::Scene_Material *p = custom_material_;
+    return p != nullptr ? *p : *reinterpret_cast<const ::tracerr::Scene_Material *>(&::tracerr::_Scene_Material_default_instance_);
+  }
+  inline const ::tracerr::Scene_Material &Scene_Rectangle::custom_material() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Rectangle.custom_material)
+    return _internal_custom_material();
+  }
+  inline void Scene_Rectangle::unsafe_arena_set_allocated_custom_material(
+          ::tracerr::Scene_Material *custom_material) {
+    if (GetArena() == nullptr) {
+      delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite *>(custom_material_);
     }
-    _has_bits_[0] &= ~0x00000001u;
-    return material_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  }
-  inline void Scene_Rectangle::set_allocated_material(std::string *material) {
-    if (material != nullptr) {
-      _has_bits_[0] |= 0x00000001u;
+    custom_material_ = custom_material;
+    if (custom_material) {
+      _has_bits_[0] |= 0x00000010u;
     } else {
-      _has_bits_[0] &= ~0x00000001u;
+      _has_bits_[0] &= ~0x00000010u;
     }
-    material_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), material,
-                           GetArena());
-    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Rectangle.material)
+    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Rectangle.custom_material)
   }
-  inline std::string *Scene_Rectangle::unsafe_arena_release_material() {
-    // @@protoc_insertion_point(field_unsafe_arena_release:tracerr.Scene.Rectangle.material)
-    GOOGLE_DCHECK(GetArena() != nullptr);
-    _has_bits_[0] &= ~0x00000001u;
-    return material_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-                                        GetArena());
+  inline ::tracerr::Scene_Material *Scene_Rectangle::release_custom_material() {
+    auto temp = unsafe_arena_release_custom_material();
+    if (GetArena() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    return temp;
   }
-  inline void Scene_Rectangle::unsafe_arena_set_allocated_material(
-          std::string *material) {
-    GOOGLE_DCHECK(GetArena() != nullptr);
-    if (material != nullptr) {
-      _has_bits_[0] |= 0x00000001u;
+  inline ::tracerr::Scene_Material *Scene_Rectangle::unsafe_arena_release_custom_material() {
+    // @@protoc_insertion_point(field_release:tracerr.Scene.Rectangle.custom_material)
+    _has_bits_[0] &= ~0x00000010u;
+    ::tracerr::Scene_Material *temp = custom_material_;
+    custom_material_ = nullptr;
+    return temp;
+  }
+  inline ::tracerr::Scene_Material *Scene_Rectangle::_internal_mutable_custom_material() {
+    _has_bits_[0] |= 0x00000010u;
+    if (custom_material_ == nullptr) {
+      auto *p = CreateMaybeMessage<::tracerr::Scene_Material>(GetArena());
+      custom_material_ = p;
+    }
+    return custom_material_;
+  }
+  inline ::tracerr::Scene_Material *Scene_Rectangle::mutable_custom_material() {
+    // @@protoc_insertion_point(field_mutable:tracerr.Scene.Rectangle.custom_material)
+    return _internal_mutable_custom_material();
+  }
+  inline void Scene_Rectangle::set_allocated_custom_material(::tracerr::Scene_Material *custom_material) {
+    ::PROTOBUF_NAMESPACE_ID::Arena *message_arena = GetArena();
+    if (message_arena == nullptr) {
+      delete custom_material_;
+    }
+    if (custom_material) {
+      ::PROTOBUF_NAMESPACE_ID::Arena *submessage_arena =
+              ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(custom_material);
+      if (message_arena != submessage_arena) {
+        custom_material = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+                message_arena, custom_material, submessage_arena);
+      }
+      _has_bits_[0] |= 0x00000010u;
     } else {
-      _has_bits_[0] &= ~0x00000001u;
+      _has_bits_[0] &= ~0x00000010u;
     }
-    material_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-                                      material, GetArena());
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Rectangle.material)
+    custom_material_ = custom_material;
+    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Rectangle.custom_material)
   }
 
   // -------------------------------------------------------------------
@@ -3137,101 +4501,38 @@ private:
     // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Obj.fname)
   }
 
-  // required string material = 2;
+  // optional .tracerr.Scene.MaterialType material = 2;
   inline bool Scene_Obj::_internal_has_material() const {
-    bool value = (_has_bits_[0] & 0x00000002u) != 0;
+    bool value = (_has_bits_[0] & 0x00000008u) != 0;
     return value;
   }
   inline bool Scene_Obj::has_material() const {
     return _internal_has_material();
   }
   inline void Scene_Obj::clear_material() {
-    material_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-    _has_bits_[0] &= ~0x00000002u;
+    material_ = 0;
+    _has_bits_[0] &= ~0x00000008u;
   }
-  inline const std::string &Scene_Obj::material() const {
+  inline ::tracerr::Scene_MaterialType Scene_Obj::_internal_material() const {
+    return static_cast<::tracerr::Scene_MaterialType>(material_);
+  }
+  inline ::tracerr::Scene_MaterialType Scene_Obj::material() const {
     // @@protoc_insertion_point(field_get:tracerr.Scene.Obj.material)
     return _internal_material();
   }
-  inline void Scene_Obj::set_material(const std::string &value) {
+  inline void Scene_Obj::_internal_set_material(::tracerr::Scene_MaterialType value) {
+    assert(::tracerr::Scene_MaterialType_IsValid(value));
+    _has_bits_[0] |= 0x00000008u;
+    material_ = value;
+  }
+  inline void Scene_Obj::set_material(::tracerr::Scene_MaterialType value) {
     _internal_set_material(value);
     // @@protoc_insertion_point(field_set:tracerr.Scene.Obj.material)
-  }
-  inline std::string *Scene_Obj::mutable_material() {
-    // @@protoc_insertion_point(field_mutable:tracerr.Scene.Obj.material)
-    return _internal_mutable_material();
-  }
-  inline const std::string &Scene_Obj::_internal_material() const {
-    return material_.Get();
-  }
-  inline void Scene_Obj::_internal_set_material(const std::string &value) {
-    _has_bits_[0] |= 0x00000002u;
-    material_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
-  }
-  inline void Scene_Obj::set_material(std::string &&value) {
-    _has_bits_[0] |= 0x00000002u;
-    material_.Set(
-            &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
-    // @@protoc_insertion_point(field_set_rvalue:tracerr.Scene.Obj.material)
-  }
-  inline void Scene_Obj::set_material(const char *value) {
-    GOOGLE_DCHECK(value != nullptr);
-    _has_bits_[0] |= 0x00000002u;
-    material_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
-                  GetArena());
-    // @@protoc_insertion_point(field_set_char:tracerr.Scene.Obj.material)
-  }
-  inline void Scene_Obj::set_material(const char *value,
-                                      size_t size) {
-    _has_bits_[0] |= 0x00000002u;
-    material_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(reinterpret_cast<const char *>(value), size), GetArena());
-    // @@protoc_insertion_point(field_set_pointer:tracerr.Scene.Obj.material)
-  }
-  inline std::string *Scene_Obj::_internal_mutable_material() {
-    _has_bits_[0] |= 0x00000002u;
-    return material_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  }
-  inline std::string *Scene_Obj::release_material() {
-    // @@protoc_insertion_point(field_release:tracerr.Scene.Obj.material)
-    if (!_internal_has_material()) {
-      return nullptr;
-    }
-    _has_bits_[0] &= ~0x00000002u;
-    return material_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  }
-  inline void Scene_Obj::set_allocated_material(std::string *material) {
-    if (material != nullptr) {
-      _has_bits_[0] |= 0x00000002u;
-    } else {
-      _has_bits_[0] &= ~0x00000002u;
-    }
-    material_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), material,
-                           GetArena());
-    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Obj.material)
-  }
-  inline std::string *Scene_Obj::unsafe_arena_release_material() {
-    // @@protoc_insertion_point(field_unsafe_arena_release:tracerr.Scene.Obj.material)
-    GOOGLE_DCHECK(GetArena() != nullptr);
-    _has_bits_[0] &= ~0x00000002u;
-    return material_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-                                        GetArena());
-  }
-  inline void Scene_Obj::unsafe_arena_set_allocated_material(
-          std::string *material) {
-    GOOGLE_DCHECK(GetArena() != nullptr);
-    if (material != nullptr) {
-      _has_bits_[0] |= 0x00000002u;
-    } else {
-      _has_bits_[0] &= ~0x00000002u;
-    }
-    material_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-                                      material, GetArena());
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Obj.material)
   }
 
   // optional .tracerr.Scene.Pos translation = 3;
   inline bool Scene_Obj::_internal_has_translation() const {
-    bool value = (_has_bits_[0] & 0x00000004u) != 0;
+    bool value = (_has_bits_[0] & 0x00000002u) != 0;
     PROTOBUF_ASSUME(!value || translation_ != nullptr);
     return value;
   }
@@ -3240,7 +4541,7 @@ private:
   }
   inline void Scene_Obj::clear_translation() {
     if (translation_ != nullptr) translation_->Clear();
-    _has_bits_[0] &= ~0x00000004u;
+    _has_bits_[0] &= ~0x00000002u;
   }
   inline const ::tracerr::Scene_Pos &Scene_Obj::_internal_translation() const {
     const ::tracerr::Scene_Pos *p = translation_;
@@ -3257,9 +4558,9 @@ private:
     }
     translation_ = translation;
     if (translation) {
-      _has_bits_[0] |= 0x00000004u;
+      _has_bits_[0] |= 0x00000002u;
     } else {
-      _has_bits_[0] &= ~0x00000004u;
+      _has_bits_[0] &= ~0x00000002u;
     }
     // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Obj.translation)
   }
@@ -3272,13 +4573,13 @@ private:
   }
   inline ::tracerr::Scene_Pos *Scene_Obj::unsafe_arena_release_translation() {
     // @@protoc_insertion_point(field_release:tracerr.Scene.Obj.translation)
-    _has_bits_[0] &= ~0x00000004u;
+    _has_bits_[0] &= ~0x00000002u;
     ::tracerr::Scene_Pos *temp = translation_;
     translation_ = nullptr;
     return temp;
   }
   inline ::tracerr::Scene_Pos *Scene_Obj::_internal_mutable_translation() {
-    _has_bits_[0] |= 0x00000004u;
+    _has_bits_[0] |= 0x00000002u;
     if (translation_ == nullptr) {
       auto *p = CreateMaybeMessage<::tracerr::Scene_Pos>(GetArena());
       translation_ = p;
@@ -3301,12 +4602,748 @@ private:
         translation = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
                 message_arena, translation, submessage_arena);
       }
+      _has_bits_[0] |= 0x00000002u;
+    } else {
+      _has_bits_[0] &= ~0x00000002u;
+    }
+    translation_ = translation;
+    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Obj.translation)
+  }
+
+  // optional bool custom_material_enabled = 4 [default = false];
+  inline bool Scene_Obj::_internal_has_custom_material_enabled() const {
+    bool value = (_has_bits_[0] & 0x00000010u) != 0;
+    return value;
+  }
+  inline bool Scene_Obj::has_custom_material_enabled() const {
+    return _internal_has_custom_material_enabled();
+  }
+  inline void Scene_Obj::clear_custom_material_enabled() {
+    custom_material_enabled_ = false;
+    _has_bits_[0] &= ~0x00000010u;
+  }
+  inline bool Scene_Obj::_internal_custom_material_enabled() const {
+    return custom_material_enabled_;
+  }
+  inline bool Scene_Obj::custom_material_enabled() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Obj.custom_material_enabled)
+    return _internal_custom_material_enabled();
+  }
+  inline void Scene_Obj::_internal_set_custom_material_enabled(bool value) {
+    _has_bits_[0] |= 0x00000010u;
+    custom_material_enabled_ = value;
+  }
+  inline void Scene_Obj::set_custom_material_enabled(bool value) {
+    _internal_set_custom_material_enabled(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Obj.custom_material_enabled)
+  }
+
+  // optional .tracerr.Scene.Material custom_material = 5;
+  inline bool Scene_Obj::_internal_has_custom_material() const {
+    bool value = (_has_bits_[0] & 0x00000004u) != 0;
+    PROTOBUF_ASSUME(!value || custom_material_ != nullptr);
+    return value;
+  }
+  inline bool Scene_Obj::has_custom_material() const {
+    return _internal_has_custom_material();
+  }
+  inline void Scene_Obj::clear_custom_material() {
+    if (custom_material_ != nullptr) custom_material_->Clear();
+    _has_bits_[0] &= ~0x00000004u;
+  }
+  inline const ::tracerr::Scene_Material &Scene_Obj::_internal_custom_material() const {
+    const ::tracerr::Scene_Material *p = custom_material_;
+    return p != nullptr ? *p : *reinterpret_cast<const ::tracerr::Scene_Material *>(&::tracerr::_Scene_Material_default_instance_);
+  }
+  inline const ::tracerr::Scene_Material &Scene_Obj::custom_material() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Obj.custom_material)
+    return _internal_custom_material();
+  }
+  inline void Scene_Obj::unsafe_arena_set_allocated_custom_material(
+          ::tracerr::Scene_Material *custom_material) {
+    if (GetArena() == nullptr) {
+      delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite *>(custom_material_);
+    }
+    custom_material_ = custom_material;
+    if (custom_material) {
       _has_bits_[0] |= 0x00000004u;
     } else {
       _has_bits_[0] &= ~0x00000004u;
     }
-    translation_ = translation;
-    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Obj.translation)
+    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Obj.custom_material)
+  }
+  inline ::tracerr::Scene_Material *Scene_Obj::release_custom_material() {
+    auto temp = unsafe_arena_release_custom_material();
+    if (GetArena() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    return temp;
+  }
+  inline ::tracerr::Scene_Material *Scene_Obj::unsafe_arena_release_custom_material() {
+    // @@protoc_insertion_point(field_release:tracerr.Scene.Obj.custom_material)
+    _has_bits_[0] &= ~0x00000004u;
+    ::tracerr::Scene_Material *temp = custom_material_;
+    custom_material_ = nullptr;
+    return temp;
+  }
+  inline ::tracerr::Scene_Material *Scene_Obj::_internal_mutable_custom_material() {
+    _has_bits_[0] |= 0x00000004u;
+    if (custom_material_ == nullptr) {
+      auto *p = CreateMaybeMessage<::tracerr::Scene_Material>(GetArena());
+      custom_material_ = p;
+    }
+    return custom_material_;
+  }
+  inline ::tracerr::Scene_Material *Scene_Obj::mutable_custom_material() {
+    // @@protoc_insertion_point(field_mutable:tracerr.Scene.Obj.custom_material)
+    return _internal_mutable_custom_material();
+  }
+  inline void Scene_Obj::set_allocated_custom_material(::tracerr::Scene_Material *custom_material) {
+    ::PROTOBUF_NAMESPACE_ID::Arena *message_arena = GetArena();
+    if (message_arena == nullptr) {
+      delete custom_material_;
+    }
+    if (custom_material) {
+      ::PROTOBUF_NAMESPACE_ID::Arena *submessage_arena =
+              ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(custom_material);
+      if (message_arena != submessage_arena) {
+        custom_material = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+                message_arena, custom_material, submessage_arena);
+      }
+      _has_bits_[0] |= 0x00000004u;
+    } else {
+      _has_bits_[0] &= ~0x00000004u;
+    }
+    custom_material_ = custom_material;
+    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Obj.custom_material)
+  }
+
+  // -------------------------------------------------------------------
+
+  // Scene_Color
+
+  // required int32 r = 1;
+  inline bool Scene_Color::_internal_has_r() const {
+    bool value = (_has_bits_[0] & 0x00000001u) != 0;
+    return value;
+  }
+  inline bool Scene_Color::has_r() const {
+    return _internal_has_r();
+  }
+  inline void Scene_Color::clear_r() {
+    r_ = 0;
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::int32 Scene_Color::_internal_r() const {
+    return r_;
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::int32 Scene_Color::r() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Color.r)
+    return _internal_r();
+  }
+  inline void Scene_Color::_internal_set_r(::PROTOBUF_NAMESPACE_ID::int32 value) {
+    _has_bits_[0] |= 0x00000001u;
+    r_ = value;
+  }
+  inline void Scene_Color::set_r(::PROTOBUF_NAMESPACE_ID::int32 value) {
+    _internal_set_r(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Color.r)
+  }
+
+  // required int32 g = 2;
+  inline bool Scene_Color::_internal_has_g() const {
+    bool value = (_has_bits_[0] & 0x00000002u) != 0;
+    return value;
+  }
+  inline bool Scene_Color::has_g() const {
+    return _internal_has_g();
+  }
+  inline void Scene_Color::clear_g() {
+    g_ = 0;
+    _has_bits_[0] &= ~0x00000002u;
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::int32 Scene_Color::_internal_g() const {
+    return g_;
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::int32 Scene_Color::g() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Color.g)
+    return _internal_g();
+  }
+  inline void Scene_Color::_internal_set_g(::PROTOBUF_NAMESPACE_ID::int32 value) {
+    _has_bits_[0] |= 0x00000002u;
+    g_ = value;
+  }
+  inline void Scene_Color::set_g(::PROTOBUF_NAMESPACE_ID::int32 value) {
+    _internal_set_g(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Color.g)
+  }
+
+  // required int32 b = 3;
+  inline bool Scene_Color::_internal_has_b() const {
+    bool value = (_has_bits_[0] & 0x00000004u) != 0;
+    return value;
+  }
+  inline bool Scene_Color::has_b() const {
+    return _internal_has_b();
+  }
+  inline void Scene_Color::clear_b() {
+    b_ = 0;
+    _has_bits_[0] &= ~0x00000004u;
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::int32 Scene_Color::_internal_b() const {
+    return b_;
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::int32 Scene_Color::b() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Color.b)
+    return _internal_b();
+  }
+  inline void Scene_Color::_internal_set_b(::PROTOBUF_NAMESPACE_ID::int32 value) {
+    _has_bits_[0] |= 0x00000004u;
+    b_ = value;
+  }
+  inline void Scene_Color::set_b(::PROTOBUF_NAMESPACE_ID::int32 value) {
+    _internal_set_b(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Color.b)
+  }
+
+  // -------------------------------------------------------------------
+
+  // Scene_Albedo
+
+  // required float a0 = 1;
+  inline bool Scene_Albedo::_internal_has_a0() const {
+    bool value = (_has_bits_[0] & 0x00000001u) != 0;
+    return value;
+  }
+  inline bool Scene_Albedo::has_a0() const {
+    return _internal_has_a0();
+  }
+  inline void Scene_Albedo::clear_a0() {
+    a0_ = 0;
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  inline float Scene_Albedo::_internal_a0() const {
+    return a0_;
+  }
+  inline float Scene_Albedo::a0() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Albedo.a0)
+    return _internal_a0();
+  }
+  inline void Scene_Albedo::_internal_set_a0(float value) {
+    _has_bits_[0] |= 0x00000001u;
+    a0_ = value;
+  }
+  inline void Scene_Albedo::set_a0(float value) {
+    _internal_set_a0(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Albedo.a0)
+  }
+
+  // required float a1 = 2;
+  inline bool Scene_Albedo::_internal_has_a1() const {
+    bool value = (_has_bits_[0] & 0x00000002u) != 0;
+    return value;
+  }
+  inline bool Scene_Albedo::has_a1() const {
+    return _internal_has_a1();
+  }
+  inline void Scene_Albedo::clear_a1() {
+    a1_ = 0;
+    _has_bits_[0] &= ~0x00000002u;
+  }
+  inline float Scene_Albedo::_internal_a1() const {
+    return a1_;
+  }
+  inline float Scene_Albedo::a1() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Albedo.a1)
+    return _internal_a1();
+  }
+  inline void Scene_Albedo::_internal_set_a1(float value) {
+    _has_bits_[0] |= 0x00000002u;
+    a1_ = value;
+  }
+  inline void Scene_Albedo::set_a1(float value) {
+    _internal_set_a1(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Albedo.a1)
+  }
+
+  // required float a2 = 3;
+  inline bool Scene_Albedo::_internal_has_a2() const {
+    bool value = (_has_bits_[0] & 0x00000004u) != 0;
+    return value;
+  }
+  inline bool Scene_Albedo::has_a2() const {
+    return _internal_has_a2();
+  }
+  inline void Scene_Albedo::clear_a2() {
+    a2_ = 0;
+    _has_bits_[0] &= ~0x00000004u;
+  }
+  inline float Scene_Albedo::_internal_a2() const {
+    return a2_;
+  }
+  inline float Scene_Albedo::a2() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Albedo.a2)
+    return _internal_a2();
+  }
+  inline void Scene_Albedo::_internal_set_a2(float value) {
+    _has_bits_[0] |= 0x00000004u;
+    a2_ = value;
+  }
+  inline void Scene_Albedo::set_a2(float value) {
+    _internal_set_a2(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Albedo.a2)
+  }
+
+  // required float a3 = 4;
+  inline bool Scene_Albedo::_internal_has_a3() const {
+    bool value = (_has_bits_[0] & 0x00000008u) != 0;
+    return value;
+  }
+  inline bool Scene_Albedo::has_a3() const {
+    return _internal_has_a3();
+  }
+  inline void Scene_Albedo::clear_a3() {
+    a3_ = 0;
+    _has_bits_[0] &= ~0x00000008u;
+  }
+  inline float Scene_Albedo::_internal_a3() const {
+    return a3_;
+  }
+  inline float Scene_Albedo::a3() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Albedo.a3)
+    return _internal_a3();
+  }
+  inline void Scene_Albedo::_internal_set_a3(float value) {
+    _has_bits_[0] |= 0x00000008u;
+    a3_ = value;
+  }
+  inline void Scene_Albedo::set_a3(float value) {
+    _internal_set_a3(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Albedo.a3)
+  }
+
+  // -------------------------------------------------------------------
+
+  // Scene_Material_Color_diff
+
+  // required int32 r = 1;
+  inline bool Scene_Material_Color_diff::_internal_has_r() const {
+    bool value = (_has_bits_[0] & 0x00000001u) != 0;
+    return value;
+  }
+  inline bool Scene_Material_Color_diff::has_r() const {
+    return _internal_has_r();
+  }
+  inline void Scene_Material_Color_diff::clear_r() {
+    r_ = 0;
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::int32 Scene_Material_Color_diff::_internal_r() const {
+    return r_;
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::int32 Scene_Material_Color_diff::r() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Material.Color_diff.r)
+    return _internal_r();
+  }
+  inline void Scene_Material_Color_diff::_internal_set_r(::PROTOBUF_NAMESPACE_ID::int32 value) {
+    _has_bits_[0] |= 0x00000001u;
+    r_ = value;
+  }
+  inline void Scene_Material_Color_diff::set_r(::PROTOBUF_NAMESPACE_ID::int32 value) {
+    _internal_set_r(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Material.Color_diff.r)
+  }
+
+  // required int32 g = 2;
+  inline bool Scene_Material_Color_diff::_internal_has_g() const {
+    bool value = (_has_bits_[0] & 0x00000002u) != 0;
+    return value;
+  }
+  inline bool Scene_Material_Color_diff::has_g() const {
+    return _internal_has_g();
+  }
+  inline void Scene_Material_Color_diff::clear_g() {
+    g_ = 0;
+    _has_bits_[0] &= ~0x00000002u;
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::int32 Scene_Material_Color_diff::_internal_g() const {
+    return g_;
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::int32 Scene_Material_Color_diff::g() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Material.Color_diff.g)
+    return _internal_g();
+  }
+  inline void Scene_Material_Color_diff::_internal_set_g(::PROTOBUF_NAMESPACE_ID::int32 value) {
+    _has_bits_[0] |= 0x00000002u;
+    g_ = value;
+  }
+  inline void Scene_Material_Color_diff::set_g(::PROTOBUF_NAMESPACE_ID::int32 value) {
+    _internal_set_g(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Material.Color_diff.g)
+  }
+
+  // required int32 b = 3;
+  inline bool Scene_Material_Color_diff::_internal_has_b() const {
+    bool value = (_has_bits_[0] & 0x00000004u) != 0;
+    return value;
+  }
+  inline bool Scene_Material_Color_diff::has_b() const {
+    return _internal_has_b();
+  }
+  inline void Scene_Material_Color_diff::clear_b() {
+    b_ = 0;
+    _has_bits_[0] &= ~0x00000004u;
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::int32 Scene_Material_Color_diff::_internal_b() const {
+    return b_;
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::int32 Scene_Material_Color_diff::b() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Material.Color_diff.b)
+    return _internal_b();
+  }
+  inline void Scene_Material_Color_diff::_internal_set_b(::PROTOBUF_NAMESPACE_ID::int32 value) {
+    _has_bits_[0] |= 0x00000004u;
+    b_ = value;
+  }
+  inline void Scene_Material_Color_diff::set_b(::PROTOBUF_NAMESPACE_ID::int32 value) {
+    _internal_set_b(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Material.Color_diff.b)
+  }
+
+  // -------------------------------------------------------------------
+
+  // Scene_Material_Albedo
+
+  // required float a0 = 1;
+  inline bool Scene_Material_Albedo::_internal_has_a0() const {
+    bool value = (_has_bits_[0] & 0x00000001u) != 0;
+    return value;
+  }
+  inline bool Scene_Material_Albedo::has_a0() const {
+    return _internal_has_a0();
+  }
+  inline void Scene_Material_Albedo::clear_a0() {
+    a0_ = 0;
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  inline float Scene_Material_Albedo::_internal_a0() const {
+    return a0_;
+  }
+  inline float Scene_Material_Albedo::a0() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Material.Albedo.a0)
+    return _internal_a0();
+  }
+  inline void Scene_Material_Albedo::_internal_set_a0(float value) {
+    _has_bits_[0] |= 0x00000001u;
+    a0_ = value;
+  }
+  inline void Scene_Material_Albedo::set_a0(float value) {
+    _internal_set_a0(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Material.Albedo.a0)
+  }
+
+  // required float a1 = 2;
+  inline bool Scene_Material_Albedo::_internal_has_a1() const {
+    bool value = (_has_bits_[0] & 0x00000002u) != 0;
+    return value;
+  }
+  inline bool Scene_Material_Albedo::has_a1() const {
+    return _internal_has_a1();
+  }
+  inline void Scene_Material_Albedo::clear_a1() {
+    a1_ = 0;
+    _has_bits_[0] &= ~0x00000002u;
+  }
+  inline float Scene_Material_Albedo::_internal_a1() const {
+    return a1_;
+  }
+  inline float Scene_Material_Albedo::a1() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Material.Albedo.a1)
+    return _internal_a1();
+  }
+  inline void Scene_Material_Albedo::_internal_set_a1(float value) {
+    _has_bits_[0] |= 0x00000002u;
+    a1_ = value;
+  }
+  inline void Scene_Material_Albedo::set_a1(float value) {
+    _internal_set_a1(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Material.Albedo.a1)
+  }
+
+  // required float a2 = 3;
+  inline bool Scene_Material_Albedo::_internal_has_a2() const {
+    bool value = (_has_bits_[0] & 0x00000004u) != 0;
+    return value;
+  }
+  inline bool Scene_Material_Albedo::has_a2() const {
+    return _internal_has_a2();
+  }
+  inline void Scene_Material_Albedo::clear_a2() {
+    a2_ = 0;
+    _has_bits_[0] &= ~0x00000004u;
+  }
+  inline float Scene_Material_Albedo::_internal_a2() const {
+    return a2_;
+  }
+  inline float Scene_Material_Albedo::a2() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Material.Albedo.a2)
+    return _internal_a2();
+  }
+  inline void Scene_Material_Albedo::_internal_set_a2(float value) {
+    _has_bits_[0] |= 0x00000004u;
+    a2_ = value;
+  }
+  inline void Scene_Material_Albedo::set_a2(float value) {
+    _internal_set_a2(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Material.Albedo.a2)
+  }
+
+  // required float a3 = 4;
+  inline bool Scene_Material_Albedo::_internal_has_a3() const {
+    bool value = (_has_bits_[0] & 0x00000008u) != 0;
+    return value;
+  }
+  inline bool Scene_Material_Albedo::has_a3() const {
+    return _internal_has_a3();
+  }
+  inline void Scene_Material_Albedo::clear_a3() {
+    a3_ = 0;
+    _has_bits_[0] &= ~0x00000008u;
+  }
+  inline float Scene_Material_Albedo::_internal_a3() const {
+    return a3_;
+  }
+  inline float Scene_Material_Albedo::a3() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Material.Albedo.a3)
+    return _internal_a3();
+  }
+  inline void Scene_Material_Albedo::_internal_set_a3(float value) {
+    _has_bits_[0] |= 0x00000008u;
+    a3_ = value;
+  }
+  inline void Scene_Material_Albedo::set_a3(float value) {
+    _internal_set_a3(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Material.Albedo.a3)
+  }
+
+  // -------------------------------------------------------------------
+
+  // Scene_Material
+
+  // required .tracerr.Scene.Material.Color_diff color = 1;
+  inline bool Scene_Material::_internal_has_color() const {
+    bool value = (_has_bits_[0] & 0x00000001u) != 0;
+    PROTOBUF_ASSUME(!value || color_ != nullptr);
+    return value;
+  }
+  inline bool Scene_Material::has_color() const {
+    return _internal_has_color();
+  }
+  inline void Scene_Material::clear_color() {
+    if (color_ != nullptr) color_->Clear();
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  inline const ::tracerr::Scene_Material_Color_diff &Scene_Material::_internal_color() const {
+    const ::tracerr::Scene_Material_Color_diff *p = color_;
+    return p != nullptr ? *p : *reinterpret_cast<const ::tracerr::Scene_Material_Color_diff *>(&::tracerr::_Scene_Material_Color_diff_default_instance_);
+  }
+  inline const ::tracerr::Scene_Material_Color_diff &Scene_Material::color() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Material.color)
+    return _internal_color();
+  }
+  inline void Scene_Material::unsafe_arena_set_allocated_color(
+          ::tracerr::Scene_Material_Color_diff *color) {
+    if (GetArena() == nullptr) {
+      delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite *>(color_);
+    }
+    color_ = color;
+    if (color) {
+      _has_bits_[0] |= 0x00000001u;
+    } else {
+      _has_bits_[0] &= ~0x00000001u;
+    }
+    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Material.color)
+  }
+  inline ::tracerr::Scene_Material_Color_diff *Scene_Material::release_color() {
+    auto temp = unsafe_arena_release_color();
+    if (GetArena() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    return temp;
+  }
+  inline ::tracerr::Scene_Material_Color_diff *Scene_Material::unsafe_arena_release_color() {
+    // @@protoc_insertion_point(field_release:tracerr.Scene.Material.color)
+    _has_bits_[0] &= ~0x00000001u;
+    ::tracerr::Scene_Material_Color_diff *temp = color_;
+    color_ = nullptr;
+    return temp;
+  }
+  inline ::tracerr::Scene_Material_Color_diff *Scene_Material::_internal_mutable_color() {
+    _has_bits_[0] |= 0x00000001u;
+    if (color_ == nullptr) {
+      auto *p = CreateMaybeMessage<::tracerr::Scene_Material_Color_diff>(GetArena());
+      color_ = p;
+    }
+    return color_;
+  }
+  inline ::tracerr::Scene_Material_Color_diff *Scene_Material::mutable_color() {
+    // @@protoc_insertion_point(field_mutable:tracerr.Scene.Material.color)
+    return _internal_mutable_color();
+  }
+  inline void Scene_Material::set_allocated_color(::tracerr::Scene_Material_Color_diff *color) {
+    ::PROTOBUF_NAMESPACE_ID::Arena *message_arena = GetArena();
+    if (message_arena == nullptr) {
+      delete color_;
+    }
+    if (color) {
+      ::PROTOBUF_NAMESPACE_ID::Arena *submessage_arena =
+              ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(color);
+      if (message_arena != submessage_arena) {
+        color = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+                message_arena, color, submessage_arena);
+      }
+      _has_bits_[0] |= 0x00000001u;
+    } else {
+      _has_bits_[0] &= ~0x00000001u;
+    }
+    color_ = color;
+    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Material.color)
+  }
+
+  // required .tracerr.Scene.Material.Albedo albedo = 2;
+  inline bool Scene_Material::_internal_has_albedo() const {
+    bool value = (_has_bits_[0] & 0x00000002u) != 0;
+    PROTOBUF_ASSUME(!value || albedo_ != nullptr);
+    return value;
+  }
+  inline bool Scene_Material::has_albedo() const {
+    return _internal_has_albedo();
+  }
+  inline void Scene_Material::clear_albedo() {
+    if (albedo_ != nullptr) albedo_->Clear();
+    _has_bits_[0] &= ~0x00000002u;
+  }
+  inline const ::tracerr::Scene_Material_Albedo &Scene_Material::_internal_albedo() const {
+    const ::tracerr::Scene_Material_Albedo *p = albedo_;
+    return p != nullptr ? *p : *reinterpret_cast<const ::tracerr::Scene_Material_Albedo *>(&::tracerr::_Scene_Material_Albedo_default_instance_);
+  }
+  inline const ::tracerr::Scene_Material_Albedo &Scene_Material::albedo() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Material.albedo)
+    return _internal_albedo();
+  }
+  inline void Scene_Material::unsafe_arena_set_allocated_albedo(
+          ::tracerr::Scene_Material_Albedo *albedo) {
+    if (GetArena() == nullptr) {
+      delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite *>(albedo_);
+    }
+    albedo_ = albedo;
+    if (albedo) {
+      _has_bits_[0] |= 0x00000002u;
+    } else {
+      _has_bits_[0] &= ~0x00000002u;
+    }
+    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.Material.albedo)
+  }
+  inline ::tracerr::Scene_Material_Albedo *Scene_Material::release_albedo() {
+    auto temp = unsafe_arena_release_albedo();
+    if (GetArena() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    return temp;
+  }
+  inline ::tracerr::Scene_Material_Albedo *Scene_Material::unsafe_arena_release_albedo() {
+    // @@protoc_insertion_point(field_release:tracerr.Scene.Material.albedo)
+    _has_bits_[0] &= ~0x00000002u;
+    ::tracerr::Scene_Material_Albedo *temp = albedo_;
+    albedo_ = nullptr;
+    return temp;
+  }
+  inline ::tracerr::Scene_Material_Albedo *Scene_Material::_internal_mutable_albedo() {
+    _has_bits_[0] |= 0x00000002u;
+    if (albedo_ == nullptr) {
+      auto *p = CreateMaybeMessage<::tracerr::Scene_Material_Albedo>(GetArena());
+      albedo_ = p;
+    }
+    return albedo_;
+  }
+  inline ::tracerr::Scene_Material_Albedo *Scene_Material::mutable_albedo() {
+    // @@protoc_insertion_point(field_mutable:tracerr.Scene.Material.albedo)
+    return _internal_mutable_albedo();
+  }
+  inline void Scene_Material::set_allocated_albedo(::tracerr::Scene_Material_Albedo *albedo) {
+    ::PROTOBUF_NAMESPACE_ID::Arena *message_arena = GetArena();
+    if (message_arena == nullptr) {
+      delete albedo_;
+    }
+    if (albedo) {
+      ::PROTOBUF_NAMESPACE_ID::Arena *submessage_arena =
+              ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(albedo);
+      if (message_arena != submessage_arena) {
+        albedo = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+                message_arena, albedo, submessage_arena);
+      }
+      _has_bits_[0] |= 0x00000002u;
+    } else {
+      _has_bits_[0] &= ~0x00000002u;
+    }
+    albedo_ = albedo;
+    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.Material.albedo)
+  }
+
+  // required float specular_comp = 3;
+  inline bool Scene_Material::_internal_has_specular_comp() const {
+    bool value = (_has_bits_[0] & 0x00000004u) != 0;
+    return value;
+  }
+  inline bool Scene_Material::has_specular_comp() const {
+    return _internal_has_specular_comp();
+  }
+  inline void Scene_Material::clear_specular_comp() {
+    specular_comp_ = 0;
+    _has_bits_[0] &= ~0x00000004u;
+  }
+  inline float Scene_Material::_internal_specular_comp() const {
+    return specular_comp_;
+  }
+  inline float Scene_Material::specular_comp() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Material.specular_comp)
+    return _internal_specular_comp();
+  }
+  inline void Scene_Material::_internal_set_specular_comp(float value) {
+    _has_bits_[0] |= 0x00000004u;
+    specular_comp_ = value;
+  }
+  inline void Scene_Material::set_specular_comp(float value) {
+    _internal_set_specular_comp(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Material.specular_comp)
+  }
+
+  // required float refractive_index = 4;
+  inline bool Scene_Material::_internal_has_refractive_index() const {
+    bool value = (_has_bits_[0] & 0x00000008u) != 0;
+    return value;
+  }
+  inline bool Scene_Material::has_refractive_index() const {
+    return _internal_has_refractive_index();
+  }
+  inline void Scene_Material::clear_refractive_index() {
+    refractive_index_ = 0;
+    _has_bits_[0] &= ~0x00000008u;
+  }
+  inline float Scene_Material::_internal_refractive_index() const {
+    return refractive_index_;
+  }
+  inline float Scene_Material::refractive_index() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.Material.refractive_index)
+    return _internal_refractive_index();
+  }
+  inline void Scene_Material::_internal_set_refractive_index(float value) {
+    _has_bits_[0] |= 0x00000008u;
+    refractive_index_ = value;
+  }
+  inline void Scene_Material::set_refractive_index(float value) {
+    _internal_set_refractive_index(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.Material.refractive_index)
   }
 
   // -------------------------------------------------------------------
@@ -3315,7 +5352,7 @@ private:
 
   // required int32 width = 1;
   inline bool Scene::_internal_has_width() const {
-    bool value = (_has_bits_[0] & 0x00000002u) != 0;
+    bool value = (_has_bits_[0] & 0x00000004u) != 0;
     return value;
   }
   inline bool Scene::has_width() const {
@@ -3323,7 +5360,7 @@ private:
   }
   inline void Scene::clear_width() {
     width_ = 0;
-    _has_bits_[0] &= ~0x00000002u;
+    _has_bits_[0] &= ~0x00000004u;
   }
   inline ::PROTOBUF_NAMESPACE_ID::int32 Scene::_internal_width() const {
     return width_;
@@ -3333,7 +5370,7 @@ private:
     return _internal_width();
   }
   inline void Scene::_internal_set_width(::PROTOBUF_NAMESPACE_ID::int32 value) {
-    _has_bits_[0] |= 0x00000002u;
+    _has_bits_[0] |= 0x00000004u;
     width_ = value;
   }
   inline void Scene::set_width(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -3343,7 +5380,7 @@ private:
 
   // required int32 height = 2;
   inline bool Scene::_internal_has_height() const {
-    bool value = (_has_bits_[0] & 0x00000004u) != 0;
+    bool value = (_has_bits_[0] & 0x00000008u) != 0;
     return value;
   }
   inline bool Scene::has_height() const {
@@ -3351,7 +5388,7 @@ private:
   }
   inline void Scene::clear_height() {
     height_ = 0;
-    _has_bits_[0] &= ~0x00000004u;
+    _has_bits_[0] &= ~0x00000008u;
   }
   inline ::PROTOBUF_NAMESPACE_ID::int32 Scene::_internal_height() const {
     return height_;
@@ -3361,7 +5398,7 @@ private:
     return _internal_height();
   }
   inline void Scene::_internal_set_height(::PROTOBUF_NAMESPACE_ID::int32 value) {
-    _has_bits_[0] |= 0x00000004u;
+    _has_bits_[0] |= 0x00000008u;
     height_ = value;
   }
   inline void Scene::set_height(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -3371,7 +5408,7 @@ private:
 
   // required bool saveFile = 3 [default = true];
   inline bool Scene::_internal_has_savefile() const {
-    bool value = (_has_bits_[0] & 0x00000008u) != 0;
+    bool value = (_has_bits_[0] & 0x00000020u) != 0;
     return value;
   }
   inline bool Scene::has_savefile() const {
@@ -3379,7 +5416,7 @@ private:
   }
   inline void Scene::clear_savefile() {
     savefile_ = true;
-    _has_bits_[0] &= ~0x00000008u;
+    _has_bits_[0] &= ~0x00000020u;
   }
   inline bool Scene::_internal_savefile() const {
     return savefile_;
@@ -3389,7 +5426,7 @@ private:
     return _internal_savefile();
   }
   inline void Scene::_internal_set_savefile(bool value) {
-    _has_bits_[0] |= 0x00000008u;
+    _has_bits_[0] |= 0x00000020u;
     savefile_ = value;
   }
   inline void Scene::set_savefile(bool value) {
@@ -3491,7 +5528,7 @@ private:
 
   // optional bool multiThread = 5 [default = true];
   inline bool Scene::_internal_has_multithread() const {
-    bool value = (_has_bits_[0] & 0x00000010u) != 0;
+    bool value = (_has_bits_[0] & 0x00000040u) != 0;
     return value;
   }
   inline bool Scene::has_multithread() const {
@@ -3499,7 +5536,7 @@ private:
   }
   inline void Scene::clear_multithread() {
     multithread_ = true;
-    _has_bits_[0] &= ~0x00000010u;
+    _has_bits_[0] &= ~0x00000040u;
   }
   inline bool Scene::_internal_multithread() const {
     return multithread_;
@@ -3509,7 +5546,7 @@ private:
     return _internal_multithread();
   }
   inline void Scene::_internal_set_multithread(bool value) {
-    _has_bits_[0] |= 0x00000010u;
+    _has_bits_[0] |= 0x00000040u;
     multithread_ = value;
   }
   inline void Scene::set_multithread(bool value) {
@@ -3714,7 +5751,7 @@ private:
 
   // optional bool show_elapsed_time = 11 [default = true];
   inline bool Scene::_internal_has_show_elapsed_time() const {
-    bool value = (_has_bits_[0] & 0x00000020u) != 0;
+    bool value = (_has_bits_[0] & 0x00000080u) != 0;
     return value;
   }
   inline bool Scene::has_show_elapsed_time() const {
@@ -3722,7 +5759,7 @@ private:
   }
   inline void Scene::clear_show_elapsed_time() {
     show_elapsed_time_ = true;
-    _has_bits_[0] &= ~0x00000020u;
+    _has_bits_[0] &= ~0x00000080u;
   }
   inline bool Scene::_internal_show_elapsed_time() const {
     return show_elapsed_time_;
@@ -3732,7 +5769,7 @@ private:
     return _internal_show_elapsed_time();
   }
   inline void Scene::_internal_set_show_elapsed_time(bool value) {
-    _has_bits_[0] |= 0x00000020u;
+    _has_bits_[0] |= 0x00000080u;
     show_elapsed_time_ = value;
   }
   inline void Scene::set_show_elapsed_time(bool value) {
@@ -3740,9 +5777,127 @@ private:
     // @@protoc_insertion_point(field_set:tracerr.Scene.show_elapsed_time)
   }
 
+  // optional bool show_checkerboard = 12 [default = false];
+  inline bool Scene::_internal_has_show_checkerboard() const {
+    bool value = (_has_bits_[0] & 0x00000010u) != 0;
+    return value;
+  }
+  inline bool Scene::has_show_checkerboard() const {
+    return _internal_has_show_checkerboard();
+  }
+  inline void Scene::clear_show_checkerboard() {
+    show_checkerboard_ = false;
+    _has_bits_[0] &= ~0x00000010u;
+  }
+  inline bool Scene::_internal_show_checkerboard() const {
+    return show_checkerboard_;
+  }
+  inline bool Scene::show_checkerboard() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.show_checkerboard)
+    return _internal_show_checkerboard();
+  }
+  inline void Scene::_internal_set_show_checkerboard(bool value) {
+    _has_bits_[0] |= 0x00000010u;
+    show_checkerboard_ = value;
+  }
+  inline void Scene::set_show_checkerboard(bool value) {
+    _internal_set_show_checkerboard(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.show_checkerboard)
+  }
+
+  // optional .tracerr.Scene.Color background_color = 13;
+  inline bool Scene::_internal_has_background_color() const {
+    bool value = (_has_bits_[0] & 0x00000002u) != 0;
+    PROTOBUF_ASSUME(!value || background_color_ != nullptr);
+    return value;
+  }
+  inline bool Scene::has_background_color() const {
+    return _internal_has_background_color();
+  }
+  inline void Scene::clear_background_color() {
+    if (background_color_ != nullptr) background_color_->Clear();
+    _has_bits_[0] &= ~0x00000002u;
+  }
+  inline const ::tracerr::Scene_Color &Scene::_internal_background_color() const {
+    const ::tracerr::Scene_Color *p = background_color_;
+    return p != nullptr ? *p : *reinterpret_cast<const ::tracerr::Scene_Color *>(&::tracerr::_Scene_Color_default_instance_);
+  }
+  inline const ::tracerr::Scene_Color &Scene::background_color() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.background_color)
+    return _internal_background_color();
+  }
+  inline void Scene::unsafe_arena_set_allocated_background_color(
+          ::tracerr::Scene_Color *background_color) {
+    if (GetArena() == nullptr) {
+      delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite *>(background_color_);
+    }
+    background_color_ = background_color;
+    if (background_color) {
+      _has_bits_[0] |= 0x00000002u;
+    } else {
+      _has_bits_[0] &= ~0x00000002u;
+    }
+    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tracerr.Scene.background_color)
+  }
+  inline ::tracerr::Scene_Color *Scene::release_background_color() {
+    auto temp = unsafe_arena_release_background_color();
+    if (GetArena() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    return temp;
+  }
+  inline ::tracerr::Scene_Color *Scene::unsafe_arena_release_background_color() {
+    // @@protoc_insertion_point(field_release:tracerr.Scene.background_color)
+    _has_bits_[0] &= ~0x00000002u;
+    ::tracerr::Scene_Color *temp = background_color_;
+    background_color_ = nullptr;
+    return temp;
+  }
+  inline ::tracerr::Scene_Color *Scene::_internal_mutable_background_color() {
+    _has_bits_[0] |= 0x00000002u;
+    if (background_color_ == nullptr) {
+      auto *p = CreateMaybeMessage<::tracerr::Scene_Color>(GetArena());
+      background_color_ = p;
+    }
+    return background_color_;
+  }
+  inline ::tracerr::Scene_Color *Scene::mutable_background_color() {
+    // @@protoc_insertion_point(field_mutable:tracerr.Scene.background_color)
+    return _internal_mutable_background_color();
+  }
+  inline void Scene::set_allocated_background_color(::tracerr::Scene_Color *background_color) {
+    ::PROTOBUF_NAMESPACE_ID::Arena *message_arena = GetArena();
+    if (message_arena == nullptr) {
+      delete background_color_;
+    }
+    if (background_color) {
+      ::PROTOBUF_NAMESPACE_ID::Arena *submessage_arena =
+              ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(background_color);
+      if (message_arena != submessage_arena) {
+        background_color = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+                message_arena, background_color, submessage_arena);
+      }
+      _has_bits_[0] |= 0x00000002u;
+    } else {
+      _has_bits_[0] &= ~0x00000002u;
+    }
+    background_color_ = background_color;
+    // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.background_color)
+  }
+
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif// __GNUC__
+  // -------------------------------------------------------------------
+
+  // -------------------------------------------------------------------
+
+  // -------------------------------------------------------------------
+
+  // -------------------------------------------------------------------
+
+  // -------------------------------------------------------------------
+
   // -------------------------------------------------------------------
 
   // -------------------------------------------------------------------
@@ -3763,10 +5918,10 @@ private:
 PROTOBUF_NAMESPACE_OPEN
 
 template<>
-struct is_proto_enum<::tracerr::Scene_ShapeType> : ::std::true_type {};
+struct is_proto_enum<::tracerr::Scene_MaterialType> : ::std::true_type {};
 template<>
-inline const EnumDescriptor *GetEnumDescriptor<::tracerr::Scene_ShapeType>() {
-  return ::tracerr::Scene_ShapeType_descriptor();
+inline const EnumDescriptor *GetEnumDescriptor<::tracerr::Scene_MaterialType>() {
+  return ::tracerr::Scene_MaterialType_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

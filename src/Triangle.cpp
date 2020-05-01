@@ -52,3 +52,17 @@ xyz Triangle::GetNormal(const xyz &point) const {
 }
 Triangle::Triangle() : Shape({0, 0, 0}, Materials::red_rubber) {
 }
+shapeTypes Triangle::GetType() const {
+  return shapeTypes::tri;
+}
+const xyz &Triangle::GetP0_() const {
+  return p0_;
+}
+
+const xyz &Triangle::GetP1_() const {
+  return p1_;
+}
+
+const xyz &Triangle::GetP2_() const {
+  return p2_;
+}

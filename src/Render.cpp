@@ -40,18 +40,18 @@ bool Render::scene_intersect(xyz const &origin, xyz const &direction, xyz &hit, 
 
   // draw checkerboard floor plane
   float checkerboard_dist = std::numeric_limits<float>::max();
-  //  if (fabs(direction(1)) > 1e-3) {
-  //    float d = -(origin(1) + 1) / direction(1);// the checkerboard plane has equation y = -1
-  //    xyz pt = origin + direction * d;
-  //    // draws the checkerboard from -20 < x < 20 and -30 < z < 30
-  //    if (d > 0 && fabs(pt(0)) < 20 && pt(2) < 30 && pt(2) > -30 && d < shapes_dist) {
-  //      checkerboard_dist = d;
-  //      hit = pt;
-  //      normal = xyz({0, 1, 0});
-  //      mat = Materials::chessboard;
-  //      mat.color_f_ = (int(.5 * hit(0) + 1000) + int(.5 * hit(2))) & 1 ? rgb_f({.3, .3, .3}) : rgb_f({.3, .2, .1});
-  //    }
-  //  }
+  if (enable_chessboard_ && fabs(direction(1)) > 1e-3) {
+    float d = -(origin(1) + 1) / direction(1);// the checkerboard plane has equation y = -1
+    xyz pt = origin + direction * d;
+    // draws the checkerboard from -20 < x < 20 and -30 < z < 30
+    if (d > 0 && fabs(pt(0)) < 20 && pt(2) < 30 && pt(2) > -30 && d < shapes_dist) {
+      checkerboard_dist = d;
+      hit = pt;
+      normal = xyz({0, 1, 0});
+      mat = Materials::chessboard;
+      mat.color_f_ = (int(.5 * hit(0) + 1000) + int(.5 * hit(2))) & 1 ? rgb_f({.3, .3, .3}) : rgb_f({.3, .2, .1});
+    }
+  }
   return std::min(shapes_dist, checkerboard_dist) < 1000;
 }
 
@@ -90,7 +90,7 @@ rgb_f Render::cast_ray(const xyz &orig, const xyz &dir, size_t depth) {
     //    return Material::rgb2vec(background_.GetPixelColor({a,b}));
 
     // background color
-    return rgb_f({50.0 / 255.0, 180.0 / 255.0, 205.0 / 255.0});
+    return background_color_;
   } else {
 
     xyz reflect_dir = reflect(dir, normal);
@@ -169,7 +169,7 @@ void Render::RenderScene(std::vector<std::unique_ptr<Shape>> shapes) {
       rgb rgb_val = Material::vec2rgb(pix);
       image_.SetPixelColor({col, row}, rgb_val);
     }
-    std::cout << row << '\n';
+    //    std::cout << row << '\n';
   }
 }
 
@@ -215,7 +215,7 @@ void Render::RenderThread(int const &row_init, int const &row_n) {
       rgb rgb_val = Material::vec2rgb(pix);
       image_.SetPixelColor({col, row}, rgb_val);
     }
-    std::cout << row << '\n';
+    //    std::cout << row << '\n';
   }
 }
 

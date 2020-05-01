@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
   //  Render r2(width, height, {0, 0, 0}, std::move(lights));
   //
   //  //Bigger spheres
-  //  Sphere s1({-5, 0, -6}, 1, Materials::red_plastic);
+  //    Sphere s1({-5, 0, -6}, 1, Materials::red_plastic);
   //  Sphere s2({0, 0.5, -4}, 1.5, Materials::mirror);
   //  Sphere s3({-3, 0, -5}, 1, Materials::glass);
   //  Sphere s4({-5, 0, 3}, 1, Materials::green_rubber);

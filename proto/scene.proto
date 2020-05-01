@@ -9,42 +9,74 @@ message Scene {
   optional string fname = 4 [default = "RenderTest.png"];
   optional bool multiThread = 5 [default = true];
 
-  enum ShapeType {
-    tSphere = 0;
-    tTriangle = 1;
-    tRectangle = 2;
-  }
   message Pos {
     required float x = 1;
     required float y = 2;
     required float z = 3;
   }
   message Light{
-    required Pos p = 1;
+    required Pos position = 1;
     required float intensity = 2;
   }
   message Sphere{
-    required Pos p = 1;
+    required Pos position = 1;
     required float radius = 2;
-    required string material = 3;
+    optional MaterialType material = 3;
+    optional bool custom_material_enabled = 4 [default = false];
+    optional Material custom_material = 5;
   }
   message Triangle{
     required Pos p0 = 1;
     required Pos p1 = 2;
     required Pos p2 = 3;
-    required string material = 4;
+    optional MaterialType material = 4;
+    optional bool custom_material_enabled = 5 [default = false];
+    optional Material custom_material = 6;
   }
   message Rectangle{
     required Pos p0 = 1;
     required Pos p1 = 2;
     required Pos p2 = 3;
     required Pos p3 = 4;
-    required string material = 5;
+    optional MaterialType material = 5;
+    optional bool custom_material_enabled = 6 [default = false];
+    optional Material custom_material = 7;
   }
   message Obj{
     required string fname = 1;
-    required string material = 2;
+    optional MaterialType material = 2;
     optional Pos translation = 3;
+    optional bool custom_material_enabled = 4 [default = false];
+    optional Material custom_material = 5;
+  }
+  message Color{
+    required int32 r = 1;
+    required int32 g = 2;
+    required int32 b = 3;
+  }
+  message Albedo{
+    required float a0 = 1;
+    required float a1 = 2;
+    required float a2 = 3;
+    required float a3 = 4;
+  }
+  message Material{
+    message Color_diff{
+      required int32 r = 1;
+      required int32 g = 2;
+      required int32 b = 3;
+    }
+    message Albedo{
+      required float a0 = 1;
+      required float a1 = 2;
+      required float a2 = 3;
+      required float a3 = 4;
+    }
+    required Color_diff color = 1;
+    required Albedo albedo = 2;
+    required float specular_comp = 3;
+    required float refractive_index = 4;
+
   }
 
 
@@ -54,6 +86,22 @@ message Scene {
   repeated Rectangle rectangle = 9;
   repeated Obj obj = 10;
   optional bool show_elapsed_time = 11 [default = true];
+  optional bool show_checkerboard = 12 [default = false];
+  optional Color background_color = 13;
 
+
+  enum MaterialType{
+    ivory = 0;
+    red_rubber = 1;
+    green_rubber = 2;
+    blue_rubber = 3;
+    orange_rubber = 4;
+    pink_rubber = 5;
+    red_plastic = 6;
+    black_plastic = 7;
+    mirror = 8;
+    glass = 9;
+    chessboard = 10;
+  }
 
 }

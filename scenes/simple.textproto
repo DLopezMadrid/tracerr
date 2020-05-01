@@ -9,7 +9,7 @@ fname: "testProto.png"
 
 
 light{
-  p{
+  position{
     x: 0
     y: 5
     z: 0
@@ -18,23 +18,23 @@ light{
 }
 
 sphere{
-  p{
+  position{
     x: 0
     y: 0
     z: -4
   }
   radius: 1.5
-  material: "Materials::red_rubber"
+  material: red_rubber
 }
 
 sphere{
-  p{
+  position{
     x: 3
     y: 0
     z: -4
   }
   radius: 0.5
-  material: "Materials::blue_rubber"
+  material: blue_rubber
 }
 
 triangle{
@@ -53,7 +53,7 @@ triangle{
     y: 2
     z: -6
   }
-  material: "Materials::green_rubber"
+  material: green_rubber
 }
 
 rectangle{
@@ -77,7 +77,7 @@ rectangle{
     y: -4
     z: -6
   }
-  material: "Materials::orange_rubber"
+  material: orange_rubber
 }
 
 #obj{
@@ -97,5 +97,5 @@ obj{
     y: -0.5
     z: -6
   }
-  material: "Materials::pink_rubber"
+  material: pink_rubber
 }

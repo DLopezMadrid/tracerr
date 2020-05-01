@@ -12,6 +12,10 @@
 
 typedef Eigen::Vector3f xyz;
 
+enum shapeTypes { sph,
+                  tri,
+                  rec };
+
 // Pure virtual class to define the interface for all other shapes
 // For dynamic polymorphism
 class Shape {
@@ -20,9 +24,11 @@ class Shape {
 
   virtual bool RayIntersect(xyz const origin, xyz const direction, float &t0) const = 0;
   virtual xyz GetNormal(const xyz &point) const = 0;
+  virtual shapeTypes GetType() const = 0;
 
   xyz GetPos() const { return pos_; }
   Material GetMaterial() const { return material_; }
+  bool custom_material{false};
 
   // Since it is a pure virtual function, the destructor will also need to be virtual
   virtual ~Shape() = default;

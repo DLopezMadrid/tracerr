@@ -42,3 +42,22 @@ bool Rectangle::RayIntersect(xyz origin, xyz direction, float &t0) const {
 
   return (t1_intersect || t2_intersect);
 }
+shapeTypes Rectangle::GetType() const {
+  return shapeTypes::rec;
+}
+
+
+const xyz &Rectangle::GetP0_() const {
+  return p0_;
+}
+
+const xyz &Rectangle::GetP1_() const {
+  return p1_;
+}
+
+const xyz &Rectangle::GetP2_() const {
+  return p2_;
+}
+const xyz &Rectangle::GetP3_() const {
+  return p2_;
+}

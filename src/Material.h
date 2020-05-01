@@ -8,6 +8,7 @@
 #include <array>
 #include <cmath>
 #include <eigen3/Eigen/Core>
+#include <vector>
 
 typedef std::array<uint8_t, 3> rgb;
 typedef Eigen::Vector4f albedo;
@@ -48,6 +49,10 @@ struct Material {
 
     return Eigen::Vector3f{rf, gf, bf};
   }
+  //  inline bool operator==(const Material &lhs, const Material &rhs){
+  inline bool operator==(const Material &other) const {
+    return (other.color_f_ == color_f_ && other.albedo_ == albedo_ && other.specular_comp_ == specular_comp_ && other.refractive_index == refractive_index);
+  }
 };
 
 
@@ -64,6 +69,7 @@ namespace Materials {
   static Material mirror({255, 255, 255}, {0.0, 10.0, 0.80, 0.0}, 1500.0, 1.0);
   static Material glass({150, 180, 205}, {0.0, 0.50, 0.10, 0.8}, 125.0, 1.5);
   static Material chessboard({120, 80, 40}, {0.9, 0.10, 0.0, 0.0}, 10.0, 1.0);
+
 }// namespace Materials
 
 

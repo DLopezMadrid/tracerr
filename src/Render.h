@@ -41,15 +41,17 @@ class Render {
   xyz refract(const xyz &I, const xyz &N, const float eta_t, const float eta_i = 1.f);
   bool scene_intersect(xyz const &origin, xyz const &direction, xyz &hit, xyz &normal, Material &mat);
   rgb_f cast_ray(const xyz &orig, const xyz &dir, size_t depth = 0);
-
+  bool enable_chessboard_;
   Image image_;
   Image background_;
+  rgb_f background_color_{50.0 / 255.0, 180.0 / 255.0, 205.0 / 255.0};
   float fov_{M_PI / 3.0};
   xyz image_origin_;
   std::vector<std::unique_ptr<Shape>> shapes_;
   std::vector<Light> lights_;
   int width_;
   int height_;
+  friend class SceneManager;
 };
 
 
