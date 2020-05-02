@@ -4,6 +4,16 @@
 
 #include "SceneManager.h"
 
+// Protobuf docs and examples
+// https://developers.google.com/protocol-buffers/docs/reference/cpp-generated#fields
+// https://github.com/protocolbuffers/protobuf/tree/master/examples
+//
+//
+
+
+// Raytracing examples
+// https://github.com/VityasZV/tinyraytracer/blob/master/raytracing/raytracing.cpp
+
 SceneManager::SceneManager() {
   proto = std::make_unique<tracerr::Scene>();
 }

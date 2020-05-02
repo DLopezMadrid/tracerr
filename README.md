@@ -320,6 +320,11 @@ obj{
 - The raytracing can be run in series, in parallel using [OpenMP](https://en.wikipedia.org/wiki/OpenMP) or in parallel using our own thread pool implementation   
 ![](./img/render_call_diagram.png)
 
+#### SceneManager  
+- The scene manager is in charge of reading the scene from the protobuf text file, parse it, generate the required shapes sets up the render environment and call the render class  
+- It can also write to text protobufs but this is not a user facing feature yet. It was implemented for learning and debugging purposes only  
+- It is a friend class of Render, so it can access all the private members on it  
+
 #### Image
 - Holds & owns the image bitmap (pixels_) in the heap  
 - It is in charge of writing the color values to every pixel and to save the image to disk using an instance of ImageFile
