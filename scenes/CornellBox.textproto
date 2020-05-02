@@ -1,0 +1,343 @@
+# proto-file: ./../proto/scene.proto
+# proto-message: Scene
+
+height: 1000
+width: 1000
+saveFile: true
+fname: "Cornell.png"
+show_checkerboard: false
+ambient_light: 0.15
+
+background_color{
+  r: 255
+  g: 255
+  b: 255
+}
+
+light{
+  position{
+    x: 0
+    y: 2
+    z: -5
+  }
+  intensity: 1.15
+}
+
+
+
+
+
+#
+#light{
+#  position{
+#    x: 2
+#    y: 3
+#    z: 0
+#  }
+#  intensity: 1.25
+#}
+#floor
+
+rectangle{
+  p3{
+    x: -2
+    y: -2
+    z: 0
+  }
+  p2{
+    x: -2
+    y: -2
+    z: -8
+  }
+  p1{
+    x: 2
+    y: -2
+    z: -8
+  }
+  p0{
+    x: 2
+    y: -2
+    z: 0
+  }
+  custom_material_enabled: true
+  custom_material{
+    color{
+      r: 220
+      g: 220
+      b: 220
+    }
+    albedo{
+      a0: 0.9
+      a1: 0.001
+      a2: 0.1
+      a3: 0
+    }
+    specular_comp: 10
+    refractive_index: 1
+  }
+}
+# left wall
+rectangle{
+  p0{
+    x: -2
+    y: -2
+    z: 0
+  }
+  p1{
+    x: -2
+    y: -2
+    z: -8
+  }
+  p2{
+    x: -2
+    y: 3
+    z: -8
+  }
+  p3{
+    x: -2
+    y: 3
+    z: 0
+  }
+  custom_material_enabled: true
+  custom_material{
+    color{
+      r: 220
+      g: 0
+      b: 0
+    }
+    albedo{
+      a0: 0.9
+      a1: 0.001
+      a2: 0.01
+      a3: 0
+    }
+    specular_comp: 10
+    refractive_index: 1
+  }}
+
+# rear wall
+rectangle{
+  p0{
+    x: -2
+    y: -2
+    z: -8
+  }
+  p1{
+    x: -2
+    y: 3
+    z: -8
+  }
+  p2{
+    x: 2
+    y: 3
+    z: -8
+  }
+  p3{
+    x: 2
+    y: -2
+    z: -8
+  }
+  custom_material_enabled: true
+  custom_material{
+    color{
+      r: 220
+      g: 220
+      b: 220
+    }
+    albedo{
+      a0: 0.9
+      a1: 0.1
+      a2: 0.01
+      a3: 0
+    }
+    specular_comp: 1
+    refractive_index: 1
+  }
+}
+
+#right wall
+rectangle{
+  p0{
+    x: 2
+    y: -2
+    z: -8
+  }
+  p1{
+    x: 2
+    y: -2
+    z: 0
+  }
+  p2{
+    x: 2
+    y: 3
+    z: 0
+  }
+  p3{
+    x: 2
+    y: 3
+    z: -8
+  }
+  custom_material_enabled: true
+  custom_material{
+    color{
+      r: 0
+      g: 120
+      b: 220
+    }
+    albedo{
+      a0: 0.9
+      a1: 0.001
+      a2: 0.01
+      a3: 0
+    }
+    specular_comp: 10
+    refractive_index: 1
+  }
+}
+
+# top
+rectangle{
+  p0{
+    x: -2
+    y: 3
+    z: 0
+  }
+  p1{
+    x: -2
+    y: 3
+    z: -8
+  }
+  p2{
+    x: 2
+    y: 3
+    z: -8
+  }
+  p3{
+    x: 2
+    y: 3
+    z: 0
+  }
+  custom_material_enabled: true
+  custom_material{
+    color{
+      r: 0
+      g: 220
+      b: 0
+    }
+    albedo{
+      a0: 1.5
+      a1: 0.5
+      a2: 0.0
+      a3: 0
+    }
+    specular_comp: 100
+    refractive_index: 1
+  }
+}
+
+sphere{
+  position{
+    x: -1
+    y: -1.25
+    z: -4.5
+  }
+  radius: 0.75
+  custom_material_enabled: true
+  custom_material{
+    color{
+      r: 150
+      g: 180
+      b: 200
+    }
+    albedo{
+      a0: 0
+      a1: 0.5
+      a2: 0.1
+      a3: 0.8
+    }
+    specular_comp: 125
+    refractive_index: 1.5
+  }
+}
+
+sphere{
+  position{
+    x: 1.
+    y: -1.5
+    z: -4.5
+  }
+  radius: 0.5
+  material: mirror
+}
+
+
+# cam wall
+triangle{
+  p2{
+    x: -2
+    y: -2
+    z: -0
+  }
+  p1{
+    x: -2
+    y: 3
+    z: -0
+  }
+  p0{
+    x: 2
+    y: 3
+    z: -0
+  }
+  custom_material_enabled: true
+  custom_material{
+    color{
+      r: 220
+      g: 220
+      b: 220
+    }
+    albedo{
+      a0: 0.9
+      a1: 0.1
+      a2: 0.01
+      a3: 0
+    }
+    specular_comp: 1
+    refractive_index: 1
+  }
+}
+
+# cam wall
+triangle{
+  p0{
+    x: -2
+    y: -2
+    z: -0
+  }
+  p1{
+    x: 2
+    y: 3
+    z: -0
+  }
+
+  p2{
+    x: 2
+    y: -2
+    z: -0
+  }
+  custom_material_enabled: true
+  custom_material{
+    color{
+      r: 220
+      g: 220
+      b: 220
+    }
+    albedo{
+      a0: 0.9
+      a1: 0.1
+      a2: 0.01
+      a3: 0
+    }
+    specular_comp: 1
+    refractive_index: 1
+  }
+}

@@ -1,46 +1,313 @@
 # Tracerr
 ## A simple raytracing program
 
-![](./img/cover.png)
+![](./img/cover_multi.png)
 
 
-### Overview
+## Overview
 This program was done as the final project for the Udacity C++ Nanodegree.  
 The program supports rendering of spheres, triangles and rectangles as basic primitive shapes. It also includes the capability to render .obj 3D models.  
 The program is capable of simulating not only the basic Phong illumination model (ambient, diffusion and specular light) but also shadows, reflections and refractions  
+The scenes to render are stored in text protobufs that can be used to modify said scenes.  
 The code is inspired by [tinytracer](https://github.com/ssloy/tinyraytracer) by Dimitry Sokolov (specially some of the math behind raytracing). The rest of the code was done to practice the stuff that was covered during the nanodegree.    
 I also chose to use Eigen for the linear algebra due to its easy to use, speed and built-in methods. 
 
-### How to run
-First you will need to install [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) for the linear algebra operations  
- - Ubuntu: `sudo apt-get install libeigen3-dev`  
- - Other platforms: [Eigen website]()
-
+## Install dependencies 
+The instructions here are aimed for Ubuntu, for other platforms please check the library sites
+1. First you will need to install [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) for the linear algebra operations.    
+```sh   
+$ sudo apt-get install libeigen3-dev  
+```  
+2. Install [protobuf](https://github.com/protocolbuffers/protobuf)
+ ```sh   
+$ sudo apt-get install autoconf automake libtool curl make g++ unzip
+$ git clone https://github.com/protocolbuffers/protobuf.git
+$ cd protobuf
+$ git submodule update --init --recursive
+$ ./autogen.sh
+$ ./configure
+$ make
+$ make check
+$ sudo make install
+$ sudo ldconfig
+ ```  
+  Alternatively you can also use snap to install protobuf
+  - Install snap if you don't have it yet
+```sh   
+$ sudo apt update
+$ sudo apt install snapd
+```
+  - Proceed to install protobuf using it
+```sh   
+$ sudo snap install protobuf --classic
+ ```  
+ If you **change** the _scene.proto_ file, you **will need to rerun** the protobuf compiler. **If no changes** are made there is **no need to run this command**  
+  - In the project folder run this   
+```sh  
+$ protoc -I=./proto --cpp_out=./proto ./proto/scene.proto
+```
 It also uses the [STB library](https://github.com/nothings/stb) to encode the image files. The required files are already included in the repo (_include_ directory)  
-
-Choose the parameters that you desire within the _main.cpp_ file (image size, scene to render, etc...)  
-**NOTE**: bear in mind that in a i7 Skylake machine it takes around 25s to render the demo scene shown in the cover image above (2000px x 1000px) (400 randomly generated spheres + 3D duck model)   
-For **faster execution** reduce the number of randomly generated spheres or reduce the resolution (_main.cpp_ file - lines 24 - 26). You can also comment out the 3D duck rendering (main.cpp file - line 76)  
-For **single thread execution**, go to _main.cpp_ and swap the comments on lines 74 & 76   
-
-Once you have it installed you can compile with CMake and Make  
+## How to build
+Once you have all the dependencies installed you can compile the program with CMake and Make  
 **NOTE**: This code uses C++17 features  
-`mkdir build  `  
-`cd build  `  
-`cmake ..  `  
-`make  `  
-`./tracerr`    
-The resulting image will be saved in the build directory under the filename that you specify ("_RenderTest.png_" as default)
+```sh
+$ mkdir build    
+$ cd build    
+$ cmake ..    
+$ make    
+$ ./tracerr  
+```    
 
-### Code Overview
-The include folder contains the STB library files  
-The obj folder contains a sample 3D model to test the triangle mesh rendering  
-The src folder contains most of the code  
-The tests folder contains the gtest tests (WIP)  
+## How to run
+The program is launched from the terminal and takes the path to a prototext file as the only argument.  
+```sh
+$ ./tracerr {PATH_TO_PROTOTEXT_FILE}
+```  
+Example:
+```sh
+$ ./tracerr ./../scenes/simple.textproto
+```  
+In order to create a new the scene, you will need to make a new prototext file and follow the instructions in the next section
 
-#### Classes
+You can find some predefined scenes in the _./scene_ folder
+- simple.textproto: random scene that contains an element of every shape and an obj file
+- simple_spheres.textproto: another example with just a few spheres and a custom background color
+- sphere_field_with_duck.textproto: built on top of simple_spheres one but with 400 randomly generated smaller spheres and a duck 3D model
+- suzanne.textproto: just a simple obj 3D model on a plain background
 
-##### Render
+**NOTE**: In a i7 Skylake machine it takes around 25s to render the demo scene (_./scenes/sphere_field_with_duck.textproto_) shown in the cover image above (2000px x 1000px) (400 randomly generated spheres + 3D duck model)   
+
+For **faster execution** you can reduce the resolution (_width_ & _height_ parameters). You can also comment out any of the shapes in the scene config file   
+The resulting image will be saved in the build directory under the filename that you specify in the prototext file (_fname_ parameter)
+
+## Scene definition
+#### Scene configuration
+The protobuf schema for the scene files is defined in the _./proto/scene.proto_ file  
+The following fields are mandatory
+```protobuf.tmbundle
+ int32 width;
+ int32 height;
+ bool saveFile [default = true];
+```
+- width: image width in pixels  
+- height: image height in pixels
+- saveFile: bool to specify if you wish to save the image  
+
+There are also other scene configuration attributes that are optional
+```protobuf.tmbundle
+ string fname [default = "RenderTest.png"];
+ bool show_elapsed_time [default = true];
+ bool show_checkerboard [default = false];
+ Color background_color; 
+ float ambient_light;
+```
+ - fname: filename for the saved image
+ - show_elapsed_time: prints the time taken to render the scene to the console
+ - show_checkerboard: draws the checkerboard floor plane 
+ - background_color: specifies a custom background color using the Color type (see below)
+ - ambient_light: specifies the ambient light level (values 0 - 1)
+ #### Supporting types
+ There is a number of types created to make the object definition more structured
+ ```protobuf.tmbundle
+  message Pos {
+     required float x = 1;
+     required float y = 2;
+     required float z = 3;
+   }
+  message Color{
+    required int32 r = 1;
+    required int32 g = 2;
+    required int32 b = 3;
+  }
+  message Material{
+    message Color_diff{
+      required int32 r = 1;
+      required int32 g = 2;
+      required int32 b = 3;
+    }
+    message Albedo{
+      required float a0 = 1;
+      required float a1 = 2;
+      required float a2 = 3;
+      required float a3 = 4;
+    }
+    required Color_diff color = 1;
+    required Albedo albedo = 2;
+    required float specular_comp = 3;
+    required float refractive_index = 4;
+  }
+  enum MaterialType{
+    ivory = 0;
+    red_rubber = 1;
+    green_rubber = 2;
+    blue_rubber = 3;
+    orange_rubber = 4;
+    pink_rubber = 5;
+    red_plastic = 6;
+    black_plastic = 7;
+    mirror = 8;
+    glass = 9;
+    chessboard = 10;
+  }
+ ```
+- Pos: defines a cartesian (X, Y, Z) position in space
+- Color: defines an RGB color (0 - 255)
+- Material: describes a new material containing custom diffuse color, albedo, specular component and refractive index components  
+- MaterialType: if you wish to use one of the predefined materials
+#### Light sources
+To define a light source:
+ ```protobuf.tmbundle
+  message Light{
+    required Pos position = 1;
+    required float intensity = 2;
+  } 
+```
+Example:   
+```protobuf.tmbundle
+light{
+  position{
+    x: 0
+    y: 5
+    z: 0
+  }
+  intensity: 1.5
+}
+ ```
+
+#### Spheres, triangles and rectangles
+To define primitive shapes
+```protobuf.tmbundle
+  message Sphere{
+    required Pos position = 1;
+    required float radius = 2;
+    optional MaterialType material = 3;
+    optional bool custom_material_enabled = 4 [default = false];
+    optional Material custom_material = 5;
+  }
+  message Triangle{
+    required Pos p0 = 1;
+    required Pos p1 = 2;
+    required Pos p2 = 3;
+    optional MaterialType material = 4;
+    optional bool custom_material_enabled = 5 [default = false];
+    optional Material custom_material = 6;
+  }
+  message Rectangle{
+    required Pos p0 = 1;
+    required Pos p1 = 2;
+    required Pos p2 = 3;
+    required Pos p3 = 4;
+    optional MaterialType material = 5;
+    optional bool custom_material_enabled = 6 [default = false];
+    optional Material custom_material = 7;
+  }
+
+```
+
+Examples:  
+```protobuf.tmbundle
+sphere{
+  position{
+    x: 3
+    y: 0
+    z: -4
+  }
+  radius: 0.5
+  material: blue_rubber
+}
+
+triangle{
+  p0{
+    x: 3
+    y: 3
+    z: -6
+  }
+  p1{
+    x: 3
+    y: 1
+    z: -6
+  }
+  p2{
+    x: 2
+    y: 2
+    z: -6
+  }
+  material: green_rubber
+}
+
+rectangle{
+  p0{
+    x: -3
+    y: -3
+    z: -6
+  }
+  p1{
+    x: -3
+    y: -1
+    z: -6
+  }
+  p2{
+    x: -2
+    y: -2
+    z: -6
+  }
+  p3{
+    x: -2
+    y: -4
+    z: -6
+  }
+  custom_material_enabled: true
+  custom_material {
+    color {
+      r: 14
+      g: 147
+      b: 98
+    }
+    albedo {
+      a0: 0.6
+      a1: 0.1
+      a2: 0
+      a3: 0
+    }
+    specular_comp: 10
+    refractive_index: 1
+  }
+}
+```
+#### Obj files
+You can load 3D models in .obj format using the following format
+```protobuf.tmbundle
+  message Obj{
+    required string fname = 1;
+    optional MaterialType material = 2;
+    optional Pos translation = 3;
+    optional bool custom_material_enabled = 4 [default = false];
+    optional Material custom_material = 5;
+  }
+```
+Example:  
+```protobuf.tmbundle
+obj{
+  fname: "./../obj/suzanne.obj"
+  translation{
+    x: -1
+    y: 1
+    z: -5
+  }
+  material: pink_rubber
+}
+```
+## Code Overview
+- The include folder contains the STB library files  
+- The obj folder contains sample 3D models to test the triangle mesh rendering  
+- The src folder contains most of the code  
+- The proto folder contains the proto file defining the protobuf schema (_scene.proto_) and the generated C++ libraries to use it in the program (_scene.pb.cc_ & _scene.pb.h_)
+- The scenes folder contains sample prototext files with different scenes
+- The tests folder contains the gtest tests (WIP)  
+
+### Classes
+
+#### Render
 - Main class for the raytracing  
 - It owns the shapes to be rendered (stored in the heap)  
 - It casts a ray using an origin point + a direction unit vector  
@@ -53,69 +320,46 @@ The tests folder contains the gtest tests (WIP)
 - The raytracing can be run in series, in parallel using [OpenMP](https://en.wikipedia.org/wiki/OpenMP) or in parallel using our own thread pool implementation   
 ![](./img/render_call_diagram.png)
 
-##### Image
+#### Image
 - Holds & owns the image bitmap (pixels_) in the heap  
 - It is in charge of writing the color values to every pixel and to save the image to disk using an instance of ImageFile
 
-##### Light
+#### Light
 - Represents a point light source with a given intensity
   
-##### Material
+#### Material
 - Represents a given material with certain properties relating to its color, diffusivity, specularity, reflectivity and refractivity
 
-##### Shape
+#### Shape
 - Pure virtual class to define the interface for all other shapes  
 - Used for dynamic polymorphism for the calculate intersection and calculate normal methods  
 ![](./img/shape_class_childs.png)          
 
-##### Sphere
+#### Sphere
 - Shape child class that represents a sphere centered around a given point, with a certain radius and material  
 - Since its the child of a pure virtual class it defines the relevant methods to be able to be instantiated
 
-##### Triangle
+#### Triangle
 - Shape child class that represents a triangle with three given points and a certain material. Similarly to sphere it implements its own intersection and normal calculation methods
 
-##### Rectangle
+#### Rectangle
 - Shape child class made out of two triangles. Takes advantage of composition to represent a more complex shape  
 ![](./img/rect_class.png)   
 
-##### ObjLoader
+#### ObjLoader
 - Reads and parses a .obj file and creates the respective triangles for the render (including material and an optional translation)
 
-##### ImageFile
+#### ImageFile
 - RAII file handler for writing png image file. Opens the file in the constructor and frees the resource in the destructor
 
-##### ObjFile
+#### ObjFile
 - RAII file handler for reading the .obj file. Opens the file in the constructor and frees the resource in the destructor
 
-##### ThreadPool
+#### ThreadPool
 - Thread pool design pattern
 - Implements a queue of work packages for a pool of threads  
 - Threads take a task from the queue, run it and when they are finished, return the result and check if there are any more tasks in the queue to perform
 
-### Rubric points
-This project meets many of the rubric points but for official purposes, here are a few of them:
-#### The submission must compile and run.
-![](./img/build.png)  
+## License
 
-![](./img/run.png)    
-#### The project reads data from a file and process the data, or the program writes data to a file.
-This can be seen in the _ImageFile.h_ lines 19 and 24 using `cstdio` and in the _ObjLoader.h_ file in lines 17 and 25 using `fstream`  
-
-#### The project uses Object Oriented Programming techniques.
-This can be seen in the _Shape.h_ file as it implements a pure virtual class to act as the interface for the child classes.  
- `Triangle`, `Sphere` and `Rectangle` are child classes of `Shape`  
- The project also uses dynamic polymorphism when calculating ray intersections and normal vectors (_Render.cpp_ file - lines 33 & 36)
-
-#### The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate.
-Both _ImageFile_ and _ObjFile_ classes implement RAII by acquiring the resources in the constructor and releasing them in the destructor.  
-In the case of _ImageFile_, it can be seen in the _ImageFile.h_ file in lines 17 and 27
-
-#### The project uses move semantics to move data, instead of copying it, where possible.
-In _main.cpp_ a vector of unique pointers is created (line 30) and populated (lines 48-53). Since the content of the vector is unique pointers it cannot be passed by value to the render class instance, therefore it is moved to it using `std::move`
-
-#### The project uses multithreading
-The project has multithreading implemented in the `Render::RenderSceneMultiThread `method (_Render.cpp_ file - line 214). This method uses a thread pool to distribute work to different threads in a parallel way
-
-
-
+This project is distributed under the [DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE](https://en.wikipedia.org/wiki/WTFPL).

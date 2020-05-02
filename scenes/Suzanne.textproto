@@ -1,0 +1,64 @@
+# proto-file: ./../proto/scene.proto
+# proto-message: Scene
+
+height: 1000
+width: 1000
+saveFile: true
+fname: "Suzanne.png"
+show_checkerboard: false
+
+background_color{
+  r: 0
+  g: 0
+  b: 0
+}
+
+obj{
+  fname: "./../obj/suzanne.obj"
+  translation{
+    x: -1
+    y: 1
+    z: -5
+  }
+  material: pink_rubber
+}
+light{
+  position{
+    x: 0
+    y: 0
+    z: 0
+  }
+  intensity: 0.25
+}
+
+light{
+  position{
+    x: 0
+    y: 3
+    z: 0
+  }
+  intensity: 1.25
+}
+rectangle{
+  p0{
+    x: -5
+    y: -5
+    z: -6
+  }
+  p1{
+    x: -5
+    y: 5
+    z: -6
+  }
+  p2{
+    x: 5
+    y: 5
+    z: -6
+  }
+  p3{
+    x: 5
+    y: -5
+    z: -6
+  }
+  material: blue_rubber
+}

@@ -2810,6 +2810,7 @@ public:
       kWidthFieldNumber = 1,
       kHeightFieldNumber = 2,
       kShowCheckerboardFieldNumber = 12,
+      kAmbientLightFieldNumber = 14,
       kSaveFileFieldNumber = 3,
       kMultiThreadFieldNumber = 5,
       kShowElapsedTimeFieldNumber = 11,
@@ -3026,6 +3027,22 @@ private:
     void _internal_set_show_checkerboard(bool value);
 
 public:
+    // optional float ambient_light = 14;
+    bool has_ambient_light() const;
+
+private:
+    bool _internal_has_ambient_light() const;
+
+public:
+    void clear_ambient_light();
+    float ambient_light() const;
+    void set_ambient_light(float value);
+
+private:
+    float _internal_ambient_light() const;
+    void _internal_set_ambient_light(float value);
+
+public:
     // required bool saveFile = 3 [default = true];
     bool has_savefile() const;
 
@@ -3102,6 +3119,7 @@ private:
     ::PROTOBUF_NAMESPACE_ID::int32 width_;
     ::PROTOBUF_NAMESPACE_ID::int32 height_;
     bool show_checkerboard_;
+    float ambient_light_;
     bool savefile_;
     bool multithread_;
     bool show_elapsed_time_;
@@ -5408,7 +5426,7 @@ private:
 
   // required bool saveFile = 3 [default = true];
   inline bool Scene::_internal_has_savefile() const {
-    bool value = (_has_bits_[0] & 0x00000020u) != 0;
+    bool value = (_has_bits_[0] & 0x00000040u) != 0;
     return value;
   }
   inline bool Scene::has_savefile() const {
@@ -5416,7 +5434,7 @@ private:
   }
   inline void Scene::clear_savefile() {
     savefile_ = true;
-    _has_bits_[0] &= ~0x00000020u;
+    _has_bits_[0] &= ~0x00000040u;
   }
   inline bool Scene::_internal_savefile() const {
     return savefile_;
@@ -5426,7 +5444,7 @@ private:
     return _internal_savefile();
   }
   inline void Scene::_internal_set_savefile(bool value) {
-    _has_bits_[0] |= 0x00000020u;
+    _has_bits_[0] |= 0x00000040u;
     savefile_ = value;
   }
   inline void Scene::set_savefile(bool value) {
@@ -5528,7 +5546,7 @@ private:
 
   // optional bool multiThread = 5 [default = true];
   inline bool Scene::_internal_has_multithread() const {
-    bool value = (_has_bits_[0] & 0x00000040u) != 0;
+    bool value = (_has_bits_[0] & 0x00000080u) != 0;
     return value;
   }
   inline bool Scene::has_multithread() const {
@@ -5536,7 +5554,7 @@ private:
   }
   inline void Scene::clear_multithread() {
     multithread_ = true;
-    _has_bits_[0] &= ~0x00000040u;
+    _has_bits_[0] &= ~0x00000080u;
   }
   inline bool Scene::_internal_multithread() const {
     return multithread_;
@@ -5546,7 +5564,7 @@ private:
     return _internal_multithread();
   }
   inline void Scene::_internal_set_multithread(bool value) {
-    _has_bits_[0] |= 0x00000040u;
+    _has_bits_[0] |= 0x00000080u;
     multithread_ = value;
   }
   inline void Scene::set_multithread(bool value) {
@@ -5751,7 +5769,7 @@ private:
 
   // optional bool show_elapsed_time = 11 [default = true];
   inline bool Scene::_internal_has_show_elapsed_time() const {
-    bool value = (_has_bits_[0] & 0x00000080u) != 0;
+    bool value = (_has_bits_[0] & 0x00000100u) != 0;
     return value;
   }
   inline bool Scene::has_show_elapsed_time() const {
@@ -5759,7 +5777,7 @@ private:
   }
   inline void Scene::clear_show_elapsed_time() {
     show_elapsed_time_ = true;
-    _has_bits_[0] &= ~0x00000080u;
+    _has_bits_[0] &= ~0x00000100u;
   }
   inline bool Scene::_internal_show_elapsed_time() const {
     return show_elapsed_time_;
@@ -5769,7 +5787,7 @@ private:
     return _internal_show_elapsed_time();
   }
   inline void Scene::_internal_set_show_elapsed_time(bool value) {
-    _has_bits_[0] |= 0x00000080u;
+    _has_bits_[0] |= 0x00000100u;
     show_elapsed_time_ = value;
   }
   inline void Scene::set_show_elapsed_time(bool value) {
@@ -5883,6 +5901,34 @@ private:
     }
     background_color_ = background_color;
     // @@protoc_insertion_point(field_set_allocated:tracerr.Scene.background_color)
+  }
+
+  // optional float ambient_light = 14;
+  inline bool Scene::_internal_has_ambient_light() const {
+    bool value = (_has_bits_[0] & 0x00000020u) != 0;
+    return value;
+  }
+  inline bool Scene::has_ambient_light() const {
+    return _internal_has_ambient_light();
+  }
+  inline void Scene::clear_ambient_light() {
+    ambient_light_ = 0;
+    _has_bits_[0] &= ~0x00000020u;
+  }
+  inline float Scene::_internal_ambient_light() const {
+    return ambient_light_;
+  }
+  inline float Scene::ambient_light() const {
+    // @@protoc_insertion_point(field_get:tracerr.Scene.ambient_light)
+    return _internal_ambient_light();
+  }
+  inline void Scene::_internal_set_ambient_light(float value) {
+    _has_bits_[0] |= 0x00000020u;
+    ambient_light_ = value;
+  }
+  inline void Scene::set_ambient_light(float value) {
+    _internal_set_ambient_light(value);
+    // @@protoc_insertion_point(field_set:tracerr.Scene.ambient_light)
   }
 
 #ifdef __GNUC__

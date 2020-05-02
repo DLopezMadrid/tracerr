@@ -77,7 +77,22 @@ rectangle{
     y: -4
     z: -6
   }
-  material: orange_rubber
+  custom_material_enabled: true
+  custom_material {
+    color {
+      r: 14
+      g: 197
+      b: 98
+    }
+    albedo {
+      a0: 0.6
+      a1: 0.1
+      a2: 0
+      a3: 0
+    }
+    specular_comp: 10
+    refractive_index: 1
+  }
 }
 
 #obj{

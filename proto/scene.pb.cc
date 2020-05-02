@@ -440,19 +440,21 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_scene_2eproto::offsets[] PROTO
         PROTOBUF_FIELD_OFFSET(::tracerr::Scene, show_elapsed_time_),
         PROTOBUF_FIELD_OFFSET(::tracerr::Scene, show_checkerboard_),
         PROTOBUF_FIELD_OFFSET(::tracerr::Scene, background_color_),
+        PROTOBUF_FIELD_OFFSET(::tracerr::Scene, ambient_light_),
         2,
         3,
-        5,
-        0,
         6,
-        ~0u,
-        ~0u,
-        ~0u,
-        ~0u,
-        ~0u,
+        0,
         7,
+        ~0u,
+        ~0u,
+        ~0u,
+        ~0u,
+        ~0u,
+        8,
         4,
         1,
+        5,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
         {0, 8, sizeof(::tracerr::Scene_Pos)},
@@ -466,7 +468,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
         {110, 118, sizeof(::tracerr::Scene_Material_Color_diff)},
         {121, 130, sizeof(::tracerr::Scene_Material_Albedo)},
         {134, 143, sizeof(::tracerr::Scene_Material)},
-        {147, 165, sizeof(::tracerr::Scene)},
+        {147, 166, sizeof(::tracerr::Scene)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const *const file_default_instances[] = {
@@ -485,7 +487,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const *const file_default_instances[] = 
 };
 
 const char descriptor_table_protodef_scene_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-        "\n\013scene.proto\022\007tracerr\"\346\017\n\005Scene\022\r\n\005widt"
+        "\n\013scene.proto\022\007tracerr\"\375\017\n\005Scene\022\r\n\005widt"
         "h\030\001 \002(\005\022\016\n\006height\030\002 \002(\005\022\026\n\010saveFile\030\003 \002("
         "\010:\004true\022\035\n\005fname\030\004 \001(\t:\016RenderTest.png\022\031"
         "\n\013multiThread\030\005 \001(\010:\004true\022#\n\005light\030\006 \003(\013"
@@ -496,47 +498,47 @@ const char descriptor_table_protodef_scene_2eproto[] PROTOBUF_SECTION_VARIABLE(p
         "(\0132\022.tracerr.Scene.Obj\022\037\n\021show_elapsed_t"
         "ime\030\013 \001(\010:\004true\022 \n\021show_checkerboard\030\014 \001"
         "(\010:\005false\022.\n\020background_color\030\r \001(\0132\024.tr"
-        "acerr.Scene.Color\032&\n\003Pos\022\t\n\001x\030\001 \002(\002\022\t\n\001y"
-        "\030\002 \002(\002\022\t\n\001z\030\003 \002(\002\032@\n\005Light\022$\n\010position\030\001"
-        " \002(\0132\022.tracerr.Scene.Pos\022\021\n\tintensity\030\002 "
-        "\002(\002\032\307\001\n\006Sphere\022$\n\010position\030\001 \002(\0132\022.trace"
-        "rr.Scene.Pos\022\016\n\006radius\030\002 \002(\002\022-\n\010material"
-        "\030\003 \001(\0162\033.tracerr.Scene.MaterialType\022&\n\027c"
-        "ustom_material_enabled\030\004 \001(\010:\005false\0220\n\017c"
-        "ustom_material\030\005 \001(\0132\027.tracerr.Scene.Mat"
-        "erial\032\363\001\n\010Triangle\022\036\n\002p0\030\001 \002(\0132\022.tracerr"
-        ".Scene.Pos\022\036\n\002p1\030\002 \002(\0132\022.tracerr.Scene.P"
-        "os\022\036\n\002p2\030\003 \002(\0132\022.tracerr.Scene.Pos\022-\n\010ma"
-        "terial\030\004 \001(\0162\033.tracerr.Scene.MaterialTyp"
-        "e\022&\n\027custom_material_enabled\030\005 \001(\010:\005fals"
-        "e\0220\n\017custom_material\030\006 \001(\0132\027.tracerr.Sce"
-        "ne.Material\032\224\002\n\tRectangle\022\036\n\002p0\030\001 \002(\0132\022."
-        "tracerr.Scene.Pos\022\036\n\002p1\030\002 \002(\0132\022.tracerr."
-        "Scene.Pos\022\036\n\002p2\030\003 \002(\0132\022.tracerr.Scene.Po"
-        "s\022\036\n\002p3\030\004 \002(\0132\022.tracerr.Scene.Pos\022-\n\010mat"
-        "erial\030\005 \001(\0162\033.tracerr.Scene.MaterialType"
-        "\022&\n\027custom_material_enabled\030\006 \001(\010:\005false"
-        "\0220\n\017custom_material\030\007 \001(\0132\027.tracerr.Scen"
-        "e.Material\032\306\001\n\003Obj\022\r\n\005fname\030\001 \002(\t\022-\n\010mat"
-        "erial\030\002 \001(\0162\033.tracerr.Scene.MaterialType"
-        "\022\'\n\013translation\030\003 \001(\0132\022.tracerr.Scene.Po"
-        "s\022&\n\027custom_material_enabled\030\004 \001(\010:\005fals"
-        "e\0220\n\017custom_material\030\005 \001(\0132\027.tracerr.Sce"
-        "ne.Material\032(\n\005Color\022\t\n\001r\030\001 \002(\005\022\t\n\001g\030\002 \002"
-        "(\005\022\t\n\001b\030\003 \002(\005\0328\n\006Albedo\022\n\n\002a0\030\001 \002(\002\022\n\n\002a"
-        "1\030\002 \002(\002\022\n\n\002a2\030\003 \002(\002\022\n\n\002a3\030\004 \002(\002\032\207\002\n\010Mate"
-        "rial\0221\n\005color\030\001 \002(\0132\".tracerr.Scene.Mate"
-        "rial.Color_diff\022.\n\006albedo\030\002 \002(\0132\036.tracer"
-        "r.Scene.Material.Albedo\022\025\n\rspecular_comp"
-        "\030\003 \002(\002\022\030\n\020refractive_index\030\004 \002(\002\032-\n\nColo"
-        "r_diff\022\t\n\001r\030\001 \002(\005\022\t\n\001g\030\002 \002(\005\022\t\n\001b\030\003 \002(\005\032"
-        "8\n\006Albedo\022\n\n\002a0\030\001 \002(\002\022\n\n\002a1\030\002 \002(\002\022\n\n\002a2\030"
-        "\003 \002(\002\022\n\n\002a3\030\004 \002(\002\"\273\001\n\014MaterialType\022\t\n\005iv"
-        "ory\020\000\022\016\n\nred_rubber\020\001\022\020\n\014green_rubber\020\002\022"
-        "\017\n\013blue_rubber\020\003\022\021\n\rorange_rubber\020\004\022\017\n\013p"
-        "ink_rubber\020\005\022\017\n\013red_plastic\020\006\022\021\n\rblack_p"
-        "lastic\020\007\022\n\n\006mirror\020\010\022\t\n\005glass\020\t\022\016\n\nchess"
-        "board\020\n";
+        "acerr.Scene.Color\022\025\n\rambient_light\030\016 \001(\002"
+        "\032&\n\003Pos\022\t\n\001x\030\001 \002(\002\022\t\n\001y\030\002 \002(\002\022\t\n\001z\030\003 \002(\002"
+        "\032@\n\005Light\022$\n\010position\030\001 \002(\0132\022.tracerr.Sc"
+        "ene.Pos\022\021\n\tintensity\030\002 \002(\002\032\307\001\n\006Sphere\022$\n"
+        "\010position\030\001 \002(\0132\022.tracerr.Scene.Pos\022\016\n\006r"
+        "adius\030\002 \002(\002\022-\n\010material\030\003 \001(\0162\033.tracerr."
+        "Scene.MaterialType\022&\n\027custom_material_en"
+        "abled\030\004 \001(\010:\005false\0220\n\017custom_material\030\005 "
+        "\001(\0132\027.tracerr.Scene.Material\032\363\001\n\010Triangl"
+        "e\022\036\n\002p0\030\001 \002(\0132\022.tracerr.Scene.Pos\022\036\n\002p1\030"
+        "\002 \002(\0132\022.tracerr.Scene.Pos\022\036\n\002p2\030\003 \002(\0132\022."
+        "tracerr.Scene.Pos\022-\n\010material\030\004 \001(\0162\033.tr"
+        "acerr.Scene.MaterialType\022&\n\027custom_mater"
+        "ial_enabled\030\005 \001(\010:\005false\0220\n\017custom_mater"
+        "ial\030\006 \001(\0132\027.tracerr.Scene.Material\032\224\002\n\tR"
+        "ectangle\022\036\n\002p0\030\001 \002(\0132\022.tracerr.Scene.Pos"
+        "\022\036\n\002p1\030\002 \002(\0132\022.tracerr.Scene.Pos\022\036\n\002p2\030\003"
+        " \002(\0132\022.tracerr.Scene.Pos\022\036\n\002p3\030\004 \002(\0132\022.t"
+        "racerr.Scene.Pos\022-\n\010material\030\005 \001(\0162\033.tra"
+        "cerr.Scene.MaterialType\022&\n\027custom_materi"
+        "al_enabled\030\006 \001(\010:\005false\0220\n\017custom_materi"
+        "al\030\007 \001(\0132\027.tracerr.Scene.Material\032\306\001\n\003Ob"
+        "j\022\r\n\005fname\030\001 \002(\t\022-\n\010material\030\002 \001(\0162\033.tra"
+        "cerr.Scene.MaterialType\022\'\n\013translation\030\003"
+        " \001(\0132\022.tracerr.Scene.Pos\022&\n\027custom_mater"
+        "ial_enabled\030\004 \001(\010:\005false\0220\n\017custom_mater"
+        "ial\030\005 \001(\0132\027.tracerr.Scene.Material\032(\n\005Co"
+        "lor\022\t\n\001r\030\001 \002(\005\022\t\n\001g\030\002 \002(\005\022\t\n\001b\030\003 \002(\005\0328\n\006"
+        "Albedo\022\n\n\002a0\030\001 \002(\002\022\n\n\002a1\030\002 \002(\002\022\n\n\002a2\030\003 \002"
+        "(\002\022\n\n\002a3\030\004 \002(\002\032\207\002\n\010Material\0221\n\005color\030\001 \002"
+        "(\0132\".tracerr.Scene.Material.Color_diff\022."
+        "\n\006albedo\030\002 \002(\0132\036.tracerr.Scene.Material."
+        "Albedo\022\025\n\rspecular_comp\030\003 \002(\002\022\030\n\020refract"
+        "ive_index\030\004 \002(\002\032-\n\nColor_diff\022\t\n\001r\030\001 \002(\005"
+        "\022\t\n\001g\030\002 \002(\005\022\t\n\001b\030\003 \002(\005\0328\n\006Albedo\022\n\n\002a0\030\001"
+        " \002(\002\022\n\n\002a1\030\002 \002(\002\022\n\n\002a2\030\003 \002(\002\022\n\n\002a3\030\004 \002(\002"
+        "\"\273\001\n\014MaterialType\022\t\n\005ivory\020\000\022\016\n\nred_rubb"
+        "er\020\001\022\020\n\014green_rubber\020\002\022\017\n\013blue_rubber\020\003\022"
+        "\021\n\rorange_rubber\020\004\022\017\n\013pink_rubber\020\005\022\017\n\013r"
+        "ed_plastic\020\006\022\021\n\rblack_plastic\020\007\022\n\n\006mirro"
+        "r\020\010\022\t\n\005glass\020\t\022\016\n\nchessboard\020\n";
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable *const descriptor_table_scene_2eproto_deps[1] = {};
 static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase *const descriptor_table_scene_2eproto_sccs[12] = {
         &scc_info_Scene_scene_2eproto.base,
@@ -558,7 +560,7 @@ const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_scene_
         false,
         descriptor_table_protodef_scene_2eproto,
         "scene.proto",
-        2047,
+        2070,
         &descriptor_table_scene_2eproto_once,
         descriptor_table_scene_2eproto_sccs,
         descriptor_table_scene_2eproto_deps,
@@ -4700,16 +4702,16 @@ public:
       (*has_bits)[0] |= 8u;
     }
     static void set_has_savefile(HasBits *has_bits) {
-      (*has_bits)[0] |= 32u;
+      (*has_bits)[0] |= 64u;
     }
     static void set_has_fname(HasBits *has_bits) {
       (*has_bits)[0] |= 1u;
     }
     static void set_has_multithread(HasBits *has_bits) {
-      (*has_bits)[0] |= 64u;
+      (*has_bits)[0] |= 128u;
     }
     static void set_has_show_elapsed_time(HasBits *has_bits) {
-      (*has_bits)[0] |= 128u;
+      (*has_bits)[0] |= 256u;
     }
     static void set_has_show_checkerboard(HasBits *has_bits) {
       (*has_bits)[0] |= 16u;
@@ -4718,8 +4720,11 @@ public:
     static void set_has_background_color(HasBits *has_bits) {
       (*has_bits)[0] |= 2u;
     }
+    static void set_has_ambient_light(HasBits *has_bits) {
+      (*has_bits)[0] |= 32u;
+    }
     static bool MissingRequiredFields(const HasBits &has_bits) {
-      return ((has_bits[0] & 0x0000002c) ^ 0x0000002c) != 0;
+      return ((has_bits[0] & 0x0000004c) ^ 0x0000004c) != 0;
     }
   };
 
@@ -4768,7 +4773,7 @@ public:
   void Scene::SharedCtor() {
     ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Scene_scene_2eproto.base);
     fname_.UnsafeSetDefault(&::tracerr::Scene::_i_give_permission_to_break_this_code_default_fname_.get());
-    ::memset(&background_color_, 0, static_cast<size_t>(reinterpret_cast<char *>(&show_checkerboard_) - reinterpret_cast<char *>(&background_color_)) + sizeof(show_checkerboard_));
+    ::memset(&background_color_, 0, static_cast<size_t>(reinterpret_cast<char *>(&ambient_light_) - reinterpret_cast<char *>(&background_color_)) + sizeof(ambient_light_));
     savefile_ = true;
     multithread_ = true;
     show_elapsed_time_ = true;
@@ -4823,11 +4828,11 @@ public:
       }
     }
     if (cached_has_bits & 0x000000fcu) {
-      ::memset(&width_, 0, static_cast<size_t>(reinterpret_cast<char *>(&show_checkerboard_) - reinterpret_cast<char *>(&width_)) + sizeof(show_checkerboard_));
+      ::memset(&width_, 0, static_cast<size_t>(reinterpret_cast<char *>(&ambient_light_) - reinterpret_cast<char *>(&width_)) + sizeof(ambient_light_));
       savefile_ = true;
       multithread_ = true;
-      show_elapsed_time_ = true;
     }
+    show_elapsed_time_ = true;
     _has_bits_.Clear();
     _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
   }
@@ -4982,6 +4987,15 @@ public:
           } else
             goto handle_unusual;
           continue;
+        // optional float ambient_light = 14;
+        case 14:
+          if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 117)) {
+            _Internal::set_has_ambient_light(&has_bits);
+            ambient_light_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+            ptr += sizeof(float);
+          } else
+            goto handle_unusual;
+          continue;
         default: {
         handle_unusual:
           if ((tag & 7) == 4 || tag == 0) {
@@ -5025,7 +5039,7 @@ public:
     }
 
     // required bool saveFile = 3 [default = true];
-    if (cached_has_bits & 0x00000020u) {
+    if (cached_has_bits & 0x00000040u) {
       target = stream->EnsureSpace(target);
       target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(3, this->_internal_savefile(), target);
     }
@@ -5041,7 +5055,7 @@ public:
     }
 
     // optional bool multiThread = 5 [default = true];
-    if (cached_has_bits & 0x00000040u) {
+    if (cached_has_bits & 0x00000080u) {
       target = stream->EnsureSpace(target);
       target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(5, this->_internal_multithread(), target);
     }
@@ -5092,7 +5106,7 @@ public:
     }
 
     // optional bool show_elapsed_time = 11 [default = true];
-    if (cached_has_bits & 0x00000080u) {
+    if (cached_has_bits & 0x00000100u) {
       target = stream->EnsureSpace(target);
       target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(11, this->_internal_show_elapsed_time(), target);
     }
@@ -5109,6 +5123,12 @@ public:
       target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
               InternalWriteMessage(
                       13, _Internal::background_color(this), target, stream);
+    }
+
+    // optional float ambient_light = 14;
+    if (cached_has_bits & 0x00000020u) {
+      target = stream->EnsureSpace(target);
+      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(14, this->_internal_ambient_light(), target);
     }
 
     if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -5148,7 +5168,7 @@ public:
     // @@protoc_insertion_point(message_byte_size_start:tracerr.Scene)
     size_t total_size = 0;
 
-    if (((_has_bits_[0] & 0x0000002c) ^ 0x0000002c) == 0) {// All required fields are present.
+    if (((_has_bits_[0] & 0x0000004c) ^ 0x0000004c) == 0) {// All required fields are present.
       // required int32 width = 1;
       total_size += 1 +
                     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
@@ -5220,22 +5240,27 @@ public:
                               *background_color_);
       }
     }
-    // optional bool show_checkerboard = 12 [default = false];
-    if (cached_has_bits & 0x00000010u) {
+    if (cached_has_bits & 0x00000030u) {
+      // optional bool show_checkerboard = 12 [default = false];
+      if (cached_has_bits & 0x00000010u) {
+        total_size += 1 + 1;
+      }
+
+      // optional float ambient_light = 14;
+      if (cached_has_bits & 0x00000020u) {
+        total_size += 1 + 4;
+      }
+    }
+    // optional bool multiThread = 5 [default = true];
+    if (cached_has_bits & 0x00000080u) {
       total_size += 1 + 1;
     }
 
-    if (cached_has_bits & 0x000000c0u) {
-      // optional bool multiThread = 5 [default = true];
-      if (cached_has_bits & 0x00000040u) {
-        total_size += 1 + 1;
-      }
-
-      // optional bool show_elapsed_time = 11 [default = true];
-      if (cached_has_bits & 0x00000080u) {
-        total_size += 1 + 1;
-      }
+    // optional bool show_elapsed_time = 11 [default = true];
+    if (cached_has_bits & 0x00000100u) {
+      total_size += 1 + 1;
     }
+
     if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
       return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
               _internal_metadata_, total_size, &_cached_size_);
@@ -5290,15 +5315,18 @@ public:
         show_checkerboard_ = from.show_checkerboard_;
       }
       if (cached_has_bits & 0x00000020u) {
-        savefile_ = from.savefile_;
+        ambient_light_ = from.ambient_light_;
       }
       if (cached_has_bits & 0x00000040u) {
-        multithread_ = from.multithread_;
+        savefile_ = from.savefile_;
       }
       if (cached_has_bits & 0x00000080u) {
-        show_elapsed_time_ = from.show_elapsed_time_;
+        multithread_ = from.multithread_;
       }
       _has_bits_[0] |= cached_has_bits;
+    }
+    if (cached_has_bits & 0x00000100u) {
+      _internal_set_show_elapsed_time(from._internal_show_elapsed_time());
     }
   }
 
@@ -5340,7 +5368,7 @@ public:
     obj_.InternalSwap(&other->obj_);
     fname_.Swap(&other->fname_, &::tracerr::Scene::_i_give_permission_to_break_this_code_default_fname_.get(), GetArena());
     ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-            PROTOBUF_FIELD_OFFSET(Scene, show_checkerboard_) + sizeof(Scene::show_checkerboard_) - PROTOBUF_FIELD_OFFSET(Scene, background_color_)>(
+            PROTOBUF_FIELD_OFFSET(Scene, ambient_light_) + sizeof(Scene::ambient_light_) - PROTOBUF_FIELD_OFFSET(Scene, background_color_)>(
             reinterpret_cast<char *>(&background_color_),
             reinterpret_cast<char *>(&other->background_color_));
     swap(savefile_, other->savefile_);

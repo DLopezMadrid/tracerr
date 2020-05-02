@@ -54,12 +54,6 @@ message Scene {
     required int32 g = 2;
     required int32 b = 3;
   }
-  message Albedo{
-    required float a0 = 1;
-    required float a1 = 2;
-    required float a2 = 3;
-    required float a3 = 4;
-  }
   message Material{
     message Color_diff{
       required int32 r = 1;
@@ -88,7 +82,7 @@ message Scene {
   optional bool show_elapsed_time = 11 [default = true];
   optional bool show_checkerboard = 12 [default = false];
   optional Color background_color = 13;
-
+  optional float ambient_light = 14;
 
   enum MaterialType{
     ivory = 0;

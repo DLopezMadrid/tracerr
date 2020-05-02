@@ -1,0 +1,138 @@
+# proto-file: ./../proto/scene.proto
+# proto-message: Scene
+
+height: 500
+width: 1000
+saveFile: true
+fname: "testProtoImg.png"
+show_checkerboard: true
+
+background_color{
+  r: 220
+  g: 250
+  b: 25
+}
+
+sphere{
+  position{
+    x: -5
+    y: 0
+    z: -6
+  }
+  radius: 1
+  material: red_plastic;
+}
+
+sphere{
+  position{
+    x: 0
+    y: 0.5
+    z: -4
+  }
+  radius: 1.5
+  material: mirror;
+}
+
+sphere{
+  position{
+    x: -3
+    y: 0
+    z: -5
+  }
+  radius: 1
+  material: glass;
+}
+
+sphere{
+  position{
+    x: -5
+    y: 0
+    z: 3
+  }
+  radius: 1
+  material: green_rubber;
+}
+
+sphere{
+  position{
+    x: 0
+    y: 0
+    z: 3
+  }
+  radius: 1
+  material: pink_rubber;
+}
+
+sphere{
+  position{
+    x: 5
+    y: 0
+    z: 3
+  }
+  radius: 1
+  material: orange_rubber;
+}
+
+sphere {
+  position {
+    x: -2
+    y: -0.775
+    z: -4.5
+  }
+  radius: 0.225
+  custom_material_enabled: true
+  custom_material {
+    color {
+      r: 58
+      g: 137
+      b: 89
+    }
+    albedo {
+      a0: 0.6
+      a1: 0.1
+      a2: 0
+      a3: 0
+    }
+    specular_comp: 10
+    refractive_index: 1
+  }
+}
+
+#obj{
+#  fname: "./../obj/duck.obj"
+#  translation{
+#    x: 1
+#    y: 3
+#    z: 1
+#  }
+#  material: blue_rubber
+#}
+
+light{
+  position{
+    x: -20
+    y: 20
+    z: 10
+  }
+  intensity: 1.5
+}
+
+light{
+  position{
+    x: 0
+    y: 3
+    z: 0
+  }
+  intensity: 1.5
+}
+
+light{
+  position{
+    x: 20
+    y: 20
+    z: -5
+  }
+  intensity: 0.5
+}
+
+

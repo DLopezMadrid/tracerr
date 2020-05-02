@@ -27,6 +27,7 @@ struct Material {
 
   // to avoid initializing the unit vector every time we call CalcColor
   Eigen::Vector3f unit_f_1{1.0f, 1.0f, 1.0f};
+  //  Eigen::Vector3f unit_f_1{255.0f, 255.0f, 255.0f};
 
   // calculates the final color value using the phong model + reflections + refractions
   rgb_f CalcColor(float const &diffuse_light_intensity, float const &specular_light_intensity, rgb_f const &reflect_color, rgb_f const &refract_color) {

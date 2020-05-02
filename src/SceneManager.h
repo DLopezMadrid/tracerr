@@ -14,6 +14,10 @@
 #include <eigen3/Eigen/Geometry>
 #include <fstream>
 
+// The scene manager is in charge of reading the scene from the protobuf text file, parse it, generate the required shapes
+// set up the render environment and call the render class
+// It can also write to text protobufs but this is not a user facing feature yet. It was implemented for learning and debugging purposes only
+// It is a friend class of Render, so it can access all the private members on it
 class SceneManager {
   public:
   SceneManager();
@@ -26,6 +30,7 @@ class SceneManager {
   void LoadTriangles();
   void LoadRectangles();
   void LoadObjs();
+  void LoadSceneConfig();
   Material LoadMaterial(int m);
   bool WriteProtoText(const std::string &save_file_path);
   void SaveSceneToProto();
@@ -48,7 +53,6 @@ class SceneManager {
   bool show_chessboard_{false};
   bool show_elapsed_time_{true};
   rgb_f background_color_;
-  void LoadSceneConfig();
 };
 
 

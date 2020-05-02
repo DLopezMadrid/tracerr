@@ -3,8 +3,77 @@
 //
 
 #include "SceneManager.h"
+
 SceneManager::SceneManager() {
   proto = std::make_unique<tracerr::Scene>();
+}
+
+void SceneManager::LoadScene(char *proto_path_char) {
+  proto_path_ = std::string(proto_path_char);
+  auto start_t{std::chrono::high_resolution_clock::now()};
+
+  std::cout << "Loading proto file" << '\n';
+  LoadTextProto();
+  std::cout << "Loading scene config" << '\n';
+  LoadSceneConfig();
+  std::cout << "Loading lights" << '\n';
+  LoadLights();
+  std::cout << "Loading spheres" << '\n';
+  LoadSpheres();
+  std::cout << "Loading triangles" << '\n';
+  LoadTriangles();
+  std::cout << "Loading rectangles" << '\n';
+  LoadRectangles();
+  std::cout << "Loading .obj files" << '\n';
+  LoadObjs();
+
+  Render render(width_, height_, {0, 0, 0}, lights_);
+  render.enable_chessboard_ = show_chessboard_;
+  if (scene_in_.has_background_color()) {
+    render.background_color_ = background_color_;
+  }
+  std::cout << "Rendering" << '\n';
+  //  GenerateRandomSpheres();
+  //  SaveSceneToProto();
+  render.RenderSceneMultiThread(std::move(shapes_));
+  if (scene_in_.savefile()) {
+    std::cout << "Saving file as " << scene_in_.fname() << '\n';
+    render.SaveImage(scene_in_.fname());
+  }
+  std::cout << "Done" << '\n';
+
+  auto end_t = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_t);
+
+  if (show_elapsed_time_) {
+    std::cout << "Completed " << scene_in_.width() << "x" << scene_in_.height() << " image in " << end_t.count() << " ms" << std::endl;
+  }
+}
+
+bool SceneManager::LoadTextProto() {
+  std::ifstream ifs(proto_path_);
+  google::protobuf::io::IstreamInputStream iis(&ifs);
+  auto success = google::protobuf::TextFormat::Parse(&iis, proto.get());
+  if (!success) {
+    std::cerr << "Failed to parse scene" << std::endl;
+    return -1;
+  }
+  return true;
+}
+
+void SceneManager::LoadSceneConfig() {
+  scene_in_ = *((tracerr::Scene *) proto.get());
+  width_ = scene_in_.width();
+  height_ = scene_in_.height();
+  show_chessboard_ = scene_in_.show_checkerboard();
+  show_elapsed_time_ = scene_in_.show_elapsed_time();
+  if (scene_in_.has_ambient_light()) {
+    Material::ambient_light = scene_in_.ambient_light();
+  }
+  if (scene_in_.has_background_color()) {
+    background_color_(0) = scene_in_.background_color().r() / 255.0f;
+    background_color_(1) = scene_in_.background_color().g() / 255.0f;
+    background_color_(2) = scene_in_.background_color().b() / 255.0f;
+  }
 }
 
 void SceneManager::LoadLights() {
@@ -80,24 +149,56 @@ void SceneManager::LoadObjs() {
   }
 }
 
+Material SceneManager::LoadMaterial(int m) {
+  Material mat{Materials::red_rubber};
 
-bool SceneManager::LoadTextProto() {
-  std::ifstream ifs(proto_path_);
-  google::protobuf::io::IstreamInputStream iis(&ifs);
-  auto success = google::protobuf::TextFormat::Parse(&iis, proto.get());
-  if (!success) {
-    std::cerr << "Failed to parse scene" << std::endl;
-    return -1;
+  if (m == 0) {
+    mat = Materials::ivory;
+  } else if (m == 1) {
+    mat = Materials::red_rubber;
+  } else if (m == 2) {
+    mat = Materials::green_rubber;
+  } else if (m == 3) {
+    mat = Materials::blue_rubber;
+  } else if (m == 4) {
+    mat = Materials::orange_rubber;
+  } else if (m == 5) {
+    mat = Materials::pink_rubber;
+  } else if (m == 6) {
+    mat = Materials::red_plastic;
+  } else if (m == 7) {
+    mat = Materials::black_plastic;
+  } else if (m == 8) {
+    mat = Materials::mirror;
+  } else if (m == 9) {
+    mat = Materials::glass;
+  } else if (m == 10) {
+    mat = Materials::chessboard;
   }
-  return true;
+  return mat;
 }
 
+Material SceneManager::GetCustomMaterialFromProto(const tracerr::Scene::Material &proto_mat) {
+  Material mat;
+  mat.color_f_(0) = proto_mat.color().r() / 255.f;
+  mat.color_f_(1) = proto_mat.color().g() / 255.f;
+  mat.color_f_(2) = proto_mat.color().b() / 255.f;
+  mat.albedo_(0) = proto_mat.albedo().a0();
+  mat.albedo_(1) = proto_mat.albedo().a1();
+  mat.albedo_(2) = proto_mat.albedo().a2();
+  mat.albedo_(3) = proto_mat.albedo().a3();
+  mat.refractive_index = proto_mat.refractive_index();
+  mat.specular_comp_ = proto_mat.specular_comp();
+
+  return mat;
+}
 
 void SceneManager::SaveSceneToProto() {
   scene_out_.set_height(height_);
   scene_out_.set_width(width_);
   scene_out_.set_savefile(true);
   scene_out_.set_fname("GeneratedProtoImg.png");
+  scene_out_.set_ambient_light(Material::ambient_light);
 
   for (auto &l : lights_) {
     auto new_light = scene_out_.add_light();
@@ -143,118 +244,13 @@ bool SceneManager::WriteProtoText(const std::string &save_file_path) {
   return true;
 }
 
-
-void SceneManager::LoadScene(char *proto_path_char) {
-  proto_path_ = std::string(proto_path_char);
-  auto start_t{std::chrono::high_resolution_clock::now()};
-
-  std::cout << "Loading proto file" << '\n';
-  LoadTextProto();
-  std::cout << "Loading scene config" << '\n';
-  LoadSceneConfig();
-  std::cout << "Loading lights" << '\n';
-  LoadLights();
-  std::cout << "Loading spheres" << '\n';
-  LoadSpheres();
-  std::cout << "Loading triangles" << '\n';
-  LoadTriangles();
-  std::cout << "Loading rectangles" << '\n';
-  LoadRectangles();
-  std::cout << "Loading .obj files" << '\n';
-  LoadObjs();
-
-  Render render(width_, height_, {0, 0, 0}, lights_);
-  if (show_chessboard_) {
-    render.enable_chessboard_ = true;
-  }
-  if (scene_in_.has_background_color()) {
-    render.background_color_ = background_color_;
-  }
-  std::cout << "Rendering" << '\n';
-  //  GenerateRandomSpheres();
-  //  SaveSceneToProto();
-  render.RenderSceneMultiThread(std::move(shapes_));
-  if (scene_in_.savefile()) {
-    std::cout << "Saving file as " << scene_in_.fname() << '\n';
-    render.SaveImage(scene_in_.fname());
-  }
-  std::cout << "Done" << '\n';
-
-  auto end_t = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_t);
-
-  if (show_elapsed_time_) {
-    std::cout << "Completed " << scene_in_.width() << "x" << scene_in_.height() << " image in " << end_t.count() << " ms" << std::endl;
-  }
-}
-
-void SceneManager::LoadSceneConfig() {
-  scene_in_ = *((tracerr::Scene *) proto.get());
-  width_ = scene_in_.width();
-  height_ = scene_in_.height();
-  show_chessboard_ = scene_in_.show_checkerboard();
-  show_elapsed_time_ = scene_in_.show_elapsed_time();
-  if (scene_in_.has_background_color()) {
-    background_color_(0) = scene_in_.background_color().r();
-    background_color_(1) = scene_in_.background_color().g();
-    background_color_(2) = scene_in_.background_color().b();
-  }
-}
-
-Material SceneManager::LoadMaterial(int m) {
-  Material mat{Materials::red_rubber};
-
-  if (m == 0) {
-    mat = Materials::ivory;
-  } else if (m == 1) {
-    mat = Materials::red_rubber;
-  } else if (m == 2) {
-    mat = Materials::green_rubber;
-  } else if (m == 3) {
-    mat = Materials::blue_rubber;
-  } else if (m == 4) {
-    mat = Materials::orange_rubber;
-  } else if (m == 5) {
-    mat = Materials::pink_rubber;
-  } else if (m == 6) {
-    mat = Materials::red_plastic;
-  } else if (m == 7) {
-    mat = Materials::black_plastic;
-  } else if (m == 8) {
-    mat = Materials::mirror;
-  } else if (m == 9) {
-    mat = Materials::glass;
-  } else if (m == 10) {
-    mat = Materials::chessboard;
-  }
-  return mat;
-}
-
-tracerr::Scene::MaterialType SceneManager::GetMaterialEnum(const Material &mat) {
-  auto ret = tracerr::Scene::MaterialType::Scene_MaterialType_ivory;
-  if (mat == Materials::ivory) {
-    ret = tracerr::Scene::MaterialType::Scene_MaterialType_ivory;
-  } else if (mat == Materials::red_rubber) {
-    ret = tracerr::Scene::MaterialType::Scene_MaterialType_red_rubber;
-  } else if (mat == Materials::green_rubber) {
-    ret = tracerr::Scene::MaterialType::Scene_MaterialType_green_rubber;
-  } else if (mat == Materials::blue_rubber) {
-    ret = tracerr::Scene::MaterialType::Scene_MaterialType_blue_rubber;
-  } else if (mat == Materials::orange_rubber) {
-    ret = tracerr::Scene::MaterialType::Scene_MaterialType_orange_rubber;
-  } else if (mat == Materials::pink_rubber) {
-    ret = tracerr::Scene::MaterialType::Scene_MaterialType_pink_rubber;
-  } else if (mat == Materials::red_plastic) {
-    ret = tracerr::Scene::MaterialType::Scene_MaterialType_red_plastic;
-  } else if (mat == Materials::black_plastic) {
-    ret = tracerr::Scene::MaterialType::Scene_MaterialType_black_plastic;
-  } else if (mat == Materials::mirror) {
-    ret = tracerr::Scene::MaterialType::Scene_MaterialType_mirror;
-  } else if (mat == Materials::glass) {
-    ret = tracerr::Scene::MaterialType::Scene_MaterialType_glass;
-  } else if (mat == Materials::chessboard) {
-    ret = tracerr::Scene::MaterialType::Scene_MaterialType_chessboard;
-  }
-  return ret;
+void SceneManager::Light2ProtoMessage(tracerr::Scene::Light *new_light, Light l) {
+  auto *p = new tracerr::Scene::Pos();
+  p->set_x(l.position_(0));
+  p->set_y(l.position_(1));
+  p->set_z(l.position_(2));
+  new_light->set_allocated_position(p);
+  new_light->set_intensity(l.intensity_);
 }
 
 void SceneManager::Sphere2ProtoMessage(tracerr::Scene::Sphere *new_sphere, Shape *shp) {
@@ -331,34 +327,32 @@ void SceneManager::Rectangle2ProtoMessage(tracerr::Scene::Rectangle *new_rectang
   new_rectangle->set_allocated_p3(p3);
 }
 
-void SceneManager::Light2ProtoMessage(tracerr::Scene::Light *new_light, Light l) {
-  auto *p = new tracerr::Scene::Pos();
-  p->set_x(l.position_(0));
-  p->set_y(l.position_(1));
-  p->set_z(l.position_(2));
-  new_light->set_allocated_position(p);
-  new_light->set_intensity(l.intensity_);
-}
-
-void SceneManager::GenerateRandomSpheres() {
-  srand(time(NULL));
-  int num_spheres{0};
-  for (int i{0}; i < num_spheres; i++) {
-    float xpos;
-    float zpos;
-    float radius{0.225};
-    float f1{(((rand() % 255) + 50) % 255) / 1.0f};
-    float f2{(((rand() % 255) + 50) % 255) / 1.0f};
-    float f3{(((rand() % 255) + 50) % 255) / 1.0f};
-
-    Material mat({f1, f2, f3}, {0.6, 0.1, 0.0, 0.0}, 10, 1.0);
-    xpos = -10.0f + (rand() % 20) + (rand() % 2) / 2.0f;
-    zpos = -10.0f + (rand() % 25) + (rand() % 2) / 2.0f;
-
-    Sphere ns({xpos, (-1.0f + radius), zpos}, radius, mat);
-    ns.custom_material = true;
-    shapes_.push_back(std::make_unique<Sphere>(std::move(ns)));
+tracerr::Scene::MaterialType SceneManager::GetMaterialEnum(const Material &mat) {
+  auto ret = tracerr::Scene::MaterialType::Scene_MaterialType_ivory;
+  if (mat == Materials::ivory) {
+    ret = tracerr::Scene::MaterialType::Scene_MaterialType_ivory;
+  } else if (mat == Materials::red_rubber) {
+    ret = tracerr::Scene::MaterialType::Scene_MaterialType_red_rubber;
+  } else if (mat == Materials::green_rubber) {
+    ret = tracerr::Scene::MaterialType::Scene_MaterialType_green_rubber;
+  } else if (mat == Materials::blue_rubber) {
+    ret = tracerr::Scene::MaterialType::Scene_MaterialType_blue_rubber;
+  } else if (mat == Materials::orange_rubber) {
+    ret = tracerr::Scene::MaterialType::Scene_MaterialType_orange_rubber;
+  } else if (mat == Materials::pink_rubber) {
+    ret = tracerr::Scene::MaterialType::Scene_MaterialType_pink_rubber;
+  } else if (mat == Materials::red_plastic) {
+    ret = tracerr::Scene::MaterialType::Scene_MaterialType_red_plastic;
+  } else if (mat == Materials::black_plastic) {
+    ret = tracerr::Scene::MaterialType::Scene_MaterialType_black_plastic;
+  } else if (mat == Materials::mirror) {
+    ret = tracerr::Scene::MaterialType::Scene_MaterialType_mirror;
+  } else if (mat == Materials::glass) {
+    ret = tracerr::Scene::MaterialType::Scene_MaterialType_glass;
+  } else if (mat == Materials::chessboard) {
+    ret = tracerr::Scene::MaterialType::Scene_MaterialType_chessboard;
   }
+  return ret;
 }
 
 tracerr::Scene::Material *SceneManager::GetCustomMaterialToProto(Material shape_mat) {
@@ -380,17 +374,23 @@ tracerr::Scene::Material *SceneManager::GetCustomMaterialToProto(Material shape_
   return m;
 };
 
-Material SceneManager::GetCustomMaterialFromProto(const tracerr::Scene::Material &proto_mat) {
-  Material mat;
-  mat.color_f_(0) = proto_mat.color().r() / 255.f;
-  mat.color_f_(1) = proto_mat.color().g() / 255.f;
-  mat.color_f_(2) = proto_mat.color().b() / 255.f;
-  mat.albedo_(0) = proto_mat.albedo().a0();
-  mat.albedo_(1) = proto_mat.albedo().a1();
-  mat.albedo_(2) = proto_mat.albedo().a2();
-  mat.albedo_(3) = proto_mat.albedo().a3();
-  mat.refractive_index = proto_mat.refractive_index();
-  mat.specular_comp_ = proto_mat.specular_comp();
+void SceneManager::GenerateRandomSpheres() {
+  srand(time(NULL));
+  int num_spheres{0};
+  for (int i{0}; i < num_spheres; i++) {
+    float xpos;
+    float zpos;
+    float radius{0.225};
+    float f1{(((rand() % 255) + 50) % 255) / 1.0f};
+    float f2{(((rand() % 255) + 50) % 255) / 1.0f};
+    float f3{(((rand() % 255) + 50) % 255) / 1.0f};
 
-  return mat;
+    Material mat({f1, f2, f3}, {0.6, 0.1, 0.0, 0.0}, 10, 1.0);
+    xpos = -10.0f + (rand() % 20) + (rand() % 2) / 2.0f;
+    zpos = -10.0f + (rand() % 25) + (rand() % 2) / 2.0f;
+
+    Sphere ns({xpos, (-1.0f + radius), zpos}, radius, mat);
+    ns.custom_material = true;
+    shapes_.push_back(std::make_unique<Sphere>(std::move(ns)));
+  }
 }
