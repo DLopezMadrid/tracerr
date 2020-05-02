@@ -46,7 +46,7 @@ PROTOBUF_NAMESPACE_CLOSE
 struct TableStruct_scene_2eproto {
   static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTableField entries[] PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[] PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[12] PROTOBUF_SECTION_VARIABLE(protodesc_cold);
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[11] PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
   static const ::PROTOBUF_NAMESPACE_ID::uint32 offsets[];
@@ -56,9 +56,6 @@ namespace tracerr {
   class Scene;
   class SceneDefaultTypeInternal;
   extern SceneDefaultTypeInternal _Scene_default_instance_;
-  class Scene_Albedo;
-  class Scene_AlbedoDefaultTypeInternal;
-  extern Scene_AlbedoDefaultTypeInternal _Scene_Albedo_default_instance_;
   class Scene_Color;
   class Scene_ColorDefaultTypeInternal;
   extern Scene_ColorDefaultTypeInternal _Scene_Color_default_instance_;
@@ -93,8 +90,6 @@ namespace tracerr {
 PROTOBUF_NAMESPACE_OPEN
 template<>
 ::tracerr::Scene *Arena::CreateMaybeMessage<::tracerr::Scene>(Arena *);
-template<>
-::tracerr::Scene_Albedo *Arena::CreateMaybeMessage<::tracerr::Scene_Albedo>(Arena *);
 template<>
 ::tracerr::Scene_Color *Arena::CreateMaybeMessage<::tracerr::Scene_Color>(Arena *);
 template<>
@@ -1780,217 +1775,6 @@ private:
   };
   // -------------------------------------------------------------------
 
-  class Scene_Albedo PROTOBUF_FINAL : public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:tracerr.Scene.Albedo) */ {
-public:
-    inline Scene_Albedo() : Scene_Albedo(nullptr){};
-    virtual ~Scene_Albedo();
-
-    Scene_Albedo(const Scene_Albedo &from);
-    Scene_Albedo(Scene_Albedo &&from) noexcept
-        : Scene_Albedo() {
-      *this = ::std::move(from);
-    }
-
-    inline Scene_Albedo &operator=(const Scene_Albedo &from) {
-      CopyFrom(from);
-      return *this;
-    }
-    inline Scene_Albedo &operator=(Scene_Albedo &&from) noexcept {
-      if (GetArena() == from.GetArena()) {
-        if (this != &from) InternalSwap(&from);
-      } else {
-        CopyFrom(from);
-      }
-      return *this;
-    }
-
-    inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet &unknown_fields() const {
-      return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
-    }
-    inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet *mutable_unknown_fields() {
-      return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-    }
-
-    static const ::PROTOBUF_NAMESPACE_ID::Descriptor *descriptor() {
-      return GetDescriptor();
-    }
-    static const ::PROTOBUF_NAMESPACE_ID::Descriptor *GetDescriptor() {
-      return GetMetadataStatic().descriptor;
-    }
-    static const ::PROTOBUF_NAMESPACE_ID::Reflection *GetReflection() {
-      return GetMetadataStatic().reflection;
-    }
-    static const Scene_Albedo &default_instance();
-
-    static void InitAsDefaultInstance();// FOR INTERNAL USE ONLY
-    static inline const Scene_Albedo *internal_default_instance() {
-      return reinterpret_cast<const Scene_Albedo *>(
-              &_Scene_Albedo_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages =
-            7;
-
-    friend void swap(Scene_Albedo &a, Scene_Albedo &b) {
-      a.Swap(&b);
-    }
-    inline void Swap(Scene_Albedo *other) {
-      if (other == this) return;
-      if (GetArena() == other->GetArena()) {
-        InternalSwap(other);
-      } else {
-        ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-      }
-    }
-    void UnsafeArenaSwap(Scene_Albedo *other) {
-      if (other == this) return;
-      GOOGLE_DCHECK(GetArena() == other->GetArena());
-      InternalSwap(other);
-    }
-
-    // implements Message ----------------------------------------------
-
-    inline Scene_Albedo *New() const final {
-      return CreateMaybeMessage<Scene_Albedo>(nullptr);
-    }
-
-    Scene_Albedo *New(::PROTOBUF_NAMESPACE_ID::Arena *arena) const final {
-      return CreateMaybeMessage<Scene_Albedo>(arena);
-    }
-    void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) final;
-    void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) final;
-    void CopyFrom(const Scene_Albedo &from);
-    void MergeFrom(const Scene_Albedo &from);
-    PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-    bool IsInitialized() const final;
-
-    size_t ByteSizeLong() const final;
-    const char *_InternalParse(const char *ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext *ctx) final;
-    ::PROTOBUF_NAMESPACE_ID::uint8 *_InternalSerialize(
-            ::PROTOBUF_NAMESPACE_ID::uint8 *target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream *stream) const final;
-    int GetCachedSize() const final { return _cached_size_.Get(); }
-
-private:
-    inline void SharedCtor();
-    inline void SharedDtor();
-    void SetCachedSize(int size) const final;
-    void InternalSwap(Scene_Albedo *other);
-    friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-    static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-      return "tracerr.Scene.Albedo";
-    }
-
-protected:
-    explicit Scene_Albedo(::PROTOBUF_NAMESPACE_ID::Arena *arena);
-
-private:
-    static void ArenaDtor(void *object);
-    inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena *arena);
-
-public:
-    ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-private:
-    static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-      ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_scene_2eproto);
-      return ::descriptor_table_scene_2eproto.file_level_metadata[kIndexInFileMessages];
-    }
-
-public:
-    // nested types ----------------------------------------------------
-
-    // accessors -------------------------------------------------------
-
-    enum : int {
-      kA0FieldNumber = 1,
-      kA1FieldNumber = 2,
-      kA2FieldNumber = 3,
-      kA3FieldNumber = 4,
-    };
-    // required float a0 = 1;
-    bool has_a0() const;
-
-private:
-    bool _internal_has_a0() const;
-
-public:
-    void clear_a0();
-    float a0() const;
-    void set_a0(float value);
-
-private:
-    float _internal_a0() const;
-    void _internal_set_a0(float value);
-
-public:
-    // required float a1 = 2;
-    bool has_a1() const;
-
-private:
-    bool _internal_has_a1() const;
-
-public:
-    void clear_a1();
-    float a1() const;
-    void set_a1(float value);
-
-private:
-    float _internal_a1() const;
-    void _internal_set_a1(float value);
-
-public:
-    // required float a2 = 3;
-    bool has_a2() const;
-
-private:
-    bool _internal_has_a2() const;
-
-public:
-    void clear_a2();
-    float a2() const;
-    void set_a2(float value);
-
-private:
-    float _internal_a2() const;
-    void _internal_set_a2(float value);
-
-public:
-    // required float a3 = 4;
-    bool has_a3() const;
-
-private:
-    bool _internal_has_a3() const;
-
-public:
-    void clear_a3();
-    float a3() const;
-    void set_a3(float value);
-
-private:
-    float _internal_a3() const;
-    void _internal_set_a3(float value);
-
-public:
-    // @@protoc_insertion_point(class_scope:tracerr.Scene.Albedo)
-private:
-    class _Internal;
-
-    // helper for ByteSizeLong()
-    size_t RequiredFieldsByteSizeFallback() const;
-
-    template<typename T>
-    friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-    typedef void InternalArenaConstructable_;
-    typedef void DestructorSkippable_;
-    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    float a0_;
-    float a1_;
-    float a2_;
-    float a3_;
-    friend struct ::TableStruct_scene_2eproto;
-  };
-  // -------------------------------------------------------------------
-
   class Scene_Material_Color_diff PROTOBUF_FINAL : public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:tracerr.Scene.Material.Color_diff) */ {
 public:
     inline Scene_Material_Color_diff() : Scene_Material_Color_diff(nullptr){};
@@ -2039,7 +1823,7 @@ public:
               &_Scene_Material_Color_diff_default_instance_);
     }
     static constexpr int kIndexInFileMessages =
-            8;
+            7;
 
     friend void swap(Scene_Material_Color_diff &a, Scene_Material_Color_diff &b) {
       a.Swap(&b);
@@ -2232,7 +2016,7 @@ public:
               &_Scene_Material_Albedo_default_instance_);
     }
     static constexpr int kIndexInFileMessages =
-            9;
+            8;
 
     friend void swap(Scene_Material_Albedo &a, Scene_Material_Albedo &b) {
       a.Swap(&b);
@@ -2443,7 +2227,7 @@ public:
               &_Scene_Material_default_instance_);
     }
     static constexpr int kIndexInFileMessages =
-            10;
+            9;
 
     friend void swap(Scene_Material &a, Scene_Material &b) {
       a.Swap(&b);
@@ -2669,7 +2453,7 @@ public:
               &_Scene_default_instance_);
     }
     static constexpr int kIndexInFileMessages =
-            11;
+            10;
 
     friend void swap(Scene &a, Scene &b) {
       a.Swap(&b);
@@ -2746,7 +2530,6 @@ public:
     typedef Scene_Rectangle Rectangle;
     typedef Scene_Obj Obj;
     typedef Scene_Color Color;
-    typedef Scene_Albedo Albedo;
     typedef Scene_Material Material;
 
     typedef Scene_MaterialType MaterialType;
@@ -4826,122 +4609,6 @@ private:
 
   // -------------------------------------------------------------------
 
-  // Scene_Albedo
-
-  // required float a0 = 1;
-  inline bool Scene_Albedo::_internal_has_a0() const {
-    bool value = (_has_bits_[0] & 0x00000001u) != 0;
-    return value;
-  }
-  inline bool Scene_Albedo::has_a0() const {
-    return _internal_has_a0();
-  }
-  inline void Scene_Albedo::clear_a0() {
-    a0_ = 0;
-    _has_bits_[0] &= ~0x00000001u;
-  }
-  inline float Scene_Albedo::_internal_a0() const {
-    return a0_;
-  }
-  inline float Scene_Albedo::a0() const {
-    // @@protoc_insertion_point(field_get:tracerr.Scene.Albedo.a0)
-    return _internal_a0();
-  }
-  inline void Scene_Albedo::_internal_set_a0(float value) {
-    _has_bits_[0] |= 0x00000001u;
-    a0_ = value;
-  }
-  inline void Scene_Albedo::set_a0(float value) {
-    _internal_set_a0(value);
-    // @@protoc_insertion_point(field_set:tracerr.Scene.Albedo.a0)
-  }
-
-  // required float a1 = 2;
-  inline bool Scene_Albedo::_internal_has_a1() const {
-    bool value = (_has_bits_[0] & 0x00000002u) != 0;
-    return value;
-  }
-  inline bool Scene_Albedo::has_a1() const {
-    return _internal_has_a1();
-  }
-  inline void Scene_Albedo::clear_a1() {
-    a1_ = 0;
-    _has_bits_[0] &= ~0x00000002u;
-  }
-  inline float Scene_Albedo::_internal_a1() const {
-    return a1_;
-  }
-  inline float Scene_Albedo::a1() const {
-    // @@protoc_insertion_point(field_get:tracerr.Scene.Albedo.a1)
-    return _internal_a1();
-  }
-  inline void Scene_Albedo::_internal_set_a1(float value) {
-    _has_bits_[0] |= 0x00000002u;
-    a1_ = value;
-  }
-  inline void Scene_Albedo::set_a1(float value) {
-    _internal_set_a1(value);
-    // @@protoc_insertion_point(field_set:tracerr.Scene.Albedo.a1)
-  }
-
-  // required float a2 = 3;
-  inline bool Scene_Albedo::_internal_has_a2() const {
-    bool value = (_has_bits_[0] & 0x00000004u) != 0;
-    return value;
-  }
-  inline bool Scene_Albedo::has_a2() const {
-    return _internal_has_a2();
-  }
-  inline void Scene_Albedo::clear_a2() {
-    a2_ = 0;
-    _has_bits_[0] &= ~0x00000004u;
-  }
-  inline float Scene_Albedo::_internal_a2() const {
-    return a2_;
-  }
-  inline float Scene_Albedo::a2() const {
-    // @@protoc_insertion_point(field_get:tracerr.Scene.Albedo.a2)
-    return _internal_a2();
-  }
-  inline void Scene_Albedo::_internal_set_a2(float value) {
-    _has_bits_[0] |= 0x00000004u;
-    a2_ = value;
-  }
-  inline void Scene_Albedo::set_a2(float value) {
-    _internal_set_a2(value);
-    // @@protoc_insertion_point(field_set:tracerr.Scene.Albedo.a2)
-  }
-
-  // required float a3 = 4;
-  inline bool Scene_Albedo::_internal_has_a3() const {
-    bool value = (_has_bits_[0] & 0x00000008u) != 0;
-    return value;
-  }
-  inline bool Scene_Albedo::has_a3() const {
-    return _internal_has_a3();
-  }
-  inline void Scene_Albedo::clear_a3() {
-    a3_ = 0;
-    _has_bits_[0] &= ~0x00000008u;
-  }
-  inline float Scene_Albedo::_internal_a3() const {
-    return a3_;
-  }
-  inline float Scene_Albedo::a3() const {
-    // @@protoc_insertion_point(field_get:tracerr.Scene.Albedo.a3)
-    return _internal_a3();
-  }
-  inline void Scene_Albedo::_internal_set_a3(float value) {
-    _has_bits_[0] |= 0x00000008u;
-    a3_ = value;
-  }
-  inline void Scene_Albedo::set_a3(float value) {
-    _internal_set_a3(value);
-    // @@protoc_insertion_point(field_set:tracerr.Scene.Albedo.a3)
-  }
-
-  // -------------------------------------------------------------------
-
   // Scene_Material_Color_diff
 
   // required int32 r = 1;
@@ -5934,8 +5601,6 @@ private:
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif// __GNUC__
-  // -------------------------------------------------------------------
-
   // -------------------------------------------------------------------
 
   // -------------------------------------------------------------------

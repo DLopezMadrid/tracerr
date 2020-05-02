@@ -53,10 +53,6 @@ public:
 public:
     ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Scene_Color> _instance;
   } _Scene_Color_default_instance_;
-  class Scene_AlbedoDefaultTypeInternal {
-public:
-    ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Scene_Albedo> _instance;
-  } _Scene_Albedo_default_instance_;
   class Scene_Material_Color_diffDefaultTypeInternal {
 public:
     ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Scene_Material_Color_diff> _instance;
@@ -98,20 +94,6 @@ static void InitDefaultsscc_info_Scene_scene_2eproto() {
                                                                                                                                                     &scc_info_Scene_Obj_scene_2eproto.base,
                                                                                                                                                     &scc_info_Scene_Color_scene_2eproto.base,
                                                                                                                                             }};
-
-static void InitDefaultsscc_info_Scene_Albedo_scene_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void *ptr = &::tracerr::_Scene_Albedo_default_instance_;
-    new (ptr)::tracerr::Scene_Albedo();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::tracerr::Scene_Albedo::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Scene_Albedo_scene_2eproto =
-        {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Scene_Albedo_scene_2eproto}, {}};
 
 static void InitDefaultsscc_info_Scene_Color_scene_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -270,7 +252,7 @@ static void InitDefaultsscc_info_Scene_Triangle_scene_2eproto() {
                                                                                                                                                              &scc_info_Scene_Material_scene_2eproto.base,
                                                                                                                                                      }};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_scene_2eproto[12];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_scene_2eproto[11];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor *file_level_enum_descriptors_scene_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const **file_level_service_descriptors_scene_2eproto = nullptr;
 
@@ -372,19 +354,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_scene_2eproto::offsets[] PROTO
         0,
         1,
         2,
-        PROTOBUF_FIELD_OFFSET(::tracerr::Scene_Albedo, _has_bits_),
-        PROTOBUF_FIELD_OFFSET(::tracerr::Scene_Albedo, _internal_metadata_),
-        ~0u,// no _extensions_
-        ~0u,// no _oneof_case_
-        ~0u,// no _weak_field_map_
-        PROTOBUF_FIELD_OFFSET(::tracerr::Scene_Albedo, a0_),
-        PROTOBUF_FIELD_OFFSET(::tracerr::Scene_Albedo, a1_),
-        PROTOBUF_FIELD_OFFSET(::tracerr::Scene_Albedo, a2_),
-        PROTOBUF_FIELD_OFFSET(::tracerr::Scene_Albedo, a3_),
-        0,
-        1,
-        2,
-        3,
         PROTOBUF_FIELD_OFFSET(::tracerr::Scene_Material_Color_diff, _has_bits_),
         PROTOBUF_FIELD_OFFSET(::tracerr::Scene_Material_Color_diff, _internal_metadata_),
         ~0u,// no _extensions_
@@ -464,11 +433,10 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
         {52, 64, sizeof(::tracerr::Scene_Rectangle)},
         {71, 81, sizeof(::tracerr::Scene_Obj)},
         {86, 94, sizeof(::tracerr::Scene_Color)},
-        {97, 106, sizeof(::tracerr::Scene_Albedo)},
-        {110, 118, sizeof(::tracerr::Scene_Material_Color_diff)},
-        {121, 130, sizeof(::tracerr::Scene_Material_Albedo)},
-        {134, 143, sizeof(::tracerr::Scene_Material)},
-        {147, 166, sizeof(::tracerr::Scene)},
+        {97, 105, sizeof(::tracerr::Scene_Material_Color_diff)},
+        {108, 117, sizeof(::tracerr::Scene_Material_Albedo)},
+        {121, 130, sizeof(::tracerr::Scene_Material)},
+        {134, 153, sizeof(::tracerr::Scene)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const *const file_default_instances[] = {
@@ -479,7 +447,6 @@ static ::PROTOBUF_NAMESPACE_ID::Message const *const file_default_instances[] = 
         reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message *>(&::tracerr::_Scene_Rectangle_default_instance_),
         reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message *>(&::tracerr::_Scene_Obj_default_instance_),
         reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message *>(&::tracerr::_Scene_Color_default_instance_),
-        reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message *>(&::tracerr::_Scene_Albedo_default_instance_),
         reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message *>(&::tracerr::_Scene_Material_Color_diff_default_instance_),
         reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message *>(&::tracerr::_Scene_Material_Albedo_default_instance_),
         reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message *>(&::tracerr::_Scene_Material_default_instance_),
@@ -487,7 +454,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const *const file_default_instances[] = 
 };
 
 const char descriptor_table_protodef_scene_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-        "\n\013scene.proto\022\007tracerr\"\375\017\n\005Scene\022\r\n\005widt"
+        "\n\013scene.proto\022\007tracerr\"\303\017\n\005Scene\022\r\n\005widt"
         "h\030\001 \002(\005\022\016\n\006height\030\002 \002(\005\022\026\n\010saveFile\030\003 \002("
         "\010:\004true\022\035\n\005fname\030\004 \001(\t:\016RenderTest.png\022\031"
         "\n\013multiThread\030\005 \001(\010:\004true\022#\n\005light\030\006 \003(\013"
@@ -525,24 +492,22 @@ const char descriptor_table_protodef_scene_2eproto[] PROTOBUF_SECTION_VARIABLE(p
         " \001(\0132\022.tracerr.Scene.Pos\022&\n\027custom_mater"
         "ial_enabled\030\004 \001(\010:\005false\0220\n\017custom_mater"
         "ial\030\005 \001(\0132\027.tracerr.Scene.Material\032(\n\005Co"
-        "lor\022\t\n\001r\030\001 \002(\005\022\t\n\001g\030\002 \002(\005\022\t\n\001b\030\003 \002(\005\0328\n\006"
-        "Albedo\022\n\n\002a0\030\001 \002(\002\022\n\n\002a1\030\002 \002(\002\022\n\n\002a2\030\003 \002"
-        "(\002\022\n\n\002a3\030\004 \002(\002\032\207\002\n\010Material\0221\n\005color\030\001 \002"
-        "(\0132\".tracerr.Scene.Material.Color_diff\022."
-        "\n\006albedo\030\002 \002(\0132\036.tracerr.Scene.Material."
-        "Albedo\022\025\n\rspecular_comp\030\003 \002(\002\022\030\n\020refract"
-        "ive_index\030\004 \002(\002\032-\n\nColor_diff\022\t\n\001r\030\001 \002(\005"
-        "\022\t\n\001g\030\002 \002(\005\022\t\n\001b\030\003 \002(\005\0328\n\006Albedo\022\n\n\002a0\030\001"
-        " \002(\002\022\n\n\002a1\030\002 \002(\002\022\n\n\002a2\030\003 \002(\002\022\n\n\002a3\030\004 \002(\002"
-        "\"\273\001\n\014MaterialType\022\t\n\005ivory\020\000\022\016\n\nred_rubb"
-        "er\020\001\022\020\n\014green_rubber\020\002\022\017\n\013blue_rubber\020\003\022"
-        "\021\n\rorange_rubber\020\004\022\017\n\013pink_rubber\020\005\022\017\n\013r"
-        "ed_plastic\020\006\022\021\n\rblack_plastic\020\007\022\n\n\006mirro"
-        "r\020\010\022\t\n\005glass\020\t\022\016\n\nchessboard\020\n";
+        "lor\022\t\n\001r\030\001 \002(\005\022\t\n\001g\030\002 \002(\005\022\t\n\001b\030\003 \002(\005\032\207\002\n"
+        "\010Material\0221\n\005color\030\001 \002(\0132\".tracerr.Scene"
+        ".Material.Color_diff\022.\n\006albedo\030\002 \002(\0132\036.t"
+        "racerr.Scene.Material.Albedo\022\025\n\rspecular"
+        "_comp\030\003 \002(\002\022\030\n\020refractive_index\030\004 \002(\002\032-\n"
+        "\nColor_diff\022\t\n\001r\030\001 \002(\005\022\t\n\001g\030\002 \002(\005\022\t\n\001b\030\003"
+        " \002(\005\0328\n\006Albedo\022\n\n\002a0\030\001 \002(\002\022\n\n\002a1\030\002 \002(\002\022\n"
+        "\n\002a2\030\003 \002(\002\022\n\n\002a3\030\004 \002(\002\"\273\001\n\014MaterialType\022"
+        "\t\n\005ivory\020\000\022\016\n\nred_rubber\020\001\022\020\n\014green_rubb"
+        "er\020\002\022\017\n\013blue_rubber\020\003\022\021\n\rorange_rubber\020\004"
+        "\022\017\n\013pink_rubber\020\005\022\017\n\013red_plastic\020\006\022\021\n\rbl"
+        "ack_plastic\020\007\022\n\n\006mirror\020\010\022\t\n\005glass\020\t\022\016\n\n"
+        "chessboard\020\n";
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable *const descriptor_table_scene_2eproto_deps[1] = {};
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase *const descriptor_table_scene_2eproto_sccs[12] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase *const descriptor_table_scene_2eproto_sccs[11] = {
         &scc_info_Scene_scene_2eproto.base,
-        &scc_info_Scene_Albedo_scene_2eproto.base,
         &scc_info_Scene_Color_scene_2eproto.base,
         &scc_info_Scene_Light_scene_2eproto.base,
         &scc_info_Scene_Material_scene_2eproto.base,
@@ -560,17 +525,17 @@ const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_scene_
         false,
         descriptor_table_protodef_scene_2eproto,
         "scene.proto",
-        2070,
+        2012,
         &descriptor_table_scene_2eproto_once,
         descriptor_table_scene_2eproto_sccs,
         descriptor_table_scene_2eproto_deps,
-        12,
+        11,
         0,
         schemas,
         file_default_instances,
         TableStruct_scene_2eproto::offsets,
         file_level_metadata_scene_2eproto,
-        12,
+        11,
         file_level_enum_descriptors_scene_2eproto,
         file_level_service_descriptors_scene_2eproto,
 };
@@ -3348,332 +3313,6 @@ public:
 
   // ===================================================================
 
-  void Scene_Albedo::InitAsDefaultInstance() {
-  }
-  class Scene_Albedo::_Internal {
-public:
-    using HasBits = decltype(std::declval<Scene_Albedo>()._has_bits_);
-    static void set_has_a0(HasBits *has_bits) {
-      (*has_bits)[0] |= 1u;
-    }
-    static void set_has_a1(HasBits *has_bits) {
-      (*has_bits)[0] |= 2u;
-    }
-    static void set_has_a2(HasBits *has_bits) {
-      (*has_bits)[0] |= 4u;
-    }
-    static void set_has_a3(HasBits *has_bits) {
-      (*has_bits)[0] |= 8u;
-    }
-    static bool MissingRequiredFields(const HasBits &has_bits) {
-      return ((has_bits[0] & 0x0000000f) ^ 0x0000000f) != 0;
-    }
-  };
-
-  Scene_Albedo::Scene_Albedo(::PROTOBUF_NAMESPACE_ID::Arena *arena)
-      : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
-    SharedCtor();
-    RegisterArenaDtor(arena);
-    // @@protoc_insertion_point(arena_constructor:tracerr.Scene.Albedo)
-  }
-  Scene_Albedo::Scene_Albedo(const Scene_Albedo &from)
-      : ::PROTOBUF_NAMESPACE_ID::Message(),
-        _has_bits_(from._has_bits_) {
-    _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-    ::memcpy(&a0_, &from.a0_,
-             static_cast<size_t>(reinterpret_cast<char *>(&a3_) -
-                                 reinterpret_cast<char *>(&a0_)) +
-                     sizeof(a3_));
-    // @@protoc_insertion_point(copy_constructor:tracerr.Scene.Albedo)
-  }
-
-  void Scene_Albedo::SharedCtor() {
-    ::memset(&a0_, 0, static_cast<size_t>(reinterpret_cast<char *>(&a3_) - reinterpret_cast<char *>(&a0_)) + sizeof(a3_));
-  }
-
-  Scene_Albedo::~Scene_Albedo() {
-    // @@protoc_insertion_point(destructor:tracerr.Scene.Albedo)
-    SharedDtor();
-    _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-  }
-
-  void Scene_Albedo::SharedDtor() {
-    GOOGLE_DCHECK(GetArena() == nullptr);
-  }
-
-  void Scene_Albedo::ArenaDtor(void *object) {
-    Scene_Albedo *_this = reinterpret_cast<Scene_Albedo *>(object);
-    (void) _this;
-  }
-  void Scene_Albedo::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena *) {
-  }
-  void Scene_Albedo::SetCachedSize(int size) const {
-    _cached_size_.Set(size);
-  }
-  const Scene_Albedo &Scene_Albedo::default_instance() {
-    ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Scene_Albedo_scene_2eproto.base);
-    return *internal_default_instance();
-  }
-
-
-  void Scene_Albedo::Clear() {
-    // @@protoc_insertion_point(message_clear_start:tracerr.Scene.Albedo)
-    ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void) cached_has_bits;
-
-    cached_has_bits = _has_bits_[0];
-    if (cached_has_bits & 0x0000000fu) {
-      ::memset(&a0_, 0, static_cast<size_t>(reinterpret_cast<char *>(&a3_) - reinterpret_cast<char *>(&a0_)) + sizeof(a3_));
-    }
-    _has_bits_.Clear();
-    _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-  }
-
-  const char *Scene_Albedo::_InternalParse(const char *ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext *ctx) {
-#define CHK_(x) \
-  if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-    _Internal::HasBits has_bits{};
-    ::PROTOBUF_NAMESPACE_ID::Arena *arena = GetArena();
-    (void) arena;
-    while (!ctx->Done(&ptr)) {
-      ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-      ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-      CHK_(ptr);
-      switch (tag >> 3) {
-        // required float a0 = 1;
-        case 1:
-          if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 13)) {
-            _Internal::set_has_a0(&has_bits);
-            a0_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-            ptr += sizeof(float);
-          } else
-            goto handle_unusual;
-          continue;
-        // required float a1 = 2;
-        case 2:
-          if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 21)) {
-            _Internal::set_has_a1(&has_bits);
-            a1_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-            ptr += sizeof(float);
-          } else
-            goto handle_unusual;
-          continue;
-        // required float a2 = 3;
-        case 3:
-          if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
-            _Internal::set_has_a2(&has_bits);
-            a2_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-            ptr += sizeof(float);
-          } else
-            goto handle_unusual;
-          continue;
-        // required float a3 = 4;
-        case 4:
-          if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
-            _Internal::set_has_a3(&has_bits);
-            a3_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-            ptr += sizeof(float);
-          } else
-            goto handle_unusual;
-          continue;
-        default: {
-        handle_unusual:
-          if ((tag & 7) == 4 || tag == 0) {
-            ctx->SetLastTag(tag);
-            goto success;
-          }
-          ptr = UnknownFieldParse(tag,
-                                  _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-                                  ptr, ctx);
-          CHK_(ptr != nullptr);
-          continue;
-        }
-      }// switch
-    }  // while
-  success:
-    _has_bits_.Or(has_bits);
-    return ptr;
-  failure:
-    ptr = nullptr;
-    goto success;
-#undef CHK_
-  }
-
-  ::PROTOBUF_NAMESPACE_ID::uint8 *Scene_Albedo::_InternalSerialize(
-          ::PROTOBUF_NAMESPACE_ID::uint8 *target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream *stream) const {
-    // @@protoc_insertion_point(serialize_to_array_start:tracerr.Scene.Albedo)
-    ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-    (void) cached_has_bits;
-
-    cached_has_bits = _has_bits_[0];
-    // required float a0 = 1;
-    if (cached_has_bits & 0x00000001u) {
-      target = stream->EnsureSpace(target);
-      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->_internal_a0(), target);
-    }
-
-    // required float a1 = 2;
-    if (cached_has_bits & 0x00000002u) {
-      target = stream->EnsureSpace(target);
-      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->_internal_a1(), target);
-    }
-
-    // required float a2 = 3;
-    if (cached_has_bits & 0x00000004u) {
-      target = stream->EnsureSpace(target);
-      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_a2(), target);
-    }
-
-    // required float a3 = 4;
-    if (cached_has_bits & 0x00000008u) {
-      target = stream->EnsureSpace(target);
-      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_a3(), target);
-    }
-
-    if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-              _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:tracerr.Scene.Albedo)
-    return target;
-  }
-
-  size_t Scene_Albedo::RequiredFieldsByteSizeFallback() const {
-    // @@protoc_insertion_point(required_fields_byte_size_fallback_start:tracerr.Scene.Albedo)
-    size_t total_size = 0;
-
-    if (_internal_has_a0()) {
-      // required float a0 = 1;
-      total_size += 1 + 4;
-    }
-
-    if (_internal_has_a1()) {
-      // required float a1 = 2;
-      total_size += 1 + 4;
-    }
-
-    if (_internal_has_a2()) {
-      // required float a2 = 3;
-      total_size += 1 + 4;
-    }
-
-    if (_internal_has_a3()) {
-      // required float a3 = 4;
-      total_size += 1 + 4;
-    }
-
-    return total_size;
-  }
-  size_t Scene_Albedo::ByteSizeLong() const {
-    // @@protoc_insertion_point(message_byte_size_start:tracerr.Scene.Albedo)
-    size_t total_size = 0;
-
-    if (((_has_bits_[0] & 0x0000000f) ^ 0x0000000f) == 0) {// All required fields are present.
-      // required float a0 = 1;
-      total_size += 1 + 4;
-
-      // required float a1 = 2;
-      total_size += 1 + 4;
-
-      // required float a2 = 3;
-      total_size += 1 + 4;
-
-      // required float a3 = 4;
-      total_size += 1 + 4;
-
-    } else {
-      total_size += RequiredFieldsByteSizeFallback();
-    }
-    ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void) cached_has_bits;
-
-    if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-      return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-              _internal_metadata_, total_size, &_cached_size_);
-    }
-    int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-    SetCachedSize(cached_size);
-    return total_size;
-  }
-
-  void Scene_Albedo::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) {
-    // @@protoc_insertion_point(generalized_merge_from_start:tracerr.Scene.Albedo)
-    GOOGLE_DCHECK_NE(&from, this);
-    const Scene_Albedo *source =
-            ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Scene_Albedo>(
-                    &from);
-    if (source == nullptr) {
-      // @@protoc_insertion_point(generalized_merge_from_cast_fail:tracerr.Scene.Albedo)
-      ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-    } else {
-      // @@protoc_insertion_point(generalized_merge_from_cast_success:tracerr.Scene.Albedo)
-      MergeFrom(*source);
-    }
-  }
-
-  void Scene_Albedo::MergeFrom(const Scene_Albedo &from) {
-    // @@protoc_insertion_point(class_specific_merge_from_start:tracerr.Scene.Albedo)
-    GOOGLE_DCHECK_NE(&from, this);
-    _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-    ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-    (void) cached_has_bits;
-
-    cached_has_bits = from._has_bits_[0];
-    if (cached_has_bits & 0x0000000fu) {
-      if (cached_has_bits & 0x00000001u) {
-        a0_ = from.a0_;
-      }
-      if (cached_has_bits & 0x00000002u) {
-        a1_ = from.a1_;
-      }
-      if (cached_has_bits & 0x00000004u) {
-        a2_ = from.a2_;
-      }
-      if (cached_has_bits & 0x00000008u) {
-        a3_ = from.a3_;
-      }
-      _has_bits_[0] |= cached_has_bits;
-    }
-  }
-
-  void Scene_Albedo::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) {
-    // @@protoc_insertion_point(generalized_copy_from_start:tracerr.Scene.Albedo)
-    if (&from == this) return;
-    Clear();
-    MergeFrom(from);
-  }
-
-  void Scene_Albedo::CopyFrom(const Scene_Albedo &from) {
-    // @@protoc_insertion_point(class_specific_copy_from_start:tracerr.Scene.Albedo)
-    if (&from == this) return;
-    Clear();
-    MergeFrom(from);
-  }
-
-  bool Scene_Albedo::IsInitialized() const {
-    if (_Internal::MissingRequiredFields(_has_bits_)) return false;
-    return true;
-  }
-
-  void Scene_Albedo::InternalSwap(Scene_Albedo *other) {
-    using std::swap;
-    _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-    swap(_has_bits_[0], other->_has_bits_[0]);
-    ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-            PROTOBUF_FIELD_OFFSET(Scene_Albedo, a3_) + sizeof(Scene_Albedo::a3_) - PROTOBUF_FIELD_OFFSET(Scene_Albedo, a0_)>(
-            reinterpret_cast<char *>(&a0_),
-            reinterpret_cast<char *>(&other->a0_));
-  }
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata Scene_Albedo::GetMetadata() const {
-    return GetMetadataStatic();
-  }
-
-
-  // ===================================================================
-
   void Scene_Material_Color_diff::InitAsDefaultInstance() {
   }
   class Scene_Material_Color_diff::_Internal {
@@ -5411,10 +5050,6 @@ PROTOBUF_NOINLINE ::tracerr::Scene_Obj *Arena::CreateMaybeMessage<::tracerr::Sce
 template<>
 PROTOBUF_NOINLINE ::tracerr::Scene_Color *Arena::CreateMaybeMessage<::tracerr::Scene_Color>(Arena *arena) {
   return Arena::CreateMessageInternal<::tracerr::Scene_Color>(arena);
-}
-template<>
-PROTOBUF_NOINLINE ::tracerr::Scene_Albedo *Arena::CreateMaybeMessage<::tracerr::Scene_Albedo>(Arena *arena) {
-  return Arena::CreateMessageInternal<::tracerr::Scene_Albedo>(arena);
 }
 template<>
 PROTOBUF_NOINLINE ::tracerr::Scene_Material_Color_diff *Arena::CreateMaybeMessage<::tracerr::Scene_Material_Color_diff>(Arena *arena) {
