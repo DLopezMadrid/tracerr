@@ -59,5 +59,5 @@ const xyz &Rectangle::GetP2_() const {
   return p2_;
 }
 const xyz &Rectangle::GetP3_() const {
-  return p2_;
+  return p3_;
 }

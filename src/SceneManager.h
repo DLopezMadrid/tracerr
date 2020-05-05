@@ -22,6 +22,9 @@ class SceneManager {
   public:
   SceneManager();
   void LoadScene(char *proto_path_char);
+  void SaveExampleScene(char *proto_path_char);
+  void WriteTemplateFile(char *template_fname);
+  void WriteCleanTemplateFile(char *template_fname);
 
   private:
   bool LoadTextProto();
@@ -33,11 +36,12 @@ class SceneManager {
   void LoadSceneConfig();
   Material LoadMaterial(int m);
   bool WriteProtoText(const std::string &save_file_path);
-  void SaveSceneToProto();
+  void SaveSceneToProto(std::string save_textproto_file_path);
   void Sphere2ProtoMessage(tracerr::Scene_Sphere *new_sphere, Shape *shp);
   void Rectangle2ProtoMessage(tracerr::Scene_Rectangle *new_rectangle, Shape *shp);
   void Triangle2ProtoMessage(tracerr::Scene_Triangle *new_triangle, Shape *shp);
   void Light2ProtoMessage(tracerr::Scene_Light *new_light, Light l);
+  void AddCommentedObjToProto(std::string example_proto_path_);
   void GenerateRandomSpheres();
   tracerr::Scene::Material *GetCustomMaterialToProto(Material shape_mat);
   tracerr::Scene::MaterialType GetMaterialEnum(const Material &mat);
@@ -53,6 +57,7 @@ class SceneManager {
   bool show_chessboard_{false};
   bool show_elapsed_time_{true};
   rgb_f background_color_;
+
 };
 
 

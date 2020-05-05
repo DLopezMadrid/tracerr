@@ -7,9 +7,6 @@
 // Protobuf docs and examples
 // https://developers.google.com/protocol-buffers/docs/reference/cpp-generated#fields
 // https://github.com/protocolbuffers/protobuf/tree/master/examples
-//
-//
-
 
 // Raytracing examples
 // https://github.com/VityasZV/tinyraytracer/blob/master/raytracing/raytracing.cpp
@@ -203,12 +200,51 @@ Material SceneManager::GetCustomMaterialFromProto(const tracerr::Scene::Material
   return mat;
 }
 
-void SceneManager::SaveSceneToProto() {
+void SceneManager::SaveExampleScene(char *proto_path_char) {
+  std::string example_proto_path_ = std::string(proto_path_char);
+  //  std::cout << "Saving example scene as " << example_proto_path_ << '\n';
+
+  width_ = 600;
+  height_ = 300;
+  show_chessboard_ = true;
+  background_color_ = rgb_f{0.1, 0.2, 0.3};
+
+  lights_.push_back(Light({0, 5, 1}, 1.25));
+  lights_.push_back(Light({4, 6, -7}, 0.8));
+
+  Sphere s1({-5, 0, -6}, 1, Materials::red_plastic);
+  Sphere s2({0, 0.5, -4}, 1.5, Materials::mirror);
+  Material mat({180, 10, 220}, {0.9, 0.1, 0.0, 0.0}, 10.0, 1.0f);
+  Sphere s3({-3, 0, -5}, 1, mat);
+  s3.custom_material = true;
+
+  Rectangle r1({3, 0, -4}, {3, 2, -4}, {4, 1.5, -4}, {4, 0, -4}, Materials::orange_rubber);
+  Triangle t1({4, 2, -8}, {3, 4, -8}, {5, 4, -8}, Materials::green_rubber);
+
+  shapes_.push_back(std::make_unique<Sphere>(std::move(s1)));
+  shapes_.push_back(std::make_unique<Sphere>(std::move(s2)));
+  shapes_.push_back(std::make_unique<Sphere>(std::move(s3)));
+  shapes_.push_back(std::make_unique<Rectangle>(std::move(r1)));
+  shapes_.push_back(std::make_unique<Triangle>(std::move(t1)));
+  SaveSceneToProto(example_proto_path_);
+  AddCommentedObjToProto(example_proto_path_);
+
+  std::cout << "Done" << '\n';
+}
+
+void SceneManager::SaveSceneToProto(std::string save_textproto_file_path) {
   scene_out_.set_height(height_);
   scene_out_.set_width(width_);
   scene_out_.set_savefile(true);
-  scene_out_.set_fname("GeneratedProtoImg.png");
+  scene_out_.set_fname("GeneratedSceneImg.png");
   scene_out_.set_ambient_light(Material::ambient_light);
+  scene_out_.set_show_checkerboard(show_chessboard_);
+
+  auto *bg_color = new tracerr::Scene::Color;
+  bg_color->set_r(background_color_(0) * 255.0f);
+  bg_color->set_g(background_color_(1) * 255.0f);
+  bg_color->set_b(background_color_(2) * 255.0f);
+  scene_out_.set_allocated_background_color(bg_color);
 
   for (auto &l : lights_) {
     auto new_light = scene_out_.add_light();
@@ -235,7 +271,7 @@ void SceneManager::SaveSceneToProto() {
     }
   }
 
-  WriteProtoText("./../scenes/new_scene.textproto");
+  WriteProtoText(save_textproto_file_path);
 }
 
 bool SceneManager::WriteProtoText(const std::string &save_file_path) {
@@ -246,12 +282,29 @@ bool SceneManager::WriteProtoText(const std::string &save_file_path) {
   auto *oos = new google::protobuf::io::OstreamOutputStream(&ofs);
   auto success = google::protobuf::TextFormat::Print(scene_out_, oos);
   delete oos;
+  ofs.close();
   if (!success) {
     std::cerr << "Failed to parse scene" << std::endl;
     return -1;
   }
 
   return true;
+}
+
+void SceneManager::AddCommentedObjToProto(std::string example_proto_path_) {
+  std::ofstream ofs(example_proto_path_, std::fstream::out | std::fstream::app);
+  ofs << "\n"
+         "#Example obj file usage - uncomment to use\n"
+         "#obj{\n"
+         "#  fname: \"./../obj/duck.obj\"\n"
+         "#  translation{\n"
+         "#    x: 1\n"
+         "#    y: 3\n"
+         "#    z: 1\n"
+         "#  }\n"
+         "#  material: pink_rubber\n"
+         "#}\n";
+  ofs.close();
 }
 
 void SceneManager::Light2ProtoMessage(tracerr::Scene::Light *new_light, Light l) {
@@ -403,4 +456,223 @@ void SceneManager::GenerateRandomSpheres() {
     ns.custom_material = true;
     shapes_.push_back(std::make_unique<Sphere>(std::move(ns)));
   }
+}
+
+void SceneManager::WriteTemplateFile(char *template_fname) {
+  std::ofstream ofs(template_fname, std::fstream::out);
+  ofs << "\n"
+         "# proto-message: Scene\n"
+         "# --------------------\n"
+         "# modify from here\n"
+         "# width and height of the resulting image in pixels\n"
+         "  width: \n"
+         "  height: \n"
+         "# enable saving the resulting image and filename to use (png images only)\n"
+         "  saveFile: true\n"
+         "  fname: \"\"\n"
+         "# show checkerboard floor plane at y=-1\n"
+         "  show_checkerboard: true\n"
+         "# rgb background color [0-255]\n"
+         "  background_color {\n"
+         "          r: \n"
+         "          g: \n"
+         "          b: \n"
+         "  }\n"
+         "# ambient light level [0.0-1.0]\n"
+         "  ambient_light: \n"
+         "# light source position (x,y,z) and intensity\n"
+         "# multiple lights can be defined for a single scene\n"
+         "  light {\n"
+         "          position {\n"
+         "                  x: \n"
+         "                  y: \n"
+         "                  z: \n"
+         "          }\n"
+         "          intensity: \n"
+         "  }\n"
+         "# sphere primitive shape with center at position xyz, radius and certain pre-defined material\n"
+         "# list of available pre-defined materials for any shape or obj file:\n"
+         "#     ivory, red_rubber, green_rubber, blue_rubber, orange_rubber, pink_rubber, red_plastic, black_plastic, mirror, glass, chessboard\n"
+         "# multiple spheres can be defined for a single scene\n"
+         "  sphere {\n"
+         "          position {\n"
+         "                  x: \n"
+         "                  y: \n"
+         "                  z: \n"
+         "          }\n"
+         "          radius: \n"
+         "          material: \n"
+         "  }\n"
+         "# triangle defined by 3 points xyz and a custom material\n"
+         "# custom material color [0-255], albedo [0.0-1.0], specular_comp [0-1000], refractive_index\n"
+         "# multiple triangles can be defined for a single scene\n"
+         "  triangle {\n"
+         "          p0 {\n"
+         "            x: \n"
+         "            y: \n"
+         "            z: \n"
+         "          }\n"
+         "          p1 {\n"
+         "            x: \n"
+         "            y: \n"
+         "            z: \n"
+         "          }\n"
+         "          p2 {\n"
+         "            x: \n"
+         "            y: \n"
+         "            z: \n"
+         "          }\n"
+         "          custom_material_enabled: true\n"
+         "          custom_material {\n"
+         "            color {\n"
+         "                    r: \n"
+         "                    g: \n"
+         "                    b: \n"
+         "            }\n"
+         "            albedo {\n"
+         "                    a0: \n"
+         "                    a1: \n"
+         "                    a2: \n"
+         "                    a3: \n"
+         "            }\n"
+         "            specular_comp: \n"
+         "            refractive_index: \n"
+         "          }\n"
+         "  }\n"
+         "# rectangle defined by 4 points xyz and a pre-defined material\n"
+         "# multiple rectangles can be defined for a single scene\n"
+         "  rectangle {\n"
+         "          p0 {\n"
+         "            x: \n"
+         "            y: \n"
+         "            z: \n"
+         "          }\n"
+         "          p1 {\n"
+         "            x: \n"
+         "            y: \n"
+         "            z: \n"
+         "          }\n"
+         "          p2 {\n"
+         "            x: \n"
+         "            y: \n"
+         "            z: \n"
+         "          }\n"
+         "          p3 {\n"
+         "            x: \n"
+         "            y: \n"
+         "            z: \n"
+         "          }\n"
+         "          material: \n"
+         "  }\n"
+         "\n"
+         "\n"
+         "#Example obj file usage - uncomment to use\n"
+         "# multiple objs can be defined for a single scene\n"
+         "#obj{\n"
+         "#  fname: \"./../obj/duck.obj\"\n"
+         "#  translation{\n"
+         "#    x: 1\n"
+         "#    y: 3\n"
+         "#    z: 1\n"
+         "#  }\n"
+         "#  material: pink_rubber\n"
+         "#}\n";
+
+  ofs.close();
+  std::cout << "DONE" << '\n';
+}
+
+void SceneManager::WriteCleanTemplateFile(char *template_fname) {
+  std::ofstream ofs(template_fname, std::fstream::out);
+  ofs << "\n"
+         "# proto-message: Scene\n"
+         "  width: \n"
+         "  height: \n"
+         "  saveFile: \n"
+         "  fname: \"\"\n"
+         "  show_checkerboard: \n"
+         "  background_color {\n"
+         "          r: \n"
+         "          g: \n"
+         "          b: \n"
+         "  }\n"
+         "  ambient_light: \n"
+         "  light {\n"
+         "          position {\n"
+         "                  x: \n"
+         "                  y: \n"
+         "                  z: \n"
+         "          }\n"
+         "          intensity: \n"
+         "  }\n"
+         "  sphere {\n"
+         "          position {\n"
+         "                  x: \n"
+         "                  y: \n"
+         "                  z: \n"
+         "          }\n"
+         "          radius: \n"
+         "          material: \n"
+         "  }\n"
+         "  triangle {\n"
+         "          p0 {\n"
+         "            x: \n"
+         "            y: \n"
+         "            z: \n"
+         "          }\n"
+         "          p1 {\n"
+         "            x: \n"
+         "            y: \n"
+         "            z: \n"
+         "          }\n"
+         "          p2 {\n"
+         "            x: \n"
+         "            y: \n"
+         "            z: \n"
+         "          }\n"
+         "          custom_material_enabled: true\n"
+         "          custom_material {\n"
+         "            color {\n"
+         "                    r: \n"
+         "                    g: \n"
+         "                    b: \n"
+         "            }\n"
+         "            albedo {\n"
+         "                    a0: \n"
+         "                    a1: \n"
+         "                    a2: \n"
+         "                    a3: \n"
+         "            }\n"
+         "            specular_comp: \n"
+         "            refractive_index: \n"
+         "          }\n"
+         "  }\n"
+         "  rectangle {\n"
+         "          p0 {\n"
+         "            x: \n"
+         "            y: \n"
+         "            z: \n"
+         "          }\n"
+         "          p1 {\n"
+         "            x: \n"
+         "            y: \n"
+         "            z: \n"
+         "          }\n"
+         "          p2 {\n"
+         "            x: \n"
+         "            y: \n"
+         "            z: \n"
+         "          }\n"
+         "          p3 {\n"
+         "            x: \n"
+         "            y: \n"
+         "            z: \n"
+         "          }\n"
+         "          material: \n"
+         "  }\n"
+         "\n"
+         "\n";
+
+  ofs.close();
+  std::cout << "DONE" << '\n';
 }

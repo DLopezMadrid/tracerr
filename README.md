@@ -59,17 +59,29 @@ $ ./tracerr
 ```    
 
 ## How to run
-The program is launched from the terminal and takes the path to a prototext file as the only argument.  
+To render a scene, the program is launched from the terminal and takes the `-r` option and the path to a prototext file describing the scene.  
 ```sh
-$ ./tracerr {PATH_TO_PROTOTEXT_FILE}
+$ ./tracerr -r {PATH_TO_PROTOTEXT_FILE}
 ```  
 Example:
 ```sh
-$ ./tracerr ./../scenes/simple.textproto
+$ ./tracerr -r ./../scenes/simple.textproto
 ```  
-In order to create a new the scene, you will need to make a new prototext file and follow the instructions in the next section
+The scene parameters are explained in the next section.   
 
-You can find some predefined scenes in the _./scene_ folder
+In order to create a new the scene, you will need to make a new prototext file. You can ask the program to create an example scene, a commented empty template and a non-commented empty template with the following commands
+```sh
+  -t SAVEFILE_FOR_TEMPLATE_FILE -> Generates an empty Template with comments for a scene   
+  -u SAVEFILE_FOR_UNCOMMENTED_TEMPLATE_FILE -> Generates an empty Template WITHOUT comments for a scene   
+  -e SAVEFILE_FOR_EXAMPLE_SCENE -> Generates a textproto file of a Example scene and saves it to the specified file   
+```  
+Example to create a commented template file:
+```sh
+$ ./tracerr -u my_new_scene.textproto
+```   
+  
+  
+You can also find some predefined scenes in the _./scene_ folder
 - simple.textproto: random scene that contains an element of every shape and an obj file
 - simple_spheres.textproto: another example with just a few spheres and a custom background color
 - sphere_field_with_duck.textproto: built on top of simple_spheres one but with 400 randomly generated smaller spheres and a duck 3D model
