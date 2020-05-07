@@ -1,9 +1,10 @@
-# proto-file: ./../proto/scene.proto 
+# proto-file: ./../proto/scene.proto
 # proto-message: Scene
 width: 1000
 height: 500
 saveFile: true
 fname: "GeneratedProtoImg.png"
+show_checkerboard: true
 light {
   position {
     x: -20

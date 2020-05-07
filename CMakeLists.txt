@@ -2,11 +2,22 @@ cmake_minimum_required(VERSION 3.16)
 project(tracerr)
 
 set(CMAKE_CXX_STANDARD 20)
+# enable coverage in the debug builds
+#set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
 
-#find_package(GTest REQUIRED)
-#include_directories(${GTEST_INCLUDE_DIRS})
+#if(NOT CMAKE_BUILD_TYPE)
+#    set(CMAKE_BUILD_TYPE Release)
+#endif()
+#
+## enable optimization in release version and compiler warnings
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
+# add multithreading library
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
+# add protobuf library
 find_package(Protobuf REQUIRED)
 
 if (protobuf_VERBOSE)

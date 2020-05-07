@@ -215,7 +215,20 @@ void Render::RenderThread(int const &row_init, int const &row_n) {
       rgb rgb_val = Material::vec2rgb(pix);
       image_.SetPixelColor({col, row}, rgb_val);
     }
-    //    std::cout << row << '\n';
+  }
+  if ((row_init % 20) == 0){
+    std::lock_guard<std::mutex>(this->mtx_);
+    int barWidth = 30;
+    float progress = static_cast<float>(row_init) /  static_cast<float>(height_);
+    std::cout << "[";
+    int pos = barWidth * progress;
+    for (int i = 0; i < barWidth; ++i) {
+      if (i < pos) std::cout << "=";
+      else if (i == pos) std::cout << ">";
+      else std::cout << " ";
+    }
+    std::cout << "] " << int(progress * 100.0) << " %\r";
+    std::cout.flush();
   }
 }
 

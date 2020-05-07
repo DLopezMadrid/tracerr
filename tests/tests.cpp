@@ -1,5 +1,4 @@
 #include "../src/Image.h"
-#include "../src/Shape.h"
 #include "../src/Sphere.h"
 #include <gtest/gtest.h>
 #include <iostream>
@@ -42,6 +41,15 @@ TEST(Image, ImageResize) {
   EXPECT_EQ(img_width * 3, img.pixels_->cols());
   EXPECT_EQ(img_height, img.pixels_->rows());
   EXPECT_EQ(img_width * img_height * 3, img.pixels_->size());
+}
+
+TEST(Image, ImageResizeException){
+  int img_width = 100;
+  int img_height = 200;
+  Image img(img_width, img_height);
+  img_width =  -1 * img_width * 3;
+  img_height = img_height / 2;
+  EXPECT_ANY_THROW(img.Resize(img_width, img_height));
 }
 
 TEST(Image, DefaultColor) {
@@ -184,18 +192,62 @@ TEST(Sphere, SphereCtorNoArgs) {
 }
 
 TEST(Sphere, RayIntersect) {
-  xyz ray{0, 0, 1};
+  xyz ray{0, 0, -1};
   xyz ray2{1, 1, 0};
-  xyz ray3{1, 0, 1};
+  xyz ray3{1, 0, -1};
+  xyz ray4{99.0f/1000.0f, 0.0f/1000.0f, -1};
+  xyz ray5{101.0f/1000.0f, 0.0f/1000.0f, -1};
+  xyz ray6{99.0f/1000.0f, 0.0f/1000.0f, 1};
+  xyz ray7{99.0f/1000.0f, 99.0f/1000.0f, -1};
+  xyz ray8{-99.0f/1000.0f, 0.0f/1000.0f, -1};
+  xyz ray9{0.0f/1000.0f, 99.0f/1000.0f, -1};
+  xyz ray10{0.0f/1000.0f, -99.0f/1000.0f, -1};
+  xyz ray11{70.0f/1000.0f, 70.0f/1000.0f, -1};
+  xyz ray12{-70.0f/1000.0f, 70.0f/1000.0f, -1};
+  xyz ray13{70.0f/1000.0f, -70.0f/1000.0f, -1};
+  xyz ray14{-70.0f/1000.0f, -70.0f/1000.0f, -1};
+  xyz ray15{72.0f/1000.0f, 72.0f/1000.0f, -1};
+  ray.normalize();
+  ray2.normalize();
+  ray3.normalize();
+  ray4.normalize();
+  ray5.normalize();
+  ray6.normalize();
+  ray7.normalize();
+  ray8.normalize();
+  ray9.normalize();
+  ray10.normalize();
+  ray11.normalize();
+  ray12.normalize();
+  ray13.normalize();
+  ray14.normalize();
+  ray15.normalize();
+
   xyz origin{0, 0, 0};
-  xyz pos{0, 0, 10};
+  xyz pos{0, 0, -10};
   float radius{1};
+  float dist{std::numeric_limits<float>::max()};
   Sphere sphere(pos, radius);
-  EXPECT_TRUE(radius == 2);
-//  EXPECT_TRUE(sphere.RayIntersect(origin, ray, 0));
-//  EXPECT_FALSE(sphere.RayIntersect(origin, ray2, 0));
-//  EXPECT_FALSE(sphere.RayIntersect(origin, ray3, 0));
+  EXPECT_TRUE(sphere.RayIntersect(origin, ray, dist));
+  EXPECT_FALSE(sphere.RayIntersect(origin, ray2, dist));
+  EXPECT_FALSE(sphere.RayIntersect(origin, ray3, dist));
+  EXPECT_TRUE(sphere.RayIntersect(origin, ray4, dist));
+  EXPECT_FALSE(sphere.RayIntersect(origin, ray5, dist));
+  EXPECT_FALSE(sphere.RayIntersect(origin, ray6, dist));
+  EXPECT_FALSE(sphere.RayIntersect(origin, ray7, dist));
+  EXPECT_TRUE(sphere.RayIntersect(origin, ray8, dist));
+  EXPECT_TRUE(sphere.RayIntersect(origin, ray9, dist));
+  EXPECT_TRUE(sphere.RayIntersect(origin, ray10, dist));
+  EXPECT_TRUE(sphere.RayIntersect(origin, ray11, dist));
+  EXPECT_TRUE(sphere.RayIntersect(origin, ray12, dist));
+  EXPECT_TRUE(sphere.RayIntersect(origin, ray13, dist));
+  EXPECT_TRUE(sphere.RayIntersect(origin, ray14, dist));
+  EXPECT_FALSE(sphere.RayIntersect(origin, ray15, dist));
 }
+
+
+
+
 //
 //
 //TEST(Render, RenderCtor) {

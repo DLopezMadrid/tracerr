@@ -52,6 +52,7 @@ class Render {
   int width_;
   int height_;
   friend class SceneManager;
+  std::mutex mtx_;
 };
 
 
