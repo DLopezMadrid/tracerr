@@ -9,8 +9,8 @@
 #include "ObjLoader.h"
 #include "Rectangle.h"
 #include "Render.h"
-#include "google/protobuf/io/zero_copy_stream_impl.h"
-#include "google/protobuf/text_format.h"
+#include <google/protobuf/io/zero_copy_stream_impl.h>
+#include <google/protobuf/text_format.h>
 #include <eigen3/Eigen/Geometry>
 #include <fstream>
 

@@ -4,6 +4,8 @@
 #include <gtest/gtest.h>
 #include <iostream>
 
+float Material::ambient_light{0.05};
+
 
 TEST(Image, ImageBasicCtor) {
   Image img;
@@ -181,19 +183,19 @@ TEST(Sphere, SphereCtorNoArgs) {
   //  EXPECT_EQ(mat, sphere.GetMaterial());
 }
 
-//TEST(Sphere, RayIntersect) {
-//  xyz ray{0, 0, 1};
-//  xyz ray2{1, 1, 0};
-//  xyz ray3{1, 0, 1};
-//  xyz origin{0, 0, 0};
-//  xyz pos{0, 0, 10};
-//  double radius{1};
-//  Sphere sphere(pos, radius);
-//
+TEST(Sphere, RayIntersect) {
+  xyz ray{0, 0, 1};
+  xyz ray2{1, 1, 0};
+  xyz ray3{1, 0, 1};
+  xyz origin{0, 0, 0};
+  xyz pos{0, 0, 10};
+  float radius{1};
+  Sphere sphere(pos, radius);
+  EXPECT_TRUE(radius == 2);
 //  EXPECT_TRUE(sphere.RayIntersect(origin, ray, 0));
 //  EXPECT_FALSE(sphere.RayIntersect(origin, ray2, 0));
 //  EXPECT_FALSE(sphere.RayIntersect(origin, ray3, 0));
-//}
+}
 //
 //
 //TEST(Render, RenderCtor) {
