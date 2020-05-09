@@ -38,6 +38,7 @@ Once you have all the dependencies installed you can compile the program with CM
 **NOTE**: This code uses C++17 features  
 ```sh
 $ git clone https://github.com/DLopezMadrid/tracerr.git  
+$ cd tracerr
 $ mkdir build    
 $ cd build    
 $ cmake ..    
