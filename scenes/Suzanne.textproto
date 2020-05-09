@@ -17,8 +17,8 @@ obj{
   fname: "./../obj/suzanne.obj"
   translation{
     x: -1
-    y: 1
-    z: -5
+    y: 0.5
+    z: -3
   }
   material: pink_rubber
 }
@@ -43,22 +43,22 @@ rectangle{
   p0{
     x: -5
     y: -5
-    z: -6
+    z: -4
   }
   p1{
     x: -5
     y: 5
-    z: -6
+    z: -4
   }
   p2{
     x: 5
     y: 5
-    z: -6
+    z: -4
   }
   p3{
     x: 5
     y: -5
-    z: -6
+    z: -4
   }
   material: blue_rubber
 }

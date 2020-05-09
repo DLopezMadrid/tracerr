@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
   } else if (std::strcmp(argv[1], "-v") == 0) {
     std::cout << "Tracerr v" << TRACERR_MAJOR_VERSION << "." << TRACERR_MINOR_VERSION << '\n';
   } else if (std::strcmp(argv[1], "-r") == 0) {
-    std::cout << "Rendering " << argv[1] << '\n';
+    std::cout << "Rendering " << argv[2] << '\n';
     SceneManager sm;
     sm.LoadScene(argv[2]);
   } else if (std::strcmp(argv[1], "-e") == 0) {

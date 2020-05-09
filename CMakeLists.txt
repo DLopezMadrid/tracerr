@@ -5,10 +5,10 @@ set(CMAKE_CXX_STANDARD 20)
 # enable coverage in the debug builds
 #set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
 
-#if(NOT CMAKE_BUILD_TYPE)
-#    set(CMAKE_BUILD_TYPE Release)
-#endif()
-#
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
 ## enable optimization in release version and compiler warnings
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
@@ -18,14 +18,14 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 # add protobuf library
-find_package(Protobuf REQUIRED)
+find_package(Protobuf 3.11.4 REQUIRED)
 
 if (protobuf_VERBOSE)
     message(STATUS "Using Protocol Buffers ${Protobuf_VERSION}")
 endif ()
 
 INCLUDE_DIRECTORIES(${PROTOBUF_INCLUDE_DIR})
-PROTOBUF_GENERATE_CPP(PROTO_SRC PROTO_HEADER scene.proto)
+PROTOBUF_GENERATE_CPP(PROTO_SRC PROTO_HEADER proto/scene.proto)
 ADD_LIBRARY(proto ${PROTO_HEADER} ${PROTO_SRC})
 
 add_executable(tracerr src/main.cpp src/Shape.h src/Image.cpp src/Image.h src/Sphere.cpp src/Sphere.h src/ImageFile.h src/Material.h src/Light.h src/Render.h src/Render.cpp src/Triangle.cpp src/Triangle.h src/Rectangle.cpp src/Rectangle.h src/ObjLoader.cpp src/ObjLoader.h src/ThreadPool.h proto/scene.pb.cc proto/scene.pb.h src/SceneManager.cpp src/SceneManager.h)

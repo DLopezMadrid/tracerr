@@ -256,10 +256,10 @@ void Render::LoadObj(std::string fname, xyz const &translation, Material const &
   ObjLoader obj;
   obj.readFile2(fname.c_str(), translation, mat);
 
-  for (int i{0}; i < obj.triangles_.size(); i++) {
-    shapes_.push_back(std::make_unique<Triangle>(obj.triangles_[i]));
+  for (auto& triangle : obj.triangles_ ){
+    shapes_.push_back(std::make_unique<Triangle>(triangle));
   }
-  for (int i{0}; i < obj.rectangles_.size(); i++) {
-    shapes_.push_back(std::make_unique<Rectangle>(obj.rectangles_[i]));
+  for (auto& rectangle: obj.rectangles_){
+    shapes_.push_back(std::make_unique<Rectangle>(rectangle));
   }
 }
