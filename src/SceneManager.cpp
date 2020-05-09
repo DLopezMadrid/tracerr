@@ -44,7 +44,7 @@ void SceneManager::LoadScene(char *proto_path_char) {
   //  SaveSceneToProto();
   render.RenderSceneMultiThread(std::move(shapes_));
   if (scene_in_.savefile()) {
-    std::cout << "Saving file as " << scene_in_.fname() << '\n';
+    std::cout << '\n' << "Saving file as " << scene_in_.fname() << '\n';
     render.SaveImage(scene_in_.fname());
   }
   std::cout << "Done" << '\n';

@@ -13,49 +13,35 @@ The code is inspired by [tinytracer](https://github.com/ssloy/tinyraytracer) by 
 I also chose to use Eigen for the linear algebra due to its easy to use, speed and built-in methods. 
 
 ## Install dependencies 
-The instructions here are aimed for Ubuntu, for other platforms please check the library sites
-1. First you will need to install [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) for the linear algebra operations.    
-```sh   
-$ sudo apt-get install libeigen3-dev  
-```  
-2. Install [protobuf](https://github.com/protocolbuffers/protobuf)
- ```sh   
-$ sudo apt-get install autoconf automake libtool curl make g++ unzip
-$ git clone https://github.com/protocolbuffers/protobuf.git
-$ cd protobuf
-$ git submodule update --init --recursive
-$ ./autogen.sh
-$ ./configure
-$ make
-$ make check
-$ sudo make install
-$ sudo ldconfig
- ```  
-  Alternatively you can also use snap to install protobuf
-  - Install snap if you don't have it yet
-```sh   
-$ sudo apt update
-$ sudo apt install snapd
+The instructions here are aimed for **Ubuntu** (tested on 20.04), for other platforms please check the respective library sites
+
+Dependencies:  
+1. [Git](https://git-scm.com/) 
+2. [CMake 3.16](https://cmake.org/)
+3. [Eigen 3.3.7](http://eigen.tuxfamily.org/index.php?title=Main_Page)
+4. [Protobuf 3.6.1](https://github.com/protocolbuffers/protobuf)
+
+To install them run the following command:  
+```sh
+$ sudo apt -y install git build-essential cmake libprotobuf-dev protobuf-compiler libeigen3-dev
 ```
-  - Proceed to install protobuf using it
-```sh   
-$ sudo snap install protobuf --classic
- ```  
- If you **change** the _scene.proto_ file, you **will need to rerun** the protobuf compiler. **If no changes** are made there is **no need to run this command**  
-  - In the project folder run this   
+
+It also uses the [STB library](https://github.com/nothings/stb) to encode the image files. The required files are already included in the repo (_include_ directory)   
+  
+NOTE: If you want (**NOT REQUIRED**) to force the generation of the C++ header and source files from _scene.proto_ file, you can run the following command within the main project folder  
 ```sh  
 $ protoc -I=./proto --cpp_out=./proto ./proto/scene.proto
 ```
-It also uses the [STB library](https://github.com/nothings/stb) to encode the image files. The required files are already included in the repo (_include_ directory)  
+
 ## How to build
 Once you have all the dependencies installed you can compile the program with CMake and Make  
 **NOTE**: This code uses C++17 features  
 ```sh
+$ git clone https://github.com/DLopezMadrid/tracerr.git  
 $ mkdir build    
 $ cd build    
 $ cmake ..    
 $ make    
-$ ./tracerr  
 ```    
 
 ## How to run
