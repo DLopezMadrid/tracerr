@@ -5,7 +5,7 @@
 #ifndef TRACERR_SCENEMANAGER_H
 #define TRACERR_SCENEMANAGER_H
 
-#include "../proto/scene.pb.h"
+#include "proto/scene.pb.h"
 #include "ObjLoader.h"
 #include "Rectangle.h"
 #include "Render.h"

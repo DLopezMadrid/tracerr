@@ -18,22 +18,35 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 # add protobuf library
-find_package(Protobuf 3.11.4 REQUIRED)
+INCLUDE(FindProtobuf)
+FIND_PACKAGE(Protobuf 3.6.1 REQUIRED)
+#if (protobuf_VERBOSE)
+#    message(STATUS "Using Protocol Buffers ${Protobuf_VERSION}")
+#endif ()
 
-if (protobuf_VERBOSE)
-    message(STATUS "Using Protocol Buffers ${Protobuf_VERSION}")
-endif ()
+ADD_SUBDIRECTORY(proto)
 
-INCLUDE_DIRECTORIES(${PROTOBUF_INCLUDE_DIR})
-PROTOBUF_GENERATE_CPP(PROTO_SRC PROTO_HEADER proto/scene.proto)
-ADD_LIBRARY(proto ${PROTO_HEADER} ${PROTO_SRC})
-
-add_executable(tracerr src/main.cpp src/Shape.h src/Image.cpp src/Image.h src/Sphere.cpp src/Sphere.h src/ImageFile.h src/Material.h src/Light.h src/Render.h src/Render.cpp src/Triangle.cpp src/Triangle.h src/Rectangle.cpp src/Rectangle.h src/ObjLoader.cpp src/ObjLoader.h src/ThreadPool.h proto/scene.pb.cc proto/scene.pb.h src/SceneManager.cpp src/SceneManager.h)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+add_executable(tracerr src/main.cpp src/Shape.h src/Image.cpp src/Image.h src/Sphere.cpp src/Sphere.h src/ImageFile.h src/Material.h src/Light.h src/Render.h src/Render.cpp src/Triangle.cpp src/Triangle.h src/Rectangle.cpp src/Rectangle.h src/ObjLoader.cpp src/ObjLoader.h src/ThreadPool.h src/SceneManager.cpp src/SceneManager.h)
 target_link_libraries(tracerr Threads::Threads)
-target_link_libraries(tracerr protobuf::libprotobuf)
+#target_link_libraries(tracerr protobuf::libprotobuf)
+#TARGET_LINK_LIBRARIES(tracerr proto ${PROTOBUF_LIBRARY})
+TARGET_LINK_LIBRARIES(tracerr proto ${PROTOBUF_LIBRARIES})
+#add_dependencies(tracerr scene_proto)
+#target_link_libraries(tracerr scene_proto)
+
 # Link runTests with what we want to test and the GTest and pthread library
 #add_executable(runTests src/tests.cpp src/Shape.h src/Image.cpp src/Image.h src/Sphere.cpp src/Sphere.h src/ImageFile.h src/Material.h)
 #target_link_libraries(runTests ${GTEST_LIBRARIES} pthread)
+
+
+add_executable(Tests tests/tests.cpp src/Shape.h src/Image.cpp src/Image.h src/Sphere.cpp src/Sphere.h src/ImageFile.h src/Material.h src/Light.h src/Render.h src/Render.cpp src/Triangle.cpp src/Triangle.h src/Rectangle.cpp src/Rectangle.h src/ObjLoader.cpp src/ObjLoader.h src/ThreadPool.h src/SceneManager.cpp src/SceneManager.h)
+target_link_libraries(Tests gtest_main)
+target_link_libraries(Tests Threads::Threads)
+#target_link_libraries(Tests protobuf::libprotobuf)
+TARGET_LINK_LIBRARIES(Tests proto ${PROTOBUF_LIBRARY})
+#add_dependencies(Tests scene_proto)
+#target_link_libraries(Tests scene_proto)
 
 #Download and unpack googletest at configure time
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
@@ -67,7 +80,3 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
     include_directories("${gtest_SOURCE_DIR}/include")
 endif()
 
-add_executable(Tests tests/tests.cpp src/Shape.h src/Image.cpp src/Image.h src/Sphere.cpp src/Sphere.h src/ImageFile.h src/Material.h src/Light.h src/Render.h src/Render.cpp src/Triangle.cpp src/Triangle.h src/Rectangle.cpp src/Rectangle.h src/ObjLoader.cpp src/ObjLoader.h src/ThreadPool.h proto/scene.pb.cc proto/scene.pb.h src/SceneManager.cpp src/SceneManager.h)
-target_link_libraries(Tests gtest_main)
-target_link_libraries(Tests Threads::Threads)
-target_link_libraries(Tests protobuf::libprotobuf)
