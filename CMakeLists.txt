@@ -2,9 +2,10 @@ cmake_minimum_required(VERSION 3.16)
 project(tracerr)
 
 set(CMAKE_CXX_STANDARD 20)
-# enable coverage in the debug builds
+# uncomment to enable coverage analysis
 #set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
 
+# set a build type if non is given
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -17,16 +18,17 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 # add multithreading library
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
+
 # add protobuf library
 INCLUDE(FindProtobuf)
 FIND_PACKAGE(Protobuf 3.6.1 REQUIRED)
-#if (protobuf_VERBOSE)
-#    message(STATUS "Using Protocol Buffers ${Protobuf_VERSION}")
-#endif ()
 
+# add the proto directory and its respective CMakeList.txt file
 ADD_SUBDIRECTORY(proto)
-add_library(proto STATIC scene_proto)
-set_target_properties(supporting_library PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+# include build directory since we are generating the protobuf C++ header and source on it
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
 add_subdirectory(pybind11)
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
@@ -52,9 +54,7 @@ pybind11_add_module(tracerr
         src/ThreadPool.h
         src/SceneManager.cpp
         src/SceneManager.h)
-#target_link_libraries(tracerr Threads::Threads)
-#target_link_libraries(tracerr protobuf::libprotobuf)
-#TARGET_LINK_LIBRARIES(tracerr proto ${PROTOBUF_LIBRARY})
-#TARGET_LINK_LIBRARIES(tracerr proto ${PROTOBUF_LIBRARIES})
-#add_dependencies(tracerr scene_proto)
-target_link_libraries(tracerr scene_proto)
+
+target_link_libraries(tracerr PRIVATE pybind11::module)
+target_link_libraries(tracerr PRIVATE Threads::Threads)
+target_link_libraries(tracerr PRIVATE proto ${PROTOBUF_LIBRARIES})
