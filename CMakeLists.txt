@@ -10,6 +10,8 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
+set(CMAKE_CXX_FLAGS "-fpic")
+
 ## enable optimization in release version and compiler warnings
 #set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
@@ -34,7 +36,7 @@ add_subdirectory(pybind11)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 #add_executable(tracerr src/main.cpp src/Shape.h src/Image.cpp src/Image.h src/Sphere.cpp src/Sphere.h src/ImageFile.h src/Material.h src/Light.h src/Render.h src/Render.cpp src/Triangle.cpp src/Triangle.h src/Rectangle.cpp src/Rectangle.h src/ObjLoader.cpp src/ObjLoader.h src/ThreadPool.h src/SceneManager.cpp src/SceneManager.h)
 pybind11_add_module(tracerr
-        src/main.cpp
+        src/main_py.cpp
         src/Shape.h
         src/Image.cpp
         src/Image.h
