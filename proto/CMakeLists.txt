@@ -1,3 +1,4 @@
+# generate protobuf compiled C++ header and source files in the build directory
 MESSAGE( STATUS, "Subdir Protobuf lib is ${PROTOBUF_LIBRARY}")
 MESSAGE( STATUS, "Subdir Protobuf libs is ${PROTOBUF_LIBRARIES}")
 INCLUDE_DIRECTORIES(${PROTOBUF_INCLUDE_DIR})
