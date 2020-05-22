@@ -31,7 +31,36 @@ ADD_SUBDIRECTORY(proto)
 # include build directory since we are generating the protobuf C++ header and source on it
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-if( CPP_exe )
+if( PYBIND )
+  # python module
+  add_subdirectory(pybind11)
+  pybind11_add_module(tracerr
+          src/main_py.cpp
+          src/Shape.h
+          src/Image.cpp
+          src/Image.h
+          src/Sphere.cpp
+          src/Sphere.h
+          src/ImageFile.h
+          src/Material.h
+          src/Light.h
+          src/Render.h
+          src/Render.cpp
+          src/Triangle.cpp
+          src/Triangle.h
+          src/Rectangle.cpp
+          src/Rectangle.h
+          src/ObjLoader.cpp
+          src/ObjLoader.h
+          src/ThreadPool.h
+          src/SceneManager.cpp
+          src/SceneManager.h)
+
+  target_link_libraries(tracerr PRIVATE pybind11::module)
+  target_link_libraries(tracerr PRIVATE Threads::Threads)
+  target_link_libraries(tracerr PRIVATE proto ${PROTOBUF_LIBRARIES})
+
+else()
   # main executable
   ADD_EXECUTABLE(tracerr src/main.cpp src/Shape.h src/Image.cpp src/Image.h src/Sphere.cpp src/Sphere.h src/ImageFile.h src/Material.h src/Light.h src/Render.h src/Render.cpp src/Triangle.cpp src/Triangle.h src/Rectangle.cpp src/Rectangle.h src/ObjLoader.cpp src/ObjLoader.h src/ThreadPool.h src/SceneManager.cpp src/SceneManager.h)
 
@@ -80,34 +109,5 @@ if( CPP_exe )
   if (CMAKE_VERSION VERSION_LESS 2.8.11)
     include_directories("${gtest_SOURCE_DIR}/include")
   endif()
-
-else()
-  # python module
-  add_subdirectory(pybind11)
-  pybind11_add_module(tracerr
-          src/main_py.cpp
-          src/Shape.h
-          src/Image.cpp
-          src/Image.h
-          src/Sphere.cpp
-          src/Sphere.h
-          src/ImageFile.h
-          src/Material.h
-          src/Light.h
-          src/Render.h
-          src/Render.cpp
-          src/Triangle.cpp
-          src/Triangle.h
-          src/Rectangle.cpp
-          src/Rectangle.h
-          src/ObjLoader.cpp
-          src/ObjLoader.h
-          src/ThreadPool.h
-          src/SceneManager.cpp
-          src/SceneManager.h)
-
-  target_link_libraries(tracerr PRIVATE pybind11::module)
-  target_link_libraries(tracerr PRIVATE Threads::Threads)
-  target_link_libraries(tracerr PRIVATE proto ${PROTOBUF_LIBRARIES})
 
 endif()
