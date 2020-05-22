@@ -20,24 +20,23 @@
 float Material::ambient_light{0.05};
 
 void RenderScene(char* text_proto){
-  SceneManager sm;
-  sm.LoadScene(text_proto);
+        SceneManager sm;
+        sm.LoadScene(text_proto);
 }
 void GenerateExample(char* text_proto){
-  SceneManager sm;
-  sm.SaveExampleScene(text_proto);
+        SceneManager sm;
+        sm.SaveExampleScene(text_proto);
 }
 void GenerateTemplate(char* text_proto){
-  SceneManager sm;
-  sm.LoadScene(text_proto);
+        SceneManager sm;
+        sm.LoadScene(text_proto);
 }
 void GenerateTemplateNoComment(char* text_proto){
-  SceneManager sm;
-  sm.LoadScene(text_proto);
+        SceneManager sm;
+        sm.LoadScene(text_proto);
 }
-PYBIND11_MODULE(tracerr, m
-) {
-    m.doc() = R"pbdoc(
+PYBIND11_MODULE(tracerr, m) {
+        m.doc() = R"pbdoc(
         Pybind11 tracerr plugin
         -----------------------
         .. currentmodule:: tracerr
@@ -48,27 +47,27 @@ PYBIND11_MODULE(tracerr, m
            GenerateTemplate
            GenerateTemplateNoComment
     )pbdoc";
-    m.def("RenderScene", &RenderScene, R"pbdoc(
+        m.def("RenderScene", &RenderScene, R"pbdoc(
         Render scene described in text_proto file.
     )pbdoc");
-    m.def("GenerateExample", &GenerateExample, R"pbdoc(
+        m.def("GenerateExample", &GenerateExample, R"pbdoc(
         Generates a textproto file of a Example scene and saves it to the specified file.
     )pbdoc");
-    m.def("GenerateTemplate", &GenerateTemplate, R"pbdoc(
+        m.def("GenerateTemplate", &GenerateTemplate, R"pbdoc(
         Generates an empty Template with comments for a scene.
     )pbdoc");
-    m.def("GenerateTemplateNoComment", &GenerateTemplateNoComment, R"pbdoc(
+        m.def("GenerateTemplateNoComment", &GenerateTemplateNoComment, R"pbdoc(
         Generates an empty Template WITHOUT comments for a scene.
     )pbdoc");
 #ifdef VERSION_INFO
-    m.attr("__version__") = VERSION_INFO;
+        m.attr("__version__") = VERSION_INFO;
 #else
-    m.attr("__version__") = "dev";
+        m.attr("__version__") = "dev";
 #endif
 }
 
 
 int main(int argc, char **argv) {
 
-  return 0;
+        return 0;
 }
