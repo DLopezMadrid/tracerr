@@ -10,16 +10,17 @@ The program supports rendering of spheres, triangles and rectangles as basic pri
 The program is capable of simulating not only the basic Phong illumination model (ambient, diffusion and specular light) but also shadows, reflections and refractions  
 The scenes to render are stored in text protobufs that can be used to modify said scenes.  
 The code is inspired by [tinytracer](https://github.com/ssloy/tinyraytracer) by Dimitry Sokolov (specially some of the math behind raytracing). The rest of the code was done to practice the stuff that was covered during the nanodegree.    
-I also chose to use Eigen for the linear algebra due to its easy to use, speed and built-in methods. 
+I also chose to use Eigen for the linear algebra due to its easy to use, speed and built-in methods.
 
-## Install dependencies 
+## Install dependencies
 The instructions here are aimed for **Ubuntu** (tested on 20.04), for other platforms please check the respective library sites
 
 Dependencies:  
-1. [Git](https://git-scm.com/) 
+1. [Git](https://git-scm.com/)
 2. [CMake 3.16](https://cmake.org/)
 3. [Eigen 3.3.7](http://eigen.tuxfamily.org/index.php?title=Main_Page)
 4. [Protobuf 3.6.1](https://github.com/protocolbuffers/protobuf)
+5. Python>=3.6 if using python
 
 To install them run the following command:  
 ```sh
@@ -27,14 +28,21 @@ $ sudo apt -y install git build-essential cmake libprotobuf-dev protobuf-compile
 ```
 
 It also uses the [STB library](https://github.com/nothings/stb) to encode the image files. The required files are already included in the repo (_include_ directory)   
-  
+
 NOTE: If you want (**NOT REQUIRED**) to force the generation of the C++ header and source files from _scene.proto_ file, you can run the following command within the main project folder  
 ```sh  
 $ protoc -I=./proto --cpp_out=./proto ./proto/scene.proto
 ```
 
 ## How to build
-Once you have all the dependencies installed you can compile the program with CMake and Make  
+Once you have all the dependencies installed you can compile the program with CMake and Make
+## Python
+```sh
+$ git clone https://github.com/DLopezMadrid/tracerr.git  
+$ cd tracerr
+$ pip install .
+```
+## C++
 **NOTE**: This code uses C++17 features  
 ```sh
 $ git clone https://github.com/DLopezMadrid/tracerr.git  
@@ -66,8 +74,8 @@ Example to create a commented template file:
 ```sh
 $ ./tracerr -u my_new_scene.textproto
 ```   
-  
-  
+
+
 You can also find some predefined scenes in the _./scene_ folder
 - simple.textproto: random scene that contains an element of every shape and an obj file
 - simple_spheres.textproto: another example with just a few spheres and a custom background color
@@ -78,6 +86,20 @@ You can also find some predefined scenes in the _./scene_ folder
 
 For **faster execution** you can reduce the resolution (_width_ & _height_ parameters). You can also comment out any of the shapes in the scene config file   
 The resulting image will be saved in the build directory under the filename that you specify in the prototext file (_fname_ parameter)
+
+## Python
+The Python module follows the same functionality as C++ and provides the following functions:
+```
+tracerr.GenerateExample()
+tracerr.GenerateTemplateNoComment()
+tracerr.GenerateTemplate()
+tracerr.RenderScene()
+```
+The Python module can be used as follows:
+```
+import tracerr
+tracerr.RenderScene('PATH_TO_PROTOTEXT_FILE')
+```
 
 ## Scene definition
 #### Scene configuration
@@ -97,12 +119,12 @@ There are also other scene configuration attributes that are optional
  string fname [default = "RenderTest.png"];
  bool show_elapsed_time [default = true];
  bool show_checkerboard [default = false];
- Color background_color; 
+ Color background_color;
  float ambient_light;
 ```
  - fname: filename for the saved image
  - show_elapsed_time: prints the time taken to render the scene to the console
- - show_checkerboard: draws the checkerboard floor plane 
+ - show_checkerboard: draws the checkerboard floor plane
  - background_color: specifies a custom background color using the Color type (see below)
  - ambient_light: specifies the ambient light level (values 0 - 1)
  #### Supporting types
@@ -159,7 +181,7 @@ To define a light source:
   message Light{
     required Pos position = 1;
     required float intensity = 2;
-  } 
+  }
 ```
 Example:   
 ```protobuf.tmbundle
@@ -330,7 +352,7 @@ obj{
 
 #### Light
 - Represents a point light source with a given intensity
-  
+
 #### Material
 - Represents a given material with certain properties relating to its color, diffusivity, specularity, reflectivity and refractivity
 
